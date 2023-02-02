@@ -51,7 +51,7 @@ module.exports = {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
 			},
-			refreshtoken: {
+			refresh_token: {
 				type: DataTypes.ARRAY(DataTypes.STRING),
 				allowNull: true,
 			},

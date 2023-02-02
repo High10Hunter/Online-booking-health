@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const { ROLE_ADMIN, ROLE_NURSE, ROLE_DOCTOR } = require('../config/constants');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
@@ -34,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
 		}
 
 		getRole() {
-			if (this.role === ROLE_ADMIN) return 'admin';
-			else if (this.role === ROLE_NURSE) return 'nurse';
-			else if (this.role === ROLE_DOCTOR) return 'doctor';
+			if (this.role === ROLE_ADMIN) return 'ADMIN';
+			else if (this.role === ROLE_NURSE) return 'NURSE';
+			else if (this.role === ROLE_DOCTOR) return 'DOCTOR';
 			else return '';
 		}
 	}
@@ -186,7 +187,7 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: false,
 				defaultValue: true,
 			},
-			refreshtoken: {
+			refresh_token: {
 				type: DataTypes.ARRAY(DataTypes.STRING),
 				allowNull: true,
 			},
@@ -199,5 +200,14 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: 'User',
 		}
 	);
+
+	User.prototype.isValidPassword = async function (password) {
+		try {
+			return await bcrypt.compare(password, this.password);
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
+
 	return User;
 };
