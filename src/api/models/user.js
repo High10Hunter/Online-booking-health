@@ -35,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
 		}
 
 		getRole() {
-			if (this.role === ROLE_ADMIN) return 'ADMIN';
-			else if (this.role === ROLE_NURSE) return 'NURSE';
-			else if (this.role === ROLE_DOCTOR) return 'DOCTOR';
+			if (this.role === ROLE_ADMIN) return 'admin';
+			else if (this.role === ROLE_NURSE) return 'nurse';
+			else if (this.role === ROLE_DOCTOR) return 'doctor';
 			else return '';
 		}
 	}
