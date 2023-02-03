@@ -189,6 +189,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			refresh_token: {
 				type: DataTypes.ARRAY(DataTypes.STRING),
+				defaultValue: [],
 				allowNull: true,
 			},
 		},
