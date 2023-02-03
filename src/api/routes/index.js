@@ -1,3 +1,5 @@
+import testRoute from './test.route';
+import authRoutes from './auth.route';
 import adminRoutes from './admin.route';
 
-export default { adminRoutes };
+export default { testRoute, authRoutes, adminRoutes };
