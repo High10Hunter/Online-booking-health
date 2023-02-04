@@ -52,7 +52,7 @@ const login = async (req, res, next) => {
 
 		//store access token in cookie
 		res.cookie('accessToken', accessToken, {
-			maxAge: Number.MAX_SAFE_INTEGER, //almost forever
+			maxAge: 86400000, //1 day
 			httpOnly: true,
 		});
 
