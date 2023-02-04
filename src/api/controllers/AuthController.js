@@ -1,12 +1,13 @@
 import { User } from '../../api/models';
-import createError from 'http-errors';
 import jwt from 'jsonwebtoken';
 import { signAccessToken } from '../services/jwt/JwtServices';
 import { Sequelize } from 'sequelize';
+import RolesEnum from '../enums/RolesEnum';
 
 const index = (req, res) => {
 	if (req.payload) {
-		return res.redirect(`/${req.payload.role}`);
+		const roleListKeys = Object.keys(RolesEnum);
+		return res.redirect(`/${roleListKeys[req.payload.role].toLowerCase()}`);
 	}
 
 	res.render('auth/login', {
@@ -47,7 +48,7 @@ const login = async (req, res, next) => {
 		const accessToken = await signAccessToken(
 			user.id,
 			user.name,
-			user.getRole()
+			user.role
 		);
 
 		//store access token in cookie
@@ -105,12 +106,9 @@ const login = async (req, res, next) => {
 			});
 		}
 
-		// // redirect to index page
-		// return res.render(`./${role}/index`, {
-		// 	layout: `./${role}/index`,
-		// });
-
-		return res.redirect('/authed');
+		const role = user.getRole();
+		// redirect to index page
+		return res.redirect(`/${role}`);
 	} catch (error) {
 		next(error);
 	}
