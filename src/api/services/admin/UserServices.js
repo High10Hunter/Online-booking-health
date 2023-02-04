@@ -2,6 +2,7 @@ import { User } from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
+import createError from 'http-errors';
 
 const getAllUser = async (q = '', page = 1, limit = 10) => {
 	try {
@@ -15,6 +16,7 @@ const getAllUser = async (q = '', page = 1, limit = 10) => {
 				name: {
 					[Op.like]: `%${q}%`,
 				},
+				status: true,
 			},
 			order: [['createdAt', 'DESC']],
 		});
@@ -96,4 +98,9 @@ const deleteUser = async id => {
 	}
 };
 
-export default { getAllUser, createUser, updateUser, deleteUser };
+export default {
+	getAllUser,
+	createUser,
+	updateUser,
+	deleteUser,
+};

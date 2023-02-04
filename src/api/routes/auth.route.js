@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import AuthController from '../controllers/AuthController';
-import { verifyAccessToken } from '../services/jwt/JwtServices';
 
 import checkIfLoggedIn from '../middlewares/checkIfLoggedIn';
 

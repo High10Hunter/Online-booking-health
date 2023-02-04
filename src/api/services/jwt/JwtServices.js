@@ -25,7 +25,7 @@ const signAccessToken = (user_id, name, role) => {
 };
 
 const verifyAccessToken = (req, res, next) => {
-	const authHeader = req.headers['authorization'];
+	const authHeader = req.headers.authorization || req.headers.Authorization;
 	if (!authHeader || !authHeader.startsWith('Bearer')) {
 		return res.redirect('auth/login');
 	}

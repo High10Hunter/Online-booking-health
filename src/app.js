@@ -17,7 +17,7 @@ viewEngine(app);
 
 app.use(issueAuthHeader);
 
-// web.testRoute(app);
+web.testRoute(app);
 web.authRoutes(app);
 web.adminRoutes(app);
 
