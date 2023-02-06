@@ -17,9 +17,11 @@ viewEngine(app);
 
 app.use(issueAuthHeader);
 
-web.testRoute(app);
+web.testRoute(app); // for testing only
 web.authRoutes(app);
 web.adminRoutes(app);
+web.nurseRoutes(app);
+web.doctorRoutes(app);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
