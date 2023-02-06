@@ -8,7 +8,7 @@ const router = Router();
 
 const testRoute = app => {
 	router.get('/test', TestController.testFunc);
-	router.get('/authed', verifyAccessToken, (req, res) => {
+	router.get('/logout', verifyAccessToken, (req, res) => {
 		res.render('./tests/authed', {
 			layout: './tests/authed',
 		});
