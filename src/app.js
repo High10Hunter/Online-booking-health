@@ -15,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 viewEngine(app);
 
+web.clientRoutes(app);
+
 app.use(issueAuthHeader);
 
 web.testRoute(app); // for testing only
