@@ -29,8 +29,15 @@ const adminRoutes = app => {
 		}
 	);
 
+	router.get(
+		'/users',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.index
+	);
+
 	//CRUD users
-	router.get('/users', UserController.index);
+	// router.get('/users', UserController.index);
 	router.post('/users/create', UserController.create);
 	router.patch('/users/update/:id', UserController.update);
 	router.delete('/users/destroy/:id', UserController.destroy);

@@ -1,0 +1,167 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card-box">
+			<h4 class="mt-0 header-title">Users table</h4>
+
+			<div class="row">
+				<div class="col-md-0 mt-2 ml-2">Hiển thị</div>
+				<div class="col-md-1">
+					<select class="custom-select mb-2" id="number-of-records">
+						<!-- item-->
+						<% if (limit == 10) { %>
+						<option
+							value="/admin/users?page=<%= current %>&limit=10"
+							selected
+						>
+							<% } else { %>
+						</option>
+						<option
+							value="/admin/users?page=<%= current %>&limit=10"
+						>
+							<% } %> 10
+						</option>
+						<!-- item-->
+						<% if (limit == 15) { %>
+						<option
+							value="/admin/users?page=<%= current %>&limit=15"
+							selected
+						>
+							<% } else { %>
+						</option>
+						<option
+							value="/admin/users?page=<%= current %>&limit=15"
+						>
+							<% } %> 15
+						</option>
+						<!-- item-->
+						<% if (limit == 20) { %>
+						<option
+							value="/admin/users?page=<%= current %>&limit=20"
+							selected
+						>
+							<% } else { %>
+						</option>
+						<option
+							value="/admin/users?page=<%= current %>&limit=20"
+						>
+							<% } %> 20
+						</option>
+					</select>
+				</div>
+				<div class="col-md-0 mt-2 ml-0">bản ghi</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover mb-0">
+					<thead class="thead-dark">
+						<tr>
+							<th>#</th>
+							<th>Tên người dùng</th>
+							<th>Ngày sinh</th>
+							<th>Giới tính</th>
+							<th>Email</th>
+							<th>Số điện thoại</th>
+							<th>Vai trò</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% users.forEach(function(user) { %>
+						<tr>
+							<th scope="row"><%= user.id %></th>
+							<td><%= user.name %></td>
+							<td><%= user.birthday %></td>
+							<td><%= user.gender %></td>
+							<td><%= user.email %></td>
+							<td><%= user.phone_number %></td>
+							<% if (user.role == 0) { %>
+							<td class="text-danger">Admin</td>
+							<% } else if (user.role == 1) { %>
+							<td class="text-primary">Nurse</td>
+							<% } else if (user.role == 2) { %>
+							<td class="text-success">Doctor</td>
+							<% } %>
+						</tr>
+						<% }); %>
+					</tbody>
+				</table>
+				<!-- pagination -->
+				<div class="row pt-2">
+					<div class="col-xl-4"></div>
+					<div class="col-xl-6">
+						<nav aria-label="...">
+							<% if (pages > 0) { %>
+							<ul class="pagination text-center">
+								<% if (current == 1) { %>
+								<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1"
+										>Đầu</a
+									>
+								</li>
+								<% } else { %>
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="/admin/users?page=1&limit=<%= limit %>"
+										tabindex="-1"
+									>
+										Đầu
+									</a>
+								</li>
+								<% } %> <% let i = (Number(current) > 5 ?
+								Number(current) - 4 : 1) %> <% if (i != 1) { %>
+								<li class="page-item disabled">
+									<a class="page-link">...</a>
+								</li>
+								<% } %> <% for (; i <= pages && i <=
+								Number(current) + 4; i++) { %> <% if (i ==
+								current) { %>
+								<li class="page-item active">
+									<a class="page-link"><%=i%></a>
+								</li>
+								<% } else { %>
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="/admin/users?page=<%=i%>&limit=<%= limit %>"
+										><%=i%>
+									</a>
+								</li>
+								<% } %> <% if (i == Number(current) + 4 && i <
+								pages ) { %>
+								<li class="page-item disabled">
+									<a class="page-link">...</a>
+								</li>
+								<% } %> <% } %> <% if (current == pages) { %>
+								<li class="page-item disabled">
+									<a class="page-link">Cuối</a>
+								</li>
+								<% } else { %>
+								<li class="page-item">
+									<a
+										class="page-link"
+										href="/admin/users?page=<%= pages %>&limit=<%= limit %>"
+									>
+										Cuối
+									</a>
+								</li>
+								<% } %>
+							</ul>
+							<% } %>
+						</nav>
+					</div>
+					<div class="col-xl-2"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- contentFor('js') %>
+<script>
+	$(document).ready(function () {
+		$('#number-of-records').change(function () {
+			const url = $(this).val();
+			window.location.href = url;
+		});
+	});
+</script>

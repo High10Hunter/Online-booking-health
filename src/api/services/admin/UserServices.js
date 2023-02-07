@@ -4,11 +4,12 @@ import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
 import createError from 'http-errors';
 
-const getAllUser = async (q = '', page = 1, limit = 10) => {
+const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 	try {
-		if (page < 0 || limit < 10) throw new Error('Page or limit is invalid');
+		if (currentPage < 0 || limit <= 0)
+			throw new Error('Page or limit is invalid');
 
-		const offset = (page - 1) * limit;
+		const offset = (currentPage - 1) * limit;
 		const { count, rows } = await User.findAndCountAll({
 			offset: offset,
 			limit: limit,
@@ -22,12 +23,9 @@ const getAllUser = async (q = '', page = 1, limit = 10) => {
 		});
 
 		const endPage = Math.ceil(count / limit);
-		if (page > endPage) throw new Error('Page is invalid');
+		if (currentPage > endPage) throw new Error('Page is invalid');
 
-		const nextPage = page < endPage ? parseInt(page) + 1 : null;
-		const prevPage = page > 1 ? parseInt(page) - 1 : null;
-
-		return { rows, endPage, nextPage, prevPage };
+		return { rows, currentPage, endPage };
 	} catch (error) {
 		throw new NotFoundError('Cannot get users');
 	}

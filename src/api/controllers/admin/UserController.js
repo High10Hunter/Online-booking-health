@@ -4,24 +4,22 @@ import User from '../../services/admin/UserServices';
 const index = async (req, res) => {
 	try {
 		const { q, page, limit } = req.query;
-		const { rows, endPage, prevPage, nextPage } = await User.getAllUser(
+
+		const { rows, currentPage, endPage } = await User.getAllUser(
 			q,
 			page,
 			limit
 		);
 
-		return res.status(StatusCodes.OK).json({
-			message: 'Get users successfully',
-			data: rows,
-			prevPage,
-			nextPage,
-			endPage,
+		return res.render('./admin/users/index', {
+			users: rows,
+			pages: endPage,
+			current: currentPage,
+			limit: limit,
+			title: 'Manage Users',
 		});
 	} catch (error) {
-		return res.status(StatusCodes.BAD_REQUEST).json({
-			message: error.message,
-			data: [],
-		});
+		return res.redirect('/admin/users?page=1&limit=10');
 	}
 };
 
