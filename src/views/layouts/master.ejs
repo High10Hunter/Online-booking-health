@@ -4,9 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title><%- title %></title>
+		<title>
+			<% if (typeof title !== 'undefined') { %> <%= title %> <% } else {
+			%> Document <% } %>
+		</title>
 		<link rel="shortcut icon" href="/admin/assets/images/favicon.ico" />
-		<%- include('./style') %>
+		<%- include('./style') %> <%- defineContent('css') %>
 	</head>
 	<body>
 		<div id="wrapper">
@@ -36,6 +39,6 @@
 			<!-- ============================================================== -->
 		</div>
 
-		<%- include('./script') %>
+		<%- include('./script') %> <%- defineContent('js') %>
 	</body>
 </html>
