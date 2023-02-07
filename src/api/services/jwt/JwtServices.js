@@ -138,7 +138,7 @@ const handleRefreshToken = async (req, res, next) => {
 				const accessToken = await signAccessToken(
 					user.id,
 					user.name,
-					user.getRole()
+					user.role
 				);
 
 				const newRefreshToken = jwt.sign(
