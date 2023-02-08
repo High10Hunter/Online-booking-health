@@ -35,6 +35,38 @@ const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 	}
 };
 
+const getAllUserByRole = async (role, q = '', currentPage = 1, limit = 10) => {
+	try {
+		if (currentPage < 0 || limit <= 0)
+			throw new Error('Page or limit is invalid');
+
+		const offset = (currentPage - 1) * limit;
+		const { count, rows } = await User.findAndCountAll({
+			offset: offset,
+			limit: limit,
+			where: {
+				name: {
+					[Op.iLike]: `%${q}%`,
+				},
+				status: true,
+				role: role,
+			},
+			order: [['createdAt', 'DESC']],
+		});
+
+		if (count === 0) {
+			return { rows: [], currentPage: 1, endPage: 1 };
+		}
+
+		const endPage = Math.ceil(count / limit);
+		if (currentPage > endPage) throw new Error('Page is invalid');
+
+		return { rows, currentPage, endPage };
+	} catch (error) {
+		throw new NotFoundError('Cannot get users');
+	}
+};
+
 const createUser = async data => {
 	try {
 		const { birthday } = data;
@@ -102,6 +134,7 @@ const deleteUser = async id => {
 
 export default {
 	getAllUser,
+	getAllUserByRole,
 	createUser,
 	updateUser,
 	deleteUser,

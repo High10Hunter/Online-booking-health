@@ -4,73 +4,100 @@
 			<h4 class="mt-0 mb-2 header-title">Thông tin người dùng</h4>
 
 			<div class="row">
-				<!-- Display number of records	 -->
-				<div class="col-md-0 mt-2 ml-2">Hiển thị</div>
-				<div class="col-md-1">
-					<select class="custom-select mb-2" id="number-of-records">
-						<!-- item-->
-						<% if (limit == 10) { %>
-						<option
-							value="/admin/users?page=<%= current %>&limit=10"
-							selected
-						>
-							<% } else { %>
-						</option>
-						<option
-							value="/admin/users?page=<%= current %>&limit=10"
-						>
-							<% } %> 10
-						</option>
-						<!-- item-->
-						<% if (limit == 15) { %>
-						<option
-							value="/admin/users?page=<%= current %>&limit=15"
-							selected
-						>
-							<% } else { %>
-						</option>
-						<option
-							value="/admin/users?page=<%= current %>&limit=15"
-						>
-							<% } %> 15
-						</option>
-						<!-- item-->
-						<% if (limit == 20) { %>
-						<option
-							value="/admin/users?page=<%= current %>&limit=20"
-							selected
-						>
-							<% } else { %>
-						</option>
-						<option
-							value="/admin/users?page=<%= current %>&limit=20"
-						>
-							<% } %> 20
-						</option>
-					</select>
+				<div class="col-md-2 mb-1">
+					<a href="/admin/users?page=1&limit=10">
+						<i class="dripicons-clockwise"> Tải lại </i>
+					</a>
 				</div>
-				<div class="col-md-0 mt-2 ml-0">bản ghi</div>
-				<div class="col-md-2 mt-0 ml-3 form-group">
-					<select name="role" class="form-control">
-						<option value="" selected>Tất cả</option>
-						<option value="3">Bác sĩ</option>
-						<option value="2">Y tá</option>
-						<option value="1">Quản trị viên</option>
-					</select>
-				</div>
+			</div>
 
-				<div class="col-1"></div>
-				<div class="col-4 ml-auto">
-					<!-- Search -->
-					<form class="app-search">
-						<div class="app-search-box">
+			<form id="form-filter" method="GET" class="form-inline">
+				<div class="row">
+					<!-- Display number of records	 -->
+					<div class="form-group">
+						<div class="col-md-0 ml-2 mb-1">Hiển thị</div>
+						<div class="col-md-1">
+							<select
+								class="custom-select select-filter mb-2"
+								id="number-of-records"
+								name="limit"
+							>
+								<!-- item-->
+								<% if (limit == 10) { %>
+								<option value="10" selected>
+									<% } else { %>
+								</option>
+								<option value="10"><% } %> 10</option>
+								<!-- item-->
+								<% if (limit == 15) { %>
+								<option value="15" selected>
+									<% } else { %>
+								</option>
+								<option value="15"><% } %> 15</option>
+								<!-- item-->
+								<% if (limit == 20) { %>
+								<option value="20" selected>
+									<% } else { %>
+								</option>
+								<option value="20"><% } %> 20</option>
+							</select>
+						</div>
+						<div class="col-md-1 mr-3"></div>
+						<div class="col-md-0 ml-2 mb-1">bản ghi</div>
+					</div>
+
+					<!-- filter role -->
+					<div class="col-md-1 px-0 mt-2">Vai trò</div>
+					<div class="col-md-1 mb-1 px-0 form-group">
+						<select
+							id="role-filter"
+							name="role"
+							class="custom-select select-filter mb-1"
+						>
+							<% if (typeof role == "undefined") { %>
+							<option value="" selected>Tất cả</option>
+							<option value="3">Bác sĩ</option>
+							<option value="2">Y tá</option>
+							<option value="1">Quản trị viên</option>
+							<% } else { %>
+							<option value="">Tất cả</option>
+							<% if (role == 3) { %>
+							<option value="3" selected>Bác sĩ</option>
+							<% } else { %>
+							<option value="3">Bác sĩ</option>
+							<% } %> <% if (role == 2) { %>
+							<option value="2" selected>Y tá</option>
+							<% } else { %>
+							<option value="2">Y tá</option>
+							<% } %> <% if (role == 1) { %>
+							<option value="1" selected>Quản trị viên</option>
+							<% } else { %>
+							<option value="1">Quản trị viên</option>
+							<% } %> <% } %>
+						</select>
+					</div>
+
+					<div class="col-md-1"></div>
+					<div class="col-md-4 ml-auto">
+						<!-- Search -->
+						<div class="form-group app-search-box">
 							<div class="input-group">
+								<% if (typeof search == "undefined") { %>
 								<input
 									type="text"
 									class="form-control"
 									name="q"
 									placeholder="Nhập tên để tìm kiếm..."
 								/>
+								<% } else { %>
+								<input
+									type="text"
+									class="form-control"
+									name="q"
+									value="<%= search %>"
+									placeholder="Nhập tên để tìm kiếm..."
+								/>
+								<% } %>
 								<div class="input-group-append bg-primary">
 									<button class="btn" type="submit">
 										<i class="fe-search"></i>
@@ -78,17 +105,9 @@
 								</div>
 							</div>
 						</div>
-					</form>
+					</div>
 				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-2 mb-1">
-					<a href="/admin/users?page=1&limit=10">
-						<i class="dripicons-clockwise"> Tải lại </i>
-					</a>
-				</div>
-			</div>
+			</form>
 
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover mb-0">
@@ -203,9 +222,8 @@
 <%- contentFor('js') %>
 <script>
 	$(document).ready(function () {
-		$('#number-of-records').change(function () {
-			const url = $(this).val();
-			window.location.href = url;
+		$('.select-filter').change(function () {
+			$('#form-filter').submit();
 		});
 	});
 </script>

@@ -3,21 +3,41 @@ import User from '../../services/admin/UserServices';
 
 const index = async (req, res) => {
 	try {
-		const { q, page, limit } = req.query;
+		const { q, page, limit, role } = req.query;
 
-		const { rows, currentPage, endPage } = await User.getAllUser(
-			q,
-			page,
-			limit
-		);
+		if (!role) {
+			const { rows, currentPage, endPage } = await User.getAllUser(
+				q,
+				page,
+				limit
+			);
 
-		return res.render('./admin/users/index', {
-			users: rows,
-			pages: endPage,
-			current: currentPage,
-			limit: limit,
-			title: 'Manage Users',
-		});
+			return res.render('./admin/users/index', {
+				users: rows,
+				pages: endPage,
+				current: currentPage,
+				limit: limit,
+				search: q,
+				title: 'Quản lý người dùng',
+			});
+		} else {
+			const { rows, currentPage, endPage } = await User.getAllUserByRole(
+				role,
+				q,
+				page,
+				limit
+			);
+
+			return res.render('./admin/users/index', {
+				users: rows,
+				pages: endPage,
+				current: currentPage,
+				limit: limit,
+				search: q,
+				title: 'Quản lý người dùng',
+				role: role,
+			});
+		}
 	} catch (error) {
 		return res.redirect('/admin/users?page=1&limit=10');
 	}
