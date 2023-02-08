@@ -15,12 +15,16 @@ const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 			limit: limit,
 			where: {
 				name: {
-					[Op.like]: `%${q}%`,
+					[Op.iLike]: `%${q}%`,
 				},
 				status: true,
 			},
 			order: [['createdAt', 'DESC']],
 		});
+
+		if (count === 0) {
+			return { rows: [], currentPage: 1, endPage: 1 };
+		}
 
 		const endPage = Math.ceil(count / limit);
 		if (currentPage > endPage) throw new Error('Page is invalid');
