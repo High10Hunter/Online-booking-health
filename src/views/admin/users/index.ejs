@@ -1,9 +1,10 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
-			<h4 class="mt-0 header-title">Users table</h4>
+			<h4 class="mt-0 mb-2 header-title">Thông tin người dùng</h4>
 
 			<div class="row">
+				<!-- Display number of records	 -->
 				<div class="col-md-0 mt-2 ml-2">Hiển thị</div>
 				<div class="col-md-1">
 					<select class="custom-select mb-2" id="number-of-records">
@@ -49,6 +50,36 @@
 					</select>
 				</div>
 				<div class="col-md-0 mt-2 ml-0">bản ghi</div>
+
+				<div class="col-1"></div>
+				<div class="col-3 ml-auto">
+					<!-- Search -->
+					<form class="app-search">
+						<div class="app-search-box">
+							<div class="input-group">
+								<input
+									type="text"
+									class="form-control"
+									name="q"
+									placeholder="Tìm kiếm..."
+								/>
+								<div class="input-group-append bg-primary">
+									<button class="btn" type="submit">
+										<i class="fe-search"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-2 mb-1">
+					<a href="/admin/users?page=1&limit=10">
+						<i class="dripicons-clockwise"> Tải lại </i>
+					</a>
+				</div>
 			</div>
 
 			<div class="table-responsive">
@@ -65,7 +96,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						<% users.forEach(function(user) { %>
+						<% if (users.length != 0) { %> <%
+						users.forEach(function(user) { %>
 						<tr>
 							<th scope="row"><%= user.id %></th>
 							<td><%= user.name %></td>
@@ -74,20 +106,25 @@
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>
 							<% if (user.role == 0) { %>
-							<td class="text-danger">Admin</td>
+							<td class="text-danger">Quản trị viên</td>
 							<% } else if (user.role == 1) { %>
-							<td class="text-primary">Nurse</td>
+							<td class="text-primary">Y tá</td>
 							<% } else if (user.role == 2) { %>
-							<td class="text-success">Doctor</td>
+							<td class="text-success">Bác sĩ</td>
 							<% } %>
 						</tr>
-						<% }); %>
+						<% }); %> <% } else { %>
+						<tr>
+							<td colspan="7" class="text-center">
+								<h4>Không có dữ liệu</h4>
+							</td>
+						</tr>
+						<% } %>
 					</tbody>
 				</table>
 				<!-- pagination -->
 				<div class="row pt-2">
-					<div class="col-xl-4"></div>
-					<div class="col-xl-6">
+					<div class="col-12">
 						<nav aria-label="...">
 							<% if (pages > 0) { %>
 							<ul class="pagination text-center">
@@ -149,7 +186,6 @@
 							<% } %>
 						</nav>
 					</div>
-					<div class="col-xl-2"></div>
 				</div>
 			</div>
 		</div>
