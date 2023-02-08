@@ -50,6 +50,14 @@
 					</select>
 				</div>
 				<div class="col-md-0 mt-2 ml-0">bản ghi</div>
+				<div class="col-md-2 mt-0 ml-3 form-group">
+					<select name="role" class="form-control">
+						<option value="" selected>Tất cả</option>
+						<option value="3">Bác sĩ</option>
+						<option value="2">Y tá</option>
+						<option value="1">Quản trị viên</option>
+					</select>
+				</div>
 
 				<div class="col-1"></div>
 				<div class="col-4 ml-auto">
@@ -105,11 +113,11 @@
 							<td><%= user.gender %></td>
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>
-							<% if (user.role == 0) { %>
+							<% if (user.role == 1) { %>
 							<td class="text-danger">Quản trị viên</td>
-							<% } else if (user.role == 1) { %>
-							<td class="text-primary">Y tá</td>
 							<% } else if (user.role == 2) { %>
+							<td class="text-primary">Y tá</td>
+							<% } else if (user.role == 3) { %>
 							<td class="text-success">Bác sĩ</td>
 							<% } %>
 						</tr>

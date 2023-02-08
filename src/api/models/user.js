@@ -176,8 +176,8 @@ module.exports = (sequelize, DataTypes) => {
 						msg: 'Role is required',
 					},
 					isIn: {
-						args: [[0, 1, 2]],
-						msg: 'Role must be 0, 1 or 2',
+						args: [[1, 2, 3]],
+						msg: 'Role must be 1, 2 or 3',
 					},
 				},
 			},

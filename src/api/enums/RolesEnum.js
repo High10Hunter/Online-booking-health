@@ -1,7 +1,7 @@
 const RolesEnum = Object.freeze({
-	ADMIN: 0,
-	NURSE: 1,
-	DOCTOR: 2,
+	ADMIN: 1,
+	NURSE: 2,
+	DOCTOR: 3,
 });
 
 export default RolesEnum;

@@ -25,7 +25,7 @@ module.exports = {
 				password: faker.internet.password(),
 				email: faker.internet.email(),
 				phone_number: faker.phone.number(),
-				role: random(0, 2),
+				role: random(1, 3),
 				status: true,
 				createdAt: new Date(),
 			});
