@@ -2,7 +2,10 @@ import { User } from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
+import NodeCache from 'node-cache';
 import createError from 'http-errors';
+
+const myCache = new NodeCache();
 
 const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 	try {
@@ -64,6 +67,46 @@ const getAllUserByRole = async (role, q = '', currentPage = 1, limit = 10) => {
 		return { rows, currentPage, endPage };
 	} catch (error) {
 		throw new NotFoundError('Cannot get users');
+	}
+};
+
+const getPercentageOfEachRole = async (req, res) => {
+	try {
+		let usersPercentage = await myCache.get('usersPercentage');
+
+		if (usersPercentage == undefined) {
+			const users = await User.findAll();
+
+			let adminCount = 0;
+			let nurseCount = 0;
+			let doctorCount = 0;
+
+			users.forEach(user => {
+				if (user.role === 1) adminCount++;
+				else if (user.role === 2) nurseCount++;
+				else if (user.role === 3) doctorCount++;
+			});
+
+			const totalCount = adminCount + nurseCount + doctorCount;
+			const adminPercentage =
+				Math.round((adminCount / totalCount) * 100 * 100) / 100;
+			const nursePercentage =
+				Math.round((nurseCount / totalCount) * 100 * 100) / 100;
+			const doctorPercentage =
+				Math.round((doctorCount / totalCount) * 100 * 100) / 100;
+
+			usersPercentage = {
+				adminPercentage,
+				nursePercentage,
+				doctorPercentage,
+			};
+
+			myCache.set('usersPercentage', usersPercentage, 86400);
+		}
+
+		return usersPercentage;
+	} catch (error) {
+		throw new NotFoundError('Cannot calculate percentage of each role');
 	}
 };
 
@@ -138,4 +181,5 @@ export default {
 	createUser,
 	updateUser,
 	deleteUser,
+	getPercentageOfEachRole,
 };

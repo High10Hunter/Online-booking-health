@@ -36,6 +36,8 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
+	router.post('/userPercentage', UserController.getPercentageOfEachRole);
+
 	//CRUD users
 	// router.get('/users', UserController.index);
 	router.post('/users/create', UserController.create);
