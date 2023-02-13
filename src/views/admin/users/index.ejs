@@ -129,7 +129,7 @@
 							<th scope="row"><%= user.id %></th>
 							<td><%= user.name %></td>
 							<td><%= user.birthday %></td>
-							<td><%= user.gender %></td>
+							<td><%= user.getGenderName() %></td>
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>
 							<% if (user.role == 1) { %>
