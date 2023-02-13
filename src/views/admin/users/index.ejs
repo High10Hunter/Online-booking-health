@@ -218,12 +218,78 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	<figure class="highcharts-figure col-12">
+		<div id="users-chart-container"></div>
+	</figure>
+</div>
 
 <%- contentFor('js') %>
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
 	$(document).ready(function () {
 		$('.select-filter').change(function () {
 			$('#form-filter').submit();
+		});
+
+		//get percent of users by role
+		$.ajax({
+			type: 'POST',
+			url: '/admin/userPercentage',
+			dataType: 'json',
+			success: function (response) {
+				const { data } = response;
+				//display users chart
+				Highcharts.chart('users-chart-container', {
+					chart: {
+						type: 'pie',
+					},
+					title: {
+						text: 'Tỷ lệ người dùng',
+						align: 'center',
+					},
+
+					plotOptions: {
+						series: {
+							dataLabels: {
+								enabled: true,
+								format: '{point.name}: {point.y:.1f}%',
+							},
+						},
+					},
+
+					tooltip: {
+						headerFormat:
+							'<span style="font-size:11px">{series.name}</span><br>',
+						pointFormat:
+							'<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
+					},
+
+					series: [
+						{
+							name: 'Người dùng',
+							colorByPoint: true,
+							data: [
+								{
+									name: 'Admin',
+									y: data.adminPercentage,
+								},
+								{
+									name: 'Y tá',
+									y: data.nursePercentage,
+								},
+								{
+									name: 'Bác sĩ',
+									y: data.doctorPercentage,
+								},
+							],
+						},
+					],
+				});
+			},
+			error: function (error) {
+				console.log(error);
+			},
 		});
 	});
 </script>
