@@ -15,6 +15,7 @@ module.exports = {
 			},
 			birthday: {
 				type: DataTypes.DATEONLY,
+				allowNull: false,
 			},
 			gender: {
 				type: DataTypes.BOOLEAN,
