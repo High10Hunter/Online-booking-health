@@ -106,4 +106,25 @@ const getPercentageOfEachRole = async (req, res) => {
 	}
 };
 
-export default { index, create, update, destroy, getPercentageOfEachRole };
+const resetPassword = async (req, res) => {
+	try {
+		await User.resetPassword(req.params.id);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Reset password successfully',
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot reset password',
+		});
+	}
+};
+
+export default {
+	index,
+	create,
+	update,
+	destroy,
+	getPercentageOfEachRole,
+	resetPassword,
+};

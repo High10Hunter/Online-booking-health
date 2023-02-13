@@ -174,6 +174,33 @@ const deleteUser = async id => {
 	}
 };
 
+const resetPassword = async id => {
+	try {
+		const user = await User.findByPk(id);
+
+		const birthday = user.birthday;
+
+		let dateArr = birthday.split('-');
+		dateArr.reverse();
+		dateArr = dateArr.join('');
+
+		const hashedPassword = await hashPassword(dateArr);
+
+		user.set({
+			password: hashedPassword,
+		});
+
+		await user.save();
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot reset password');
+		} else {
+			throw new Error(errors[0].message || 'Cannot reset password');
+		}
+	}
+};
+
 export default {
 	getAllUser,
 	getAllUserByRole,
@@ -181,4 +208,5 @@ export default {
 	updateUser,
 	deleteUser,
 	getPercentageOfEachRole,
+	resetPassword,
 };

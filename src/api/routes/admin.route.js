@@ -36,7 +36,19 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
-	router.post('/userPercentage', UserController.getPercentageOfEachRole);
+	router.post(
+		'/users/resetPassword',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.resetPassword
+	);
+
+	router.post(
+		'/userPercentage',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.getPercentageOfEachRole
+	);
 
 	//CRUD users
 	// router.get('/users', UserController.index);
