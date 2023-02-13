@@ -141,7 +141,6 @@ const updateUser = async (id, data) => {
 		const { password } = data;
 
 		if (password) {
-			console.log(1);
 			throw new Error('Cannot update password');
 		}
 
