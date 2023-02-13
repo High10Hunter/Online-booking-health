@@ -44,7 +44,7 @@ const adminRoutes = app => {
 	);
 
 	router.post(
-		'/userPercentage',
+		'/users/userPercentage',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.getPercentageOfEachRole

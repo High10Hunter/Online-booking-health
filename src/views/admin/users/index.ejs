@@ -235,7 +235,7 @@
 		//get percent of users by role
 		$.ajax({
 			type: 'POST',
-			url: '/admin/userPercentage',
+			url: '/admin/users/userPercentage',
 			dataType: 'json',
 			success: function (response) {
 				const { data } = response;
