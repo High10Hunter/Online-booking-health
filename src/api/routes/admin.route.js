@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import DoctorController from '../controllers/admin/DoctorController';
+import ScheduleController from '../controllers/admin/ScheduleController';
 import UserController from '../controllers/admin/UserController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
@@ -50,11 +52,13 @@ const adminRoutes = app => {
 		UserController.getPercentageOfEachRole
 	);
 
-	//CRUD users
-	// router.get('/users', UserController.index);
-	router.post('/users/create', UserController.create);
-	router.patch('/users/update/:id', UserController.update);
-	router.delete('/users/destroy/:id', UserController.destroy);
+	//display doctor
+	router.get(
+		'/schedules',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.index
+	);
 
 	app.use('/admin', router);
 };
