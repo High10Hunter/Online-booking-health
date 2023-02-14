@@ -167,7 +167,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=1&limit=<%= limit %>"
+										href="/admin/users?page=1&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										tabindex="-1"
 									>
 										Đầu
@@ -188,7 +188,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%=i%>&limit=<%= limit %>"
+										href="/admin/users?page=<%=i%>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										><%=i%>
 									</a>
 								</li>
@@ -205,7 +205,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%= pages %>&limit=<%= limit %>"
+										href="/admin/users?page=<%= pages %>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 									>
 										Cuối
 									</a>

@@ -18,6 +18,7 @@ const index = async (req, res) => {
 				current: currentPage,
 				limit: limit,
 				search: q,
+				role: '',
 				title: 'Quản lý người dùng',
 			});
 		} else {
