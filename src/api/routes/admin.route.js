@@ -36,6 +36,18 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
+	router.get(/users\/create/, (req, res) => {
+		res.render('admin/users/create', {
+			title: 'Create User',
+		});
+	});
+
+	router.get(/users\/update/, (req, res) => {
+		res.render('admin/users/update', {
+			title: 'Update User Info',
+		});
+	});
+
 	//CRUD users
 	// router.get('/users', UserController.index);
 	router.post('/users/create', UserController.create);
