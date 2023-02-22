@@ -36,7 +36,7 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
-	router.get(/users\/create/, (req, res) => {
+	router.get('/users/create', (req, res) => {
 		res.render('admin/users/create', {
 			title: 'Create User',
 		});

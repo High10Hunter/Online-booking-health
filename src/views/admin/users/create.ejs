@@ -1,229 +1,255 @@
-<style>
-    .container {
-        background-color: white;
-        width: 95%;
-        margin: 0 auto;
-        margin-top: 1%;
-        margin-bottom: 1%;
-        padding: 30px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-
-
-    h1 {
-        font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    label {
-        display: inline-block;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    input[type="text"], input[type="email"], input[type="date"], select{
-        width: calc(100% - 1em);
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    input[type="radio"] {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-        position: relative; 
-	    bottom: 10px; 
-        left: 1em;
-    }
-
-    .radioText {
-        margin-right: 40px;
-        font-weight: normal;
-        font-size: 16px;
-        position: relative; 
-	    bottom: 14px; 
-        left: 24px;
-    }
-
-    span.error {
-        color: red;
-        display: block;
-        font-size: 12px;
-        
-    }
-
-    button[type="submit"], button[type="reset"] {
-        display: block;
-        padding: 10px;
-        margin-left: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    button[type="reset"] {
-        background-color: #f44336;
-        color: black;
-        margin-right: 10px;
-    }
-
-</style>
-
-
 <div class="container">
-    <h1>Thêm người dùng</h1>
-    <form id="add-user-form">
-        <div>
-            <label for="name">Họ tên:</label>
-            <span class="error" id="name-error"></span>
-            <input type="text" id="name" name="name" placeholder="Họ và tên">
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <label for="dob">Ngày sinh:</label>
-                <span class="error" id="dob-error"></span>
-                <input type="date" id="dob" name="dob">
+	<h1>Thêm người dùng</h1>
+	<form id="add-user-form">
+		<div>
+			<label for="name">Họ tên:</label>
+			<span class="error" id="name-error"></span>
+			<input type="text" id="name" name="name" placeholder="Họ và tên" />
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<label for="dob">Ngày sinh:</label>
+				<span class="error" id="dob-error"></span>
+				<input type="date" id="dob" name="dob" />
+			</div>
+			<div class="col-6">
+				<label for="gender">Giới tính:</label>
+				<span class="error" id="gender-error"></span>
+				<br />
+				<input type="radio" id="male" name="gender" value="male" />
+				<label class="radioText" for="male">Nam</label>
+				<input type="radio" id="female" name="gender" value="female" />
+				<label class="radioText" for="female">Nữ</label>
+			</div>
+		</div>
 
-            </div>
-            <div class="col-6">
-                <label for="gender">Giới tính:</label>
-                <span class="error" id="gender-error"></span>
-                <br/>
-                <input type="radio" id="male" name="gender" value="male">
-                <label class="radioText" for="male">Nam</label>
-                <input type="radio" id="female" name="gender" value="female">
-                <label class="radioText" for="female">Nữ</label>
+		<div>
+			<label for="phone">Số điện thoại:</label>
+			<span class="error" id="phone-error"></span>
+			<input
+				type="text"
+				id="phone"
+				name="phone"
+				placeholder="Số điện thoại"
+			/>
+		</div>
+		<div>
+			<label for="email">Email:</label>
+			<span class="error" id="email-error"></span>
+			<input
+				type="email"
+				id="email"
+				name="email"
+				placeholder="email@example.com"
+			/>
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<label for="role">Vai trò:</label>
+				<span class="error" id="role-error"></span>
+				<select id="role" name="role">
+					<option value="">-- Chọn Vai trò --</option>
+					<option value="administrator">Quản trị viên</option>
+					<option value="doctor">Bác sĩ</option>
+					<option value="nurse">Y tá</option>
+				</select>
+			</div>
+			<div class="col-6">
+				<label for="status">Tình trạng:</label>
+				<span class="error" id="status-error"></span>
+				<br />
+				<input
+					type="radio"
+					id="working"
+					name="status"
+					value="working"
+				/>
+				<label class="radioText" for="working">Đang đi làm</label>
+				<input
+					type="radio"
+					id="retired"
+					name="status"
+					value="retired"
+				/>
+				<label class="radioText" for="retired">Đã nghỉ việc</label>
+			</div>
+		</div>
 
-            </div>
-
-        </div>
-
-
-        <div>
-            <label for="phone">Số điện thoại:</label>
-            <span class="error" id="phone-error"></span>
-            <input type="text" id="phone" name="phone" placeholder="Số điện thoại">
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <span class="error" id="email-error"></span>
-            <input type="email" id="email" name="email" placeholder="email@example.com">
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <label for="role">Vai trò:</label>
-                <span class="error" id="role-error"></span>
-                <select id="role" name="role">
-                    <option value="">--  Chọn Vai trò  --</option>
-                    <option value="administrator">Quản trị viên</option>
-                    <option value="doctor">Bác sĩ</option>
-                    <option value="nurse">Y tá</option>
-                </select>
-            </div>
-            <div class="col-6">
-                <label for="status">Tình trạng:</label>
-                <span class="error" id="status-error"></span>
-                <br/>
-                <input type="radio" id="working" name="status" value="working">
-                <label class="radioText"  for="working">Đang đi làm</label>
-                <input type="radio" id="retired" name="status" value="retired">
-                <label class="radioText" for="retired">Đã nghỉ việc</label>
-            </div>
-        </div>
-
-        <div class="row" style="display: flex; justify-content: center; align-items: center;">
-            <button type="reset">Reset</button>
-            <button type="submit">Tạo người dùng</button>
-        </div>
-
-    </form>
+		<div
+			class="row"
+			style="display: flex; justify-content: center; align-items: center"
+		>
+			<button type="reset">Reset</button>
+			<button type="submit">Tạo người dùng</button>
+		</div>
+	</form>
 </div>
 
+<%- contentFor('css') %>
+<style>
+	.container {
+		background-color: white;
+		width: 95%;
+		margin: 0 auto;
+		margin-top: 1%;
+		margin-bottom: 1%;
+		padding: 30px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+	}
+
+	h1 {
+		font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
+		text-align: center;
+		margin-bottom: 30px;
+	}
+
+	label {
+		display: inline-block;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+
+	input[type='text'],
+	input[type='email'],
+	input[type='date'],
+	select {
+		width: calc(100% - 1em);
+		padding: 5px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-bottom: 10px;
+	}
+
+	input[type='radio'] {
+		width: 20px;
+		height: 20px;
+		margin-right: 5px;
+		position: relative;
+		bottom: 10px;
+		left: 1em;
+	}
+
+	.radioText {
+		margin-right: 40px;
+		font-weight: normal;
+		font-size: 16px;
+		position: relative;
+		bottom: 14px;
+		left: 24px;
+	}
+
+	span.error {
+		color: red;
+		display: block;
+		font-size: 12px;
+	}
+
+	button[type='submit'],
+	button[type='reset'] {
+		display: block;
+		padding: 10px;
+		margin-left: 10px;
+		background-color: #4caf50;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	button[type='reset'] {
+		background-color: #f44336;
+		color: black;
+		margin-right: 10px;
+	}
+</style>
+
+<%- contentFor('js') %>
 <script>
-    const form = document.getElementById('add-user-form');
-    const name = document.getElementById('name');
-    const gender = document.getElementsByName('gender');
-    const dob = document.getElementById('dob');
-    const phone = document.getElementById('phone');
-    const email = document.getElementById('email');
-    const role = document.getElementById('role');
-    const status = document.getElementsByName('status');
+	const form = document.getElementById('add-user-form');
+	const name = document.getElementById('name');
+	const gender = document.getElementsByName('gender');
+	const dob = document.getElementById('dob');
+	const phone = document.getElementById('phone');
+	const email = document.getElementById('email');
+	const role = document.getElementById('role');
+	const status = document.getElementsByName('status');
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+	form.addEventListener('submit', e => {
+		e.preventDefault();
 
-        let valid = true;
+		let valid = true;
 
-        if (name.value === '') {
-            valid = false;
-            document.getElementById('name-error').textContent = 'Vui lòng nhập tên người dùng';
-        } else {
-            document.getElementById('name-error').textContent = '';
-        }
+		if (name.value === '') {
+			valid = false;
+			document.getElementById('name-error').textContent =
+				'Vui lòng nhập tên người dùng';
+		} else {
+			document.getElementById('name-error').textContent = '';
+		}
 
-        let selectedGender = '';
-        for (let i = 0; i < gender.length; i++) {
-            if (gender[i].checked) {
-                selectedGender = gender[i].value;
-            }
-        }
-        if (selectedGender === '') {
-            valid = false;
-            document.getElementById('gender-error').textContent = 'Vui lòng chọn giới tính';
-        } else {
-            document.getElementById('gender-error').textContent = '';
-        }
+		let selectedGender = '';
+		for (let i = 0; i < gender.length; i++) {
+			if (gender[i].checked) {
+				selectedGender = gender[i].value;
+			}
+		}
+		if (selectedGender === '') {
+			valid = false;
+			document.getElementById('gender-error').textContent =
+				'Vui lòng chọn giới tính';
+		} else {
+			document.getElementById('gender-error').textContent = '';
+		}
 
-        if (dob.value === '') {
-            valid = false;
-            document.getElementById('dob-error').textContent = 'Vui lòng nhập ngày sinh';
-        } else {
-            document.getElementById('dob-error').textContent = '';
-        }
+		if (dob.value === '') {
+			valid = false;
+			document.getElementById('dob-error').textContent =
+				'Vui lòng nhập ngày sinh';
+		} else {
+			document.getElementById('dob-error').textContent = '';
+		}
 
-        if (phone.value === '' || phone.value.length < 10) {
-            valid = false;
-            document.getElementById('phone-error').textContent = 'Số điện thoại không hợp lệ';
-        } else {
-            document.getElementById('phone-error').textContent = '';
-        }
+		if (phone.value === '' || phone.value.length < 10) {
+			valid = false;
+			document.getElementById('phone-error').textContent =
+				'Số điện thoại không hợp lệ';
+		} else {
+			document.getElementById('phone-error').textContent = '';
+		}
 
-        if (email.value === '' || !email.checkValidity()) {
-            valid = false;
-            document.getElementById('email-error').textContent = 'Địa chỉ email không hợp lệ';
-        } else {
-            document.getElementById('email-error').textContent = '';
-        }
+		if (email.value === '' || !email.checkValidity()) {
+			valid = false;
+			document.getElementById('email-error').textContent =
+				'Địa chỉ email không hợp lệ';
+		} else {
+			document.getElementById('email-error').textContent = '';
+		}
 
-        if (role.value === '') {
-            valid = false;
-            document.getElementById('role-error').textContent = 'Vui lòng chọn vai trò';
-        } else {
-            document.getElementById('role-error').textContent = '';
-        }
+		if (role.value === '') {
+			valid = false;
+			document.getElementById('role-error').textContent =
+				'Vui lòng chọn vai trò';
+		} else {
+			document.getElementById('role-error').textContent = '';
+		}
 
-        let selectedStatus = '';
-        for (let i = 0; i < status.length; i++) {
-            if (status[i].checked) {
-                selectedStatus = status[i].value;
-            }
-        }
-        if (selectedStatus === '') {
-            valid = false;
-            document.getElementById('status-error').textContent = 'Vui lòng chọn tình trạng làm việc';
-        } else {
-            document.getElementById('status-error').textContent = '';
-        }
+		let selectedStatus = '';
+		for (let i = 0; i < status.length; i++) {
+			if (status[i].checked) {
+				selectedStatus = status[i].value;
+			}
+		}
+		if (selectedStatus === '') {
+			valid = false;
+			document.getElementById('status-error').textContent =
+				'Vui lòng chọn tình trạng làm việc';
+		} else {
+			document.getElementById('status-error').textContent = '';
+		}
 
-        if (valid) {
-            // Code to submit the form goes here
-            alert('User created successfully!');
-        }
-    });
+		if (valid) {
+			// Code to submit the form goes here
+			alert('User created successfully!');
+		}
+	});
 </script>
