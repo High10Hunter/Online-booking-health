@@ -7,7 +7,9 @@ import RolesEnum from '../enums/RolesEnum';
 const index = (req, res) => {
 	if (req.payload) {
 		const roleListKeys = Object.keys(RolesEnum);
-		return res.redirect(`/${roleListKeys[req.payload.role].toLowerCase()}`);
+		return res.redirect(
+			`/${roleListKeys[parseInt(req.payload.role) - 1].toLowerCase()}`
+		);
 	}
 
 	res.render('auth/login', {
