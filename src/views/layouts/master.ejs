@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>
-			<% if (typeof title !== 'undefined') { %> <%= title %> <% } else {
-			%> Document <% } %>
-		</title>
-		<link rel="shortcut icon" href="/admin/assets/images/favicon.ico" />
-		<%- include('./style') %> <%- defineContent('css') %>
-	</head>
-	<body>
-		<div id="wrapper">
-			<!-- Topbar Start -->
-			<%- include('./topbar') %>
-			<!-- end Topbar -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <% if (typeof title !== 'undefined') { %> <%= title %> <% } else { %>
+      Document <% } %>
+    </title>
+    <link rel="shortcut icon" href="/admin/assets/images/favicon.ico" />
+    <%- include('./style') %> <%- defineContent('css') %>
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- Topbar Start -->
+      <%- include('./topbar') %>
+      <!-- end Topbar -->
 
-			<!-- ========== Left Sidebar Start ========== -->
-			<%- include('./sidebar') %>
-			<!-- Left Sidebar End -->
+      <!-- ========== Left Sidebar Start ========== -->
+      <%- include('./sidebar') %>
+      <!-- Left Sidebar End -->
 
-			<!-- ============================================================== -->
-			<!-- Start Page Content here -->
-			<!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Start Page Content here -->
+      <!-- ============================================================== -->
 
-			<div class="content-page">
-				<!-- content start -->
-				<%- include('./content') %>
+      <div class="content-page">
+        <!-- content start -->
+        <%- include('./content') %>
 
-				<!-- Footer Start -->
-				<%- include('./footer') %>
-				<!-- end Footer -->
-			</div>
+        <!-- Footer Start -->
+        <%- include('./footer') %>
+        <!-- end Footer -->
+      </div>
 
-			<!-- ============================================================== -->
-			<!-- End Page content -->
-			<!-- ============================================================== -->
-		</div>
+      <!-- ============================================================== -->
+      <!-- End Page content -->
+      <!-- ============================================================== -->
+    </div>
 
-		<%- include('./script') %> <%- defineContent('js') %>
-	</body>
+    <%- include('./script') %> <%- defineContent('js') %>
+  </body>
 </html>

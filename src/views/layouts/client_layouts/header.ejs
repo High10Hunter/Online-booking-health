@@ -1,76 +1,60 @@
 <header id="site-header" class="site-header" role="banner">
 	<div class="bg-color second-bg" style="display: none"></div>
-	
-	<nav id="second-menu" class="nav-client" role="navigation" style="overflow: visible">
+	<nav id="second-menu" role="navigation" style="overflow: visible">
 		<a href="#" class="close no-border">close <span>×</span></a>
-
-		<div class="second-container second-container-client">
-			<div class="logo-box">
-				<div class="site-logo site-logo-client">
+		<div class="second-container">
+			<ul id="menu-mainmenu" class="menu">
+				<li class="current-menu-item parent">
 					<a href="#">
-						<img class="nav-client-img" src="/client/assets/images/logo.png" alt="Logo" />
+						Chuyên khoa
+						<span>Tìm bác sĩ theo chuyên khoa</span>
 					</a>
-				</div>
-			</div>
-			<!-- .logo-box -->
-
-			<div class="active search">
-				<form method="get" class="searchform">
-					<div>
-						<button
-							type="submit"
-							class="searchsubmit btn"
-							value=""
+				</li>
+				<li>
+					<a href="#">
+						Bác sĩ
+						<span>Tìm bác sĩ giỏi</span>
+					</a>
+				</li>
+				<!-- <ul class="sub-menu">
+					<li>
+						<a href="typography.html"
+							><span>Typography and Basic Styles</span></a
 						>
-							<div>
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.97183 10.8732C3.97183 7.0617 7.0617 3.97183 10.8732 3.97183C14.6848 3.97183 17.7746 7.0617 17.7746 10.8732C17.7746 14.6848 14.6848 17.7746 10.8732 17.7746C7.0617 17.7746 3.97183 14.6848 3.97183 10.8732ZM10.8732 2C5.97268 2 2 5.97268 2 10.8732C2 15.7738 5.97268 19.7465 10.8732 19.7465C12.9683 19.7465 14.8938 19.0204 16.4118 17.8061L20.3169 21.7112C20.702 22.0963 21.3262 22.0963 21.7112 21.7112C22.0963 21.3262 22.0963 20.702 21.7112 20.3169L17.8061 16.4118C19.0204 14.8938 19.7465 12.9683 19.7465 10.8732C19.7465 5.97268 15.7738 2 10.8732 2Z" fill="#8C8C8C"></path></svg>
-							</div>
-					
-						</button>
-
-						<input
-							type="text"
-							value=""
-							name="s"
-							class="search-input-client"
-							placeholder="Tìm kiếm với chuyên khoa"
-							style="
-							width: 100%;
-							border: 1px solid rgb(217, 217, 217);
-							border-radius: 6px;
-							padding: 12px 16px 12px 48px;
-							margin: 0;
-							font-weight: 400;
-							"
-						/>
-						
-					</div>
-				</form>
-			</div>
+					</li>
+					<li>
+						<a href="tables-styles.html"
+							><span>Tables Styles</span></a
+						>
+					</li>
+					<li>
+						<a href="forms-styles.html"
+							><span>Forms Styles</span></a
+						>
+					</li>
+					<li>
+						<a href="buttons-styles.html"
+							><span>Buttons Styles</span></a
+						>
+					</li>
+					<li>
+						<a href="togglable-tabs.html"
+							><span>Togglable tabs</span></a
+						>
+					</li>
+					<li>
+						<a href="tooltips.html"><span>Tooltips</span></a>
+					</li>
+					<li>
+						<a href="accordions-designs.html"
+							><span>Accordions Designs</span></a
+						>
+					</li>
+				</ul> -->
+			</ul>
 		</div>
 
-		<ul id="menu-mainmenu" class="menu">
-			<li class="current-menu-item parent">
-				<a href="#">
-					Chuyên khoa
-					<span>Tìm bác sĩ theo chuyên khoa</span>
-				</a>
-			</li>
-			
-			<li>
-				<a href="#">
-					Bác sĩ
-					<span>Tìm bác sĩ giỏi</span>
-				</a>
-			</li>
-		</ul>
-		
-		
-		
-		
-		
-
-		<!-- <div class="more">
+		<div class="more">
 			<a href="#" class="more-a no-border">More</a>
 			<ul class="more-ul"></ul>
 		</div>
@@ -80,13 +64,20 @@
 
 	<div class="clearfix"></div>
 	<div class="header-top-margin"></div>
-	<div class="clearfix"></div> -->
+	<div class="clearfix"></div>
 
 	<!-- .menu-button-box -->
 
-	
+	<div class="logo-box">
+		<div class="site-logo">
+			<a href="index.html">
+				<img src="/client/assets/images/logo.png" alt="Logo" />
+			</a>
+		</div>
+	</div>
+	<!-- .logo-box -->
 
-	<!-- <div class="header-icons">
+	<div class="header-icons">
 		<div class="header-icons-buttons">
 			<a href="email" class="email">
 				<span></span>
@@ -166,12 +157,29 @@
 				<span>Call Us:</span>
 				123-45-678
 			</div>
-			
+			<div class="active search">
+				<form method="get" class="searchform">
+					<div>
+						<input
+							type="text"
+							value=""
+							name="s"
+							class="s"
+							placeholder="Search here"
+						/>
+						<input
+							type="submit"
+							class="searchsubmit btn"
+							value="Go"
+						/>
+					</div>
+				</form>
+			</div>
 		</div>
-	</div> -->
+	</div>
 	<!-- .header-icons -->
 
-	<!-- <div class="login-register">
+	<div class="login-register">
 		<div class="standart">
 			<div class="links">
 				<a href="login.html">Login</a>
@@ -181,47 +189,10 @@
 			</div>
 			<a class="btn" href="#">Add Your Property</a>
 		</div>
-	</div> -->
+	</div>
 	<!-- .login-register -->
 
-	<!-- <div class="clearfix"></div>
+	<div class="clearfix"></div>
 	<div class="header-bottom-margin"></div>
-	<div class="clearfix"></div> -->
+	<div class="clearfix"></div>
 </header>
-
-
-<!-- <ul class="sub-menu">
-					<li>
-						<a href="typography.html"
-							><span>Typography and Basic Styles</span></a
-						>
-					</li>
-					<li>
-						<a href="tables-styles.html"
-							><span>Tables Styles</span></a
-						>
-					</li>
-					<li>
-						<a href="forms-styles.html"
-							><span>Forms Styles</span></a
-						>
-					</li>
-					<li>
-						<a href="buttons-styles.html"
-							><span>Buttons Styles</span></a
-						>
-					</li>
-					<li>
-						<a href="togglable-tabs.html"
-							><span>Togglable tabs</span></a
-						>
-					</li>
-					<li>
-						<a href="tooltips.html"><span>Tooltips</span></a>
-					</li>
-					<li>
-						<a href="accordions-designs.html"
-							><span>Accordions Designs</span></a
-						>
-					</li>
-				</ul> -->
