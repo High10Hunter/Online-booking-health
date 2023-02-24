@@ -88,6 +88,7 @@
 							<th>Số điện thoại</th>
 							<th>Chuyên khoa</th>
 							<th>Chức danh</th>
+							<th>Lịch khám</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -104,15 +105,16 @@
 							</td>
 							<td><%= user.phone_number %></td>
 							<td><%= user.doctor.speciality.name %></td>
-							<% if (user.doctor.rank == 1) { %>
-							<td>PGS-TS</td>
-							<% } else if (user.doctor.rank == 2) { %>
-							<td>TS</td>
-							<% } else if (user.doctor.rank == 3){ %>
-							<td>BS CKII</td>
-							<% } else if (user.doctor.rank == 4) { %>
-							<td>BS CKI</td>
-							<% } %>
+							<td><%= user.doctor.getRankName() %></td>
+							<td>
+								<a href="/admin/schedule/<%= user.doctor.id %>">
+									<button
+										class="btn btn-icon waves-effect btn-purple"
+									>
+										<i class="far fa-calendar-check"></i>
+									</button>
+								</a>
+							</td>
 						</tr>
 						<% }); %> <% } else { %>
 						<tr>

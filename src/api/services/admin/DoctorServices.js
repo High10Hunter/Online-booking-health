@@ -108,6 +108,28 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 	}
 };
 
+const getDoctorById = async id => {
+	try {
+		const doctor = await Doctor.findOne({
+			where: { id },
+			include: [
+				{
+					model: User,
+					as: 'user',
+					attributes: ['name'],
+				},
+			],
+			attributes: ['rank'],
+		});
+
+		if (!doctor) throw new Error('Doctor not found');
+
+		return doctor;
+	} catch (error) {
+		throw new NotFoundError('Cannot get doctor');
+	}
+};
+
 const getAllSpeciality = async () => {
 	try {
 		let specialitiesInCache = myCache.get('specialities');
@@ -136,5 +158,6 @@ const getAllSpeciality = async () => {
 
 export default {
 	getAllDoctor,
+	getDoctorById,
 	getAllSpeciality,
 };
