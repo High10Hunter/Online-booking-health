@@ -106,7 +106,54 @@ const createSchedule = async (doctorId, date, start_time) => {
 	}
 };
 
+const createScheduleEachWeek = async () => {
+	console.log('createScheduleEachWeek');
+
+	const prevWeekStart = moment()
+		.subtract(1, 'week')
+		.startOf('week')
+		.add(1, 'day')
+		.format('YYYY-MM-DD');
+	const prevWeekEnd = moment()
+		.subtract(1, 'week')
+		.endOf('week')
+		.format('YYYY-MM-DD');
+
+	try {
+		const prevWeekSchedule = await Schedule.findAll({
+			//check the date in between the previous week
+			where: {
+				date: {
+					[Op.between]: [prevWeekStart, prevWeekEnd],
+				},
+			},
+			attributes: ['doctor_id', 'shift_id', 'date'],
+		});
+
+		prevWeekSchedule.forEach(async item => {
+			//create new schedule for the next week
+			try {
+				await Schedule.create({
+					doctor_id: item.doctor_id,
+					date: moment(item.date).add(1, 'week').format('YYYY-MM-DD'),
+					shift_id: item.shift_id,
+				});
+			} catch (error) {
+				throw new Error(error.message);
+			}
+		});
+	} catch (error) {
+		throw new Error(error.message);
+	}
+};
+
+const hello = async () => {
+	console.log('hello');
+};
+
 export default {
 	getScheduleOfDoctor,
 	createSchedule,
+	createScheduleEachWeek,
+	hello,
 };
