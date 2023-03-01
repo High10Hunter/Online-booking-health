@@ -147,13 +147,8 @@ const createScheduleEachWeek = async () => {
 	}
 };
 
-const hello = async () => {
-	console.log('hello');
-};
-
 export default {
 	getScheduleOfDoctor,
 	createSchedule,
 	createScheduleEachWeek,
-	hello,
 };
