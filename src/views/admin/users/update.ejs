@@ -1,13 +1,19 @@
 <style>
+    body{
+        position: relative;
+        height: 100vh;
+    }
+
     .container {
         background-color: white;
-        width: 95%;
-        margin: 0 auto;
-        margin-top: 1%;
-        margin-bottom: 1%;
         padding: 30px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 10px;
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-45%, -50%);
     }
 
 
@@ -37,7 +43,7 @@
         height: 20px;
         margin-right: 5px;
         position: relative; 
-	    bottom: 10px; 
+        bottom: 10px; 
         left: 1em;
     }
 
@@ -46,7 +52,7 @@
         font-weight: normal;
         font-size: 16px;
         position: relative; 
-	    bottom: 14px; 
+        bottom: 14px; 
         left: 24px;
     }
 
@@ -54,9 +60,10 @@
         color: red;
         display: block;
         font-size: 12px;
+        
     }
 
-    button[type="submit"], button[type="reset"] {
+    button[type="submit"], button[type="reset"]{
         display: block;
         padding: 10px;
         margin-left: 10px;
@@ -65,24 +72,29 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        width: 12%;
     }
+    button[type="reset"] {
+        background-color: #f44336;
+        color: black;
+        margin-right: 10px;
+        width: 6%;
+    }
+    #additional-fields {
+        margin-top: 30px;
+    }
+
 </style>
 
 
 <div class="container">
     <h1>Cập nhật thông tin người dùng</h1>
-    <form id="update-user-form">
-        <div>
-            <label for="name">Họ tên:</label>
-            <span class="error" id="name-error"></span>
-            <input type="text" id="name" name="name" placeholder="Họ và tên">
-        </div>
+    <form id="add-user-form" action="/admin/users/update" method="POST">
         <div class="row">
             <div class="col-6">
-                <label for="dob">Ngày sinh:</label>
-                <span class="error" id="dob-error"></span>
-                <input type="date" id="dob" name="dob">
-
+                <label for="name">Họ tên:</label>
+                <span class="error" id="name-error"></span>
+                <input type="text" id="name" name="name" placeholder="Họ và tên">
             </div>
             <div class="col-6">
                 <label for="gender">Giới tính:</label>
@@ -92,34 +104,38 @@
                 <label class="radioText" for="male">Nam</label>
                 <input type="radio" id="female" name="gender" value="female">
                 <label class="radioText" for="female">Nữ</label>
-
             </div>
-
-        </div>
-
-
-        <div>
-            <label for="phone">Số điện thoại:</label>
-            <span class="error" id="phone-error"></span>
-            <input type="text" id="phone" name="phone" placeholder="Số điện thoại">
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            <span class="error" id="email-error"></span>
-            <input type="email" id="email" name="email" placeholder="email@example.com">
         </div>
         <div class="row">
             <div class="col-6">
+                <label for="phone">Số điện thoại:</label>
+                <span class="error" id="phone-error"></span>
+                <input type="text" id="phone" name="phone_number" placeholder="Số điện thoại">
+            </div>
+            <div class="col-6">
+                <label for="email">Email:</label>
+                <span class="error" id="email-error"></span>
+                <input type="email" id="email" name="email" placeholder="email@example.com">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="dob">Ngày sinh:</label>
+                <span class="error" id="dob-error"></span>
+                <input type="date" id="dob" name="birthday">
+            </div>
+            <div class="col-4">
                 <label for="role">Vai trò:</label>
                 <span class="error" id="role-error"></span>
                 <select id="role" name="role">
-                    <option value="">--  Chọn vai trò  --</option>
-                    <option value="administrator">Quản trị viên</option>
-                    <option value="doctor">Bác sĩ</option>
-                    <option value="nurse">Y tá</option>
+                    <option value="">--  Chọn Vai trò  --</option>
+                    <option value="1">Quản trị viên</option>
+                    <option value="2">Y tá</option>
+                    <option value="3">Bác sĩ</option>
                 </select>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <label for="status">Tình trạng:</label>
                 <span class="error" id="status-error"></span>
                 <br/>
@@ -130,14 +146,46 @@
             </div>
         </div>
 
+        <div id="additional-fields" style="display: none;">
+            <div class="row">
+                <div class="col-4">
+                <label for="specialty">Chuyên khoa:</label>
+                <span class="error" id="specialty-error"></span>
+                <input type="text" id="specialty" name="specialty" placeholder="Chuyên khoa">
+                </div>
+                <div class="col-4">
+                <label for="position">Chức vụ:</label>
+                <span class="error" id="position-error"></span>
+                <input type="text" id="position" name="position" placeholder="Chức vụ">
+                </div>
+                <div class="col-4">
+                    <label for="fee">Giá khám:</label>
+                    <span class="error" id="fee-error"></span>
+                    <input type="text" id="fee" name="fee" placeholder="Giá khám">
+                    </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                <label for="description">Mô tả:</label>
+                <span class="error" id="description-error"></span>
+                <!-- <input type="text" id="description" name="description" placeholder="Mô tả"> -->
+                <textarea name="description" id="description" rows="4" style="width: 100%;" placeholder="Mô tả"></textarea>    
+                </div>
+            </div>
+        </div>
+
         <div class="row" style="display: flex; justify-content: center; align-items: center;">
-            <button type="submit">Tạo người dùng</button>
+            <button type="submit">Xác nhận</button>
+            <button type="reset">Hủy</button>
         </div>
 
     </form>
 </div>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script>		
+
     const form = document.getElementById('add-user-form');
     const name = document.getElementById('name');
     const gender = document.getElementsByName('gender');
@@ -146,6 +194,22 @@
     const email = document.getElementById('email');
     const role = document.getElementById('role');
     const status = document.getElementsByName('status');
+
+    const roleSelect = document.getElementById("role");
+    const additionalFields = document.getElementById("additional-fields");
+
+    document.getElementById("role").addEventListener('change', function() {
+        if(this.value === "3") {
+            additionalFields.style.display = "block";
+            additionalFields.style.borderTop = "1px solid #ccc";
+            additionalFields.style.paddingTop = "20px";
+        } else {
+            additionalFields.style.display = "none";
+            additionalFields.style.borderTop = "none";
+            additionalFields.style.paddingTop = "0";
+        }
+    });
+
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -200,6 +264,36 @@
             document.getElementById('role-error').textContent = '';
         }
 
+        if(role.value === "3") {
+            if (document.getElementById('specialty').value === '') {
+                valid = false;
+                document.getElementById('specialty-error').textContent = 'Vui lòng nhập chuyên khoa';
+            } else {
+                document.getElementById('specialty-error').textContent = '';
+            }
+
+            if (document.getElementById('position').value === '') {
+                valid = false;
+                document.getElementById('position-error').textContent = 'Vui lòng nhập chức vụ';
+            } else {
+                document.getElementById('position-error').textContent = '';
+            }
+
+            if (document.getElementById('fee').value === '') {
+                valid = false;
+                document.getElementById('fee-error').textContent = 'Vui lòng nhập giá khám';
+            } else {
+                document.getElementById('fee-error').textContent = '';
+            }
+
+            if (document.getElementById('description').value === '') {
+                valid = false;
+                document.getElementById('description-error').textContent = 'Vui lòng nhập mô tả';
+            } else {
+                document.getElementById('description-error').textContent = '';
+            }
+        }
+
         let selectedStatus = '';
         for (let i = 0; i < status.length; i++) {
             if (status[i].checked) {
@@ -212,10 +306,14 @@
         } else {
             document.getElementById('status-error').textContent = '';
         }
-
-        if (valid) {
-            // Code to submit the form goes here
-            alert('User created successfully!');
-        }
     });
 </script>
+
+
+
+
+
+
+
+
+
