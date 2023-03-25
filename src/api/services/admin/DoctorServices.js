@@ -156,8 +156,19 @@ const getAllSpeciality = async () => {
 	}
 };
 
+const createDoctor = async data => {
+	try {
+		const doctor = await Doctor.create(data);
+
+		return doctor;
+	} catch (error) {
+		throw new Error(error.message);
+	}
+};
+
 export default {
 	getAllDoctor,
 	getDoctorById,
 	getAllSpeciality,
+	createDoctor,
 };

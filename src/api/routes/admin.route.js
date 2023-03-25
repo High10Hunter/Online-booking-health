@@ -5,6 +5,7 @@ import UserController from '../controllers/admin/UserController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
+import { uploadMedia } from '../utils';
 
 const router = Router();
 
@@ -38,22 +39,21 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
-	// router.get(
-	// 	'/users/create',
-	// 	verifyAccessToken,
-	// 	verifyRoles(RolesEnum.ADMIN),
-	// 	// UserController.create
-	// );
+	router.get(
+		'/users/create',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.create
+	);
 
-	// router.get('/users\/update',
-	// 	verifyAccessToken,
-	// 	verifyRoles(RolesEnum.ADMIN),
-	// 	// UserController.update
-	// );
-
-	//CRUD users
 	// router.get('/users', UserController.index);
-	router.post('/users/create', UserController.create);
+	router.post(
+		'/users/create',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		uploadMedia('avatar'),
+		UserController.store
+	);
 	router.patch('/users/update/:id', UserController.update);
 	router.delete('/users/destroy/:id', UserController.destroy);
 	router.post(
