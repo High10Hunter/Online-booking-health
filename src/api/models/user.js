@@ -209,5 +209,10 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	};
 
+	User.prototype.getGenderName = function () {
+		if (this.gender == true) return 'Nam';
+		else return 'Nữ';
+	};
+
 	return User;
 };

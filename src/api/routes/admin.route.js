@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import DoctorController from '../controllers/admin/DoctorController';
+import ScheduleController from '../controllers/admin/ScheduleController';
 import UserController from '../controllers/admin/UserController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
@@ -17,7 +19,7 @@ const router = Router();
 // };
 
 const adminRoutes = app => {
-	//manage users routes
+	//* manage users routes
 	router.get(
 		'/',
 		verifyAccessToken,
@@ -36,25 +38,13 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
-	router.get('/users/create', (req, res) => {
-		res.render('admin/users/create', {
-			title: 'Create User',
-		});
-	});
-
-	router.get(/users\/update/, (req, res) => {
-		res.render('admin/users/update', {
-			title: 'Update User Info',
-		});
-	});
-
 	// router.get(
-	// 	'/users/create', 
+	// 	'/users/create',
 	// 	verifyAccessToken,
 	// 	verifyRoles(RolesEnum.ADMIN),
 	// 	// UserController.create
 	// );
-	
+
 	// router.get('/users\/update',
 	// 	verifyAccessToken,
 	// 	verifyRoles(RolesEnum.ADMIN),
@@ -66,6 +56,48 @@ const adminRoutes = app => {
 	router.post('/users/create', UserController.create);
 	router.patch('/users/update/:id', UserController.update);
 	router.delete('/users/destroy/:id', UserController.destroy);
+	router.post(
+		'/users/resetPassword',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.resetPassword
+	);
+
+	router.post(
+		'/users/userPercentage',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.getPercentageOfEachRole
+	);
+
+	//* manage doctor's schedule routes
+	router.get(
+		'/schedules',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.index
+	);
+
+	router.get(
+		'/schedule/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.index
+	);
+
+	router.get(
+		'/api/getScheduleOfDoctor/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.getScheduleOfDoctor
+	);
+
+	router.post(
+		'/api/schedule/create',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.create
+	);
 
 	app.use('/admin', router);
 };

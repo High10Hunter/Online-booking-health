@@ -18,6 +18,7 @@ const index = async (req, res) => {
 				current: currentPage,
 				limit: limit,
 				search: q,
+				role: '',
 				title: 'Quản lý người dùng',
 			});
 		} else {
@@ -86,4 +87,42 @@ const destroy = async (req, res) => {
 	}
 };
 
-export default { index, create, update, destroy };
+const getPercentageOfEachRole = async (req, res) => {
+	try {
+		const usersPercentage = User.getPercentageOfEachRole();
+		usersPercentage.then(data => {
+			return res.status(StatusCodes.OK).json({
+				message: 'Get percentage of each role successfully',
+				data: data,
+			});
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot get percentage of each role',
+			data: [],
+		});
+	}
+};
+
+const resetPassword = async (req, res) => {
+	try {
+		await User.resetPassword(req.params.id);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Reset password successfully',
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot reset password',
+		});
+	}
+};
+
+export default {
+	index,
+	create,
+	update,
+	destroy,
+	getPercentageOfEachRole,
+	resetPassword,
+};

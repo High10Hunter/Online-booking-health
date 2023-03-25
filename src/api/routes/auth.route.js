@@ -9,7 +9,7 @@ const authRoutes = app => {
 	//authentication routes
 	router.get('/login', checkIfLoggedIn, AuthController.index);
 	router.post('/login', AuthController.login);
-	router.post('/logout', AuthController.logout);
+	router.get('/logout', AuthController.logout);
 
 	app.use('/auth', router);
 };

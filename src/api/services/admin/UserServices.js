@@ -2,7 +2,10 @@ import { User } from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
+import NodeCache from 'node-cache';
 import createError from 'http-errors';
+
+const myCache = new NodeCache();
 
 const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 	try {
@@ -67,6 +70,46 @@ const getAllUserByRole = async (role, q = '', currentPage = 1, limit = 10) => {
 	}
 };
 
+const getPercentageOfEachRole = async (req, res) => {
+	try {
+		let usersPercentage = await myCache.get('usersPercentage');
+
+		if (usersPercentage == undefined) {
+			const users = await User.findAll();
+
+			let adminCount = 0;
+			let nurseCount = 0;
+			let doctorCount = 0;
+
+			users.forEach(user => {
+				if (user.role === 1) adminCount++;
+				else if (user.role === 2) nurseCount++;
+				else if (user.role === 3) doctorCount++;
+			});
+
+			const totalCount = adminCount + nurseCount + doctorCount;
+			const adminPercentage =
+				Math.round((adminCount / totalCount) * 100 * 100) / 100;
+			const nursePercentage =
+				Math.round((nurseCount / totalCount) * 100 * 100) / 100;
+			const doctorPercentage =
+				Math.round((doctorCount / totalCount) * 100 * 100) / 100;
+
+			usersPercentage = {
+				adminPercentage,
+				nursePercentage,
+				doctorPercentage,
+			};
+
+			myCache.set('usersPercentage', usersPercentage, 86400);
+		}
+
+		return usersPercentage;
+	} catch (error) {
+		throw new NotFoundError('Cannot calculate percentage of each role');
+	}
+};
+
 const createUser = async data => {
 	try {
 		const { birthday, gender, email } = data;
@@ -101,7 +144,6 @@ const updateUser = async (id, data) => {
 		const { password } = data;
 
 		if (password) {
-			console.log(1);
 			throw new Error('Cannot update password');
 		}
 
@@ -135,10 +177,39 @@ const deleteUser = async id => {
 	}
 };
 
+const resetPassword = async id => {
+	try {
+		const user = await User.findByPk(id);
+
+		const birthday = user.birthday;
+
+		let dateArr = birthday.split('-');
+		dateArr.reverse();
+		dateArr = dateArr.join('');
+
+		const hashedPassword = await hashPassword(dateArr);
+
+		user.set({
+			password: hashedPassword,
+		});
+
+		await user.save();
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot reset password');
+		} else {
+			throw new Error(errors[0].message || 'Cannot reset password');
+		}
+	}
+};
+
 export default {
 	getAllUser,
 	getAllUserByRole,
 	createUser,
 	updateUser,
 	deleteUser,
+	getPercentageOfEachRole,
+	resetPassword,
 };
