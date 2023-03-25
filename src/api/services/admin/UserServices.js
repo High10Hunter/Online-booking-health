@@ -112,8 +112,9 @@ const getPercentageOfEachRole = async (req, res) => {
 
 const createUser = async data => {
 	try {
-		const { birthday } = data;
-
+		const { birthday, gender, email } = data;
+		let genderInput = 1;
+		if (gender === 'female') genderInput = 0;
 		//ex: birthday: 1999-03-01 => password: 01031999
 		let dateArr = birthday.split('-');
 		dateArr.reverse();
@@ -124,6 +125,8 @@ const createUser = async data => {
 		const user = await User.create({
 			...data,
 			password: hashedPassword,
+			username: email,
+			gender: genderInput,
 			status: 1,
 		});
 

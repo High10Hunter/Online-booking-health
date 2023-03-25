@@ -38,6 +38,24 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
+	// router.get(
+	// 	'/users/create',
+	// 	verifyAccessToken,
+	// 	verifyRoles(RolesEnum.ADMIN),
+	// 	// UserController.create
+	// );
+
+	// router.get('/users\/update',
+	// 	verifyAccessToken,
+	// 	verifyRoles(RolesEnum.ADMIN),
+	// 	// UserController.update
+	// );
+
+	//CRUD users
+	// router.get('/users', UserController.index);
+	router.post('/users/create', UserController.create);
+	router.patch('/users/update/:id', UserController.update);
+	router.delete('/users/destroy/:id', UserController.destroy);
 	router.post(
 		'/users/resetPassword',
 		verifyAccessToken,

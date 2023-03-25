@@ -48,10 +48,7 @@ const create = async (req, res) => {
 	try {
 		const user = await User.createUser(req.body);
 
-		return res.status(StatusCodes.CREATED).json({
-			message: 'Create user successfully',
-			data: user,
-		});
+		return res.redirect('/admin/users?page=1&limit=10');
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
 			message: error.message || 'Cannot create user',
