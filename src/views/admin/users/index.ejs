@@ -1,3 +1,12 @@
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+
+
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
@@ -120,6 +129,7 @@
 							<th>Email</th>
 							<th>Số điện thoại</th>
 							<th>Vai trò</th>
+							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -139,6 +149,56 @@
 							<% } else if (user.role == 3) { %>
 							<td class="text-success">Bác sĩ</td>
 							<% } %>
+							<td>
+								<button class="btn btn-sm btn-primary reset-password" data-toggle="modal" data-target="#ModalPassword" data-id="<%= user.id %>">Reset mật khẩu</button>
+								<button class="btn btn-sm btn-warning  update-status" data-toggle="modal" data-target="#ModalStatus" data-id="<%= user.id %>">Trạng thái</button>
+								
+
+								<div class="modal fade" id="ModalPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+									<div class="modal-dialog" role="document">
+									  <div class="modal-content">
+										<div class="modal-header">
+										  <h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+										  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										  </button>
+										</div>
+										<div class="modal-body">
+										  <p>Xác nhận đặt lại mật khẩu của người dùng <%= user.name %>?</p>
+										</div>
+										<div class="modal-footer">
+										  <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+										  <button type="button" class="btn btn-primary" onclick="resetPassword()">Xác nhận</button>
+										</div>
+									  </div>
+									</div>
+								</div>
+								<div class="modal fade" id="ModalStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+									<div class="modal-dialog" role="document">
+									  <div class="modal-content">
+										<div class="modal-header">
+										  <h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+										  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										  </button>
+										</div>
+										<div class="modal-body">
+										  <p>Trạng thái người dùng <%= user.name %> hiện tại: </p>
+										  <% if (user.status == 1) { %>
+											<p class="text-primary">Đang đi làm</p>
+											<% } else if (user.status == 0) { %>
+											<p class="text-success">Đã nghỉ việc</p>
+											<% } %>
+										  <p>Xác nhận thay đổi trạng thái?</p>
+										</div>
+										<div class="modal-footer">
+										  <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+										  <button type="button" class="btn btn-primary" onclick="updateUserStatus()">Xác nhận</button>
+										</div>
+									  </div>
+									</div>
+								</div>
+							</td>
 						</tr>
 						<% }); %> <% } else { %>
 						<tr>
@@ -226,4 +286,67 @@
 			$('#form-filter').submit();
 		});
 	});
+
+
+
+$(document).ready(function() {
+	// click vào nút "Reset mật khẩu"
+	$('.reset-password').click(function() {
+	var userId = $(this).data('id');
+	$('#ModalPassword').data('id', userId).modal('show');
+
+	
+});
+	$('#ModalPassword').submit(function(e) {
+        e.preventDefault(); // Ngăn chặn form submit mặc định
+        resetPassword();
+    });
+	// click vào nút "Trạng thái"
+$('.update-status').click(function() {
+	var userId = $(this).data('id');
+	$('#ModalStatus').data('id', userId).modal('show');
+	});
+
+	$('#ModalStatus').submit(function(e) {
+        e.preventDefault(); // Ngăn chặn form submit mặc định
+        resetPassword();
+    });
+});
+
+
+function resetPassword() {
+    var userId = $('#ModalPassword').data('id');
+	$.ajax({
+        method: "PUT",
+        url: "/admin/users/" + userId + "/reset-password",
+        success: function (response) {
+			//alert('Cập nhật trạng thái thành công');
+            $('#ModalPassword').modal('hide');
+        },
+        error: function (xhr, status, error) {
+			//alert('Cập nhật mật khẩu thất bại: ' + error);
+            console.error(error);
+			$('#ModalPassword').modal('hide');
+        }
+    });
+	return false;
+}
+
+function updateUserStatus() {
+    var userId = $('#ModalStatus').data('id');
+	$.ajax({
+        method: "PUT",
+        url: '/admin/users/' + userId + '/update-status',
+        data: {status: status},
+        success: function (response) {
+			//alert('Cập nhật trạng thái thành công');
+            $('#ModalStatus').modal('hide');
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+			//alert('Cập nhật trạng thái thất bại: ' + error);
+        }
+    });
+}
+
 </script>

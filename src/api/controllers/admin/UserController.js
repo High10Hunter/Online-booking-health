@@ -86,4 +86,36 @@ const destroy = async (req, res) => {
 	}
 };
 
-export default { index, create, update, destroy };
+const updateUserStatus = async (req, res) => {
+	try {
+		const user = await User.updateUserStatus(req.params.id);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Update user status successfully',
+			data: user,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot update user status',
+			data: [],
+		});
+	}
+};
+
+const resetPassword = async (req, res) => {
+	try {
+		const user = await User.resetPassword(req.params.id);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Reset password successfully',
+			data: user,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot reset password',
+			data: [],
+		});
+	}
+};
+
+export default { index, create, update, destroy, updateUserStatus, resetPassword };

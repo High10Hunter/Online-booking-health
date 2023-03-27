@@ -135,10 +135,65 @@ const deleteUser = async id => {
 	}
 };
 
+const updateUserStatus = async (id) => {
+	try {
+		const user = await User.findByPk(id);
+
+		let { status } = user;
+		status = !status;
+
+		user.set({
+			status,
+		});
+
+		await user.save();
+
+		return user;
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot update user status');
+		} else {
+			throw new Error(errors[0].message || 'Cannot update user status');
+		}
+	}
+};
+
+const resetPassword = async (id) => {
+	try {
+		const user = await User.findByPk(id);
+
+		const {birthday} = user;
+
+		let dateArr = birthday.split('-');
+		dateArr.reverse();
+		dateArr = dateArr.join('');
+
+		const hashedPassword = await hashPassword(dateArr);
+
+		user.set({
+			password: hashedPassword, // set mật khẩu mặc định
+		});
+
+		await user.save();
+		return user;
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot reset password');
+		} else {
+			throw new Error(errors[0].message || 'Cannot reset password');
+		}
+	}
+};
+
+
 export default {
 	getAllUser,
 	getAllUserByRole,
 	createUser,
 	updateUser,
 	deleteUser,
+	updateUserStatus,
+	resetPassword
 };

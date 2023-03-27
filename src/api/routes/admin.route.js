@@ -63,6 +63,10 @@ const adminRoutes = app => {
 
 	//CRUD users
 	// router.get('/users', UserController.index);
+
+	router.put('/users/:id/update-status', UserController.updateUserStatus);
+	router.put('/users/:id/reset-password', UserController.resetPassword);
+
 	router.post('/users/create', UserController.create);
 	router.patch('/users/update/:id', UserController.update);
 	router.delete('/users/destroy/:id', UserController.destroy);
