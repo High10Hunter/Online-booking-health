@@ -36,25 +36,25 @@ const adminRoutes = app => {
 		UserController.index
 	);
 
-	router.get(/users\/create/, (req, res) => {
-		res.render('admin/users/create', {
-			title: 'Create User',
-		});
-	});
+	// router.get(/users\/create/, (req, res) => {
+	// 	res.render('admin/users/create', {
+	// 		title: 'Create User',
+	// 	});
+	// });
 
-	router.get(/users\/update/, (req, res) => {
-		res.render('admin/users/update', {
-			title: 'Update User Info',
-		});
-	});
+	// router.get(/users\/update/, (req, res) => {
+	// 	res.render('admin/users/update', {
+	// 		title: 'Update User Info',
+	// 	});
+	// });
 
 	// router.get(
-	// 	'/users/create', 
+	// 	'/users/create',
 	// 	verifyAccessToken,
 	// 	verifyRoles(RolesEnum.ADMIN),
 	// 	// UserController.create
 	// );
-	
+
 	// router.get('/users\/update',
 	// 	verifyAccessToken,
 	// 	verifyRoles(RolesEnum.ADMIN),
