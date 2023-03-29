@@ -3,7 +3,6 @@ import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
 import NodeCache from 'node-cache';
-import createError from 'http-errors';
 
 const myCache = new NodeCache();
 
@@ -183,11 +182,35 @@ const deleteUser = async id => {
 	}
 };
 
+const updateUserStatus = async id => {
+	try {
+		const user = await User.findByPk(id);
+
+		let { status } = user;
+		status = !status;
+
+		user.set({
+			status,
+		});
+
+		await user.save();
+
+		return user;
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot update user status');
+		} else {
+			throw new Error(errors[0].message || 'Cannot update user status');
+		}
+	}
+};
+
 const resetPassword = async id => {
 	try {
 		const user = await User.findByPk(id);
 
-		const birthday = user.birthday;
+		const { birthday } = user;
 
 		let dateArr = birthday.split('-');
 		dateArr.reverse();
@@ -200,6 +223,7 @@ const resetPassword = async id => {
 		});
 
 		await user.save();
+		return user;
 	} catch (error) {
 		const { errors } = error;
 		if (!errors) {
@@ -216,6 +240,7 @@ export default {
 	createUser,
 	updateUser,
 	deleteUser,
-	getPercentageOfEachRole,
+	updateUserStatus,
 	resetPassword,
+	getPercentageOfEachRole,
 };

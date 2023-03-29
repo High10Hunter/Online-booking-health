@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import User from '../../services/admin/UserServices';
 import Doctor from '../../services/admin/DoctorServices';
 import RolesEnum from '../../enums/RolesEnum';
+import { configureMulter } from '../../utils';
 
 const index = async (req, res) => {
 	try {
@@ -63,31 +64,53 @@ const create = async (req, res) => {
 };
 
 const store = async (req, res) => {
-	try {
-		const { role } = req.body;
-		if (role == RolesEnum.DOCTOR) {
-			const { speciality_id, rank, price, description, ...user_data } =
-				req.body;
-			const user = await User.createUser(user_data);
-			const doctor_data = {
-				speciality_id: speciality_id,
-				rank: rank,
-				price: price,
-				description: description,
-				user_id: user.id,
-			};
+	const multerInstance = configureMulter('src/public/media/');
 
-			await Doctor.createDoctor(doctor_data);
-		} else {
-			await User.createUser(req.body);
+	multerInstance.single('avatar')(req, res, async err => {
+		if (err) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: err.message || 'Cannot create user',
+				data: [],
+			});
 		}
-		return res.redirect('/admin/users?page=1&limit=10');
-	} catch (error) {
-		return res.status(StatusCodes.BAD_REQUEST).json({
-			message: error.message || 'Cannot create user',
-			data: [],
-		});
-	}
+
+		if (req.file) {
+			req.body.avatar = req.file.path;
+		} else {
+			req.body.avatar = '';
+		}
+
+		try {
+			const { role } = req.body;
+			if (role == RolesEnum.DOCTOR) {
+				const {
+					speciality_id,
+					rank,
+					price,
+					description,
+					...user_data
+				} = req.body;
+				const user = await User.createUser(user_data);
+				const doctor_data = {
+					speciality_id: speciality_id,
+					rank: rank,
+					price: price,
+					description: description,
+					user_id: user.id,
+				};
+
+				await Doctor.createDoctor(doctor_data);
+			} else {
+				await User.createUser(req.body);
+			}
+			return res.redirect('/admin/users?page=1&limit=10');
+		} catch (error) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: error.message || 'Cannot create user',
+				data: [],
+			});
+		}
+	});
 };
 
 const update = async (req, res) => {
@@ -120,6 +143,22 @@ const destroy = async (req, res) => {
 	}
 };
 
+const updateUserStatus = async (req, res) => {
+	try {
+		const user = await User.updateUserStatus(req.params.id);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Update user status successfully',
+			data: user,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot update user status',
+			data: [],
+		});
+	}
+};
+
 const getPercentageOfEachRole = async (req, res) => {
 	try {
 		const usersPercentage = User.getPercentageOfEachRole();
@@ -139,14 +178,16 @@ const getPercentageOfEachRole = async (req, res) => {
 
 const resetPassword = async (req, res) => {
 	try {
-		await User.resetPassword(req.params.id);
+		const user = await User.resetPassword(req.params.id);
 
 		return res.status(StatusCodes.OK).json({
 			message: 'Reset password successfully',
+			data: user,
 		});
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
 			message: error.message || 'Cannot reset password',
+			data: [],
 		});
 	}
 };
@@ -159,4 +200,5 @@ export default {
 	destroy,
 	getPercentageOfEachRole,
 	resetPassword,
+	updateUserStatus,
 };

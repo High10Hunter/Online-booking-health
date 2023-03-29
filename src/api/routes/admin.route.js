@@ -5,7 +5,6 @@ import UserController from '../controllers/admin/UserController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
-import { uploadMedia } from '../utils';
 
 const router = Router();
 
@@ -47,21 +46,19 @@ const adminRoutes = app => {
 	);
 
 	// router.get('/users', UserController.index);
+
+	router.put('/users/:id/update-status', UserController.updateUserStatus);
+	router.put('/users/:id/reset-password', UserController.resetPassword);
+
 	router.post(
 		'/users/create',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
-		uploadMedia('avatar'),
 		UserController.store
 	);
+
 	router.patch('/users/update/:id', UserController.update);
 	router.delete('/users/destroy/:id', UserController.destroy);
-	router.post(
-		'/users/resetPassword',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		UserController.resetPassword
-	);
 
 	router.post(
 		'/users/userPercentage',

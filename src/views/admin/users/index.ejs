@@ -128,6 +128,7 @@
 							<th>Email</th>
 							<th>Số điện thoại</th>
 							<th>Vai trò</th>
+							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -143,7 +144,15 @@
 									height="100px"
 									width="100px"
 								/>
-								<% } else { %> no image <% } %>
+								<% } else { %>
+								<img
+									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>"
+									alt="avatar"
+									height="100px"
+									width="100px"
+								/>
+
+								<% } %>
 							</td>
 
 							<td><%= user.name %></td>
@@ -158,6 +167,144 @@
 							<% } else if (user.role == 3) { %>
 							<td class="text-success">Bác sĩ</td>
 							<% } %>
+							<td>
+								<button
+									class="btn btn-sm btn-primary reset-password"
+									data-toggle="modal"
+									data-target="#ModalPassword"
+									data-id="<%= user.id %>"
+								>
+									Reset mật khẩu
+								</button>
+								<button
+									class="btn btn-sm btn-warning update-status"
+									data-toggle="modal"
+									data-target="#ModalStatus"
+									data-id="<%= user.id %>"
+								>
+									Trạng thái
+								</button>
+
+								<div
+									class="modal fade"
+									id="ModalPassword"
+									tabindex="-1"
+									role="dialog"
+									aria-labelledby="myModalLabel"
+								>
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4
+													class="modal-title"
+													id="myModalLabel"
+												>
+													Thông báo
+												</h4>
+												<button
+													type="button"
+													class="close"
+													data-dismiss="modal"
+													aria-label="Close"
+												>
+													<span aria-hidden="true"
+														>&times;</span
+													>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p>
+													Xác nhận đặt lại mật khẩu
+													của người dùng <%= user.name
+													%>?
+												</p>
+											</div>
+											<div class="modal-footer">
+												<button
+													type="button"
+													class="btn btn-secondary"
+													data-dismiss="modal"
+												>
+													Đóng
+												</button>
+												<button
+													id="confirm-reset-password-btn"
+													type="button"
+													class="btn btn-primary"
+												>
+													Xác nhận
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div
+									class="modal fade"
+									id="ModalStatus"
+									tabindex="-1"
+									role="dialog"
+									aria-labelledby="myModalLabel"
+								>
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4
+													class="modal-title"
+													id="myModalLabel"
+												>
+													Thông báo
+												</h4>
+												<button
+													type="button"
+													class="close"
+													data-dismiss="modal"
+													aria-label="Close"
+												>
+													<span aria-hidden="true"
+														>&times;</span
+													>
+												</button>
+											</div>
+											<div class="modal-body">
+												<p>
+													Trạng thái người dùng <%=
+													user.name %> hiện tại:
+												</p>
+												<% if (user.status == 1) { %>
+												<p class="text-primary">
+													Đang đi làm
+												</p>
+												<% } else if (user.status == 0)
+												{ %>
+												<p class="text-success">
+													Đã nghỉ việc
+												</p>
+												<% } %>
+												<p>
+													Xác nhận thay đổi trạng
+													thái?
+												</p>
+											</div>
+											<div class="modal-footer">
+												<button
+													type="button"
+													class="btn btn-secondary"
+													data-dismiss="modal"
+												>
+													Đóng
+												</button>
+												<button
+													id="confirm-update-status-btn"
+													type="button"
+													class="btn btn-primary"
+												>
+													Xác nhận
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
 						</tr>
 						<% }); %> <% } else { %>
 						<tr>
@@ -168,7 +315,6 @@
 						<% } %>
 					</tbody>
 				</table>
-				// pagination
 				<div class="row pt-2">
 					<div class="col-12">
 						<nav aria-label="...">
@@ -243,12 +389,111 @@
 	</figure>
 </div>
 
+<%- contentFor('css') %>
+<link
+	href="assets/libs/toastr/toastr.min.css"
+	rel="stylesheet"
+	type="text/css"
+/>
+
 <%- contentFor('js') %>
+<script src="assets/libs/toastr/toastr.min.js"></script>
+<script src="assets/js/pages/toastr.init.js"></script>
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
 	$(document).ready(function () {
+		toastr.options = {
+			closeButton: true,
+			debug: false,
+			newestOnTop: false,
+			progressBar: false,
+			positionClass: 'toast-bottom-left',
+			preventDuplicates: false,
+			onclick: null,
+			showDuration: '300',
+			hideDuration: '1000',
+			timeOut: '5000',
+			extendedTimeOut: '1000',
+			showEasing: 'swing',
+			hideEasing: 'linear',
+			showMethod: 'fadeIn',
+			hideMethod: 'fadeOut',
+		};
+
+		function resetPassword() {
+			var userId = $('#ModalPassword').data('id');
+			console.log(userId);
+			$.ajax({
+				method: 'PUT',
+				url: '/admin/users/' + userId + '/reset-password',
+				success: function (response) {
+					$('#ModalPassword').hide();
+					$('body').removeClass('modal-open');
+					$('.modal-backdrop').remove();
+
+					toastr['success'](
+						'Reset mật khẩu thành công',
+						'Thành công'
+					);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Không thể reset mật khẩu người dùng này',
+						'Thất bại'
+					);
+				},
+			});
+		}
+
+		function updateUserStatus(userId, currentBtn) {
+			$.ajax({
+				method: 'PUT',
+				url: '/admin/users/' + userId + '/update-status',
+				data: { status: status },
+				success: function (response) {
+					$('#ModalStatus').hide();
+					$('body').removeClass('modal-open');
+					$('.modal-backdrop').remove();
+
+					// remove the current row
+					let currentRow = currentBtn.closest('tr');
+					currentRow.remove();
+
+					toastr['success'](
+						'Cập nhật trạng thái thành công',
+						'Thành công'
+					);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Không cập nhật trạng thái người dùng này',
+						'Thất bại'
+					);
+				},
+			});
+		}
+
 		$('.select-filter').change(function () {
 			$('#form-filter').submit();
+		});
+
+		$('.reset-password').click(function () {
+			var userId = $(this).data('id');
+			$('#ModalPassword').data('id', userId).modal('show');
+		});
+
+		$('#confirm-reset-password-btn').click(function () {
+			resetPassword();
+		});
+
+		$('.update-status').click(function () {
+			let userId = $(this).data('id');
+			let currentBtn = $(this);
+
+			$('#confirm-update-status-btn').click(function () {
+				updateUserStatus(userId, currentBtn);
+			});
 		});
 
 		//get percent of users by role
