@@ -144,7 +144,15 @@
 									height="100px"
 									width="100px"
 								/>
-								<% } else { %> no image <% } %>
+								<% } else { %>
+								<img
+									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>"
+									alt="avatar"
+									height="100px"
+									width="100px"
+								/>
+
+								<% } %>
 							</td>
 
 							<td><%= user.name %></td>
@@ -169,8 +177,7 @@
 									Reset mật khẩu
 								</button>
 								<button
-									id="update-status-btn"
-									class="btn btn-sm btn-warning"
+									class="btn btn-sm btn-warning update-status"
 									data-toggle="modal"
 									data-target="#ModalStatus"
 									data-id="<%= user.id %>"
@@ -308,7 +315,6 @@
 						<% } %>
 					</tbody>
 				</table>
-				// pagination
 				<div class="row pt-2">
 					<div class="col-12">
 						<nav aria-label="...">
@@ -416,7 +422,7 @@
 		};
 
 		function resetPassword() {
-			var userId = $('.reset-password').data('id');
+			var userId = $('#ModalPassword').data('id');
 			console.log(userId);
 			$.ajax({
 				method: 'PUT',
@@ -472,12 +478,17 @@
 			$('#form-filter').submit();
 		});
 
+		$('.reset-password').click(function () {
+			var userId = $(this).data('id');
+			$('#ModalPassword').data('id', userId).modal('show');
+		});
+
 		$('#confirm-reset-password-btn').click(function () {
 			resetPassword();
 		});
 
-		$('#update-status-btn').click(function () {
-			let userId = $('#update-status-btn').data('id');
+		$('.update-status').click(function () {
+			let userId = $(this).data('id');
 			let currentBtn = $(this);
 
 			$('#confirm-update-status-btn').click(function () {

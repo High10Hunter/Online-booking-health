@@ -1,25 +1,30 @@
 const multer = require('multer');
 const path = require('path');
 
-const storage = multer.diskStorage({
-	destination: 'src/public/media/',
-	filename: function (req, file, cb) {
-		cb(
-			null,
-			file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-		);
-	},
-});
+const configureMulter = destinationFolder => {
+	const storage = multer.diskStorage({
+		destination: destinationFolder,
+		filename: function (req, file, cb) {
+			cb(
+				null,
+				file.fieldname +
+					'-' +
+					Date.now() +
+					path.extname(file.originalname)
+			);
+		},
+	});
 
-// Init upload
-const upload = fieldName =>
-	multer({
+	const multerInstance = multer({
 		storage: storage,
 		limits: { fileSize: 1000000 },
 		fileFilter: function (req, file, cb) {
 			checkFileType(file, cb);
 		},
-	}).single(fieldName);
+	});
+
+	return multerInstance;
+};
 
 // Check file type
 function checkFileType(file, cb) {
@@ -39,21 +44,4 @@ function checkFileType(file, cb) {
 	}
 }
 
-const uploadMedia = fieldName => {
-	return (req, res, next) => {
-		upload('avatar')(req, res, err => {
-			if (err) {
-				res.send(err);
-			} else {
-				if (req.file) {
-					const avatarPath = req.file.path;
-					req.body.avatar = avatarPath;
-
-					next();
-				}
-			}
-		});
-	};
-};
-
-module.exports = { uploadMedia };
+module.exports = { configureMulter };

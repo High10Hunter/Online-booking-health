@@ -5,7 +5,6 @@ import UserController from '../controllers/admin/UserController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
-import { uploadMedia } from '../utils';
 
 const router = Router();
 
@@ -55,7 +54,6 @@ const adminRoutes = app => {
 		'/users/create',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
-		uploadMedia('avatar'),
 		UserController.store
 	);
 
