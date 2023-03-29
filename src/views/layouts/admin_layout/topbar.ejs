@@ -214,7 +214,8 @@
 					class="rounded-circle"
 				/>
 				<span class="pro-user-name ml-1">
-					Nowak <i class="mdi mdi-chevron-down"></i>
+					<%= authUser.name %>
+					<i class="mdi mdi-chevron-down"></i>
 				</span>
 			</a>
 			<div class="dropdown-menu dropdown-menu-right profile-dropdown">
@@ -244,9 +245,9 @@
 				<div class="dropdown-divider"></div>
 
 				<!-- item-->
-				<a href="javascript:void(0);" class="dropdown-item notify-item">
+				<a href="/auth/logout" class="dropdown-item notify-item">
 					<i class="fe-log-out"></i>
-					<span>Logout</span>
+					<span>Đăng xuất</span>
 				</a>
 			</div>
 		</li>
@@ -288,10 +289,6 @@
 			<button class="button-menu-mobile disable-btn waves-effect">
 				<i class="fe-menu"></i>
 			</button>
-		</li>
-
-		<li>
-			<h4 class="page-title-main">Dark Topbar</h4>
 		</li>
 	</ul>
 </div>

@@ -1,5 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import User from '../../services/admin/UserServices';
+import Doctor from '../../services/admin/DoctorServices';
+import RolesEnum from '../../enums/RolesEnum';
 
 const index = async (req, res) => {
 	try {
@@ -18,6 +20,7 @@ const index = async (req, res) => {
 				current: currentPage,
 				limit: limit,
 				search: q,
+				role: '',
 				title: 'Quản lý người dùng',
 			});
 		} else {
@@ -45,8 +48,39 @@ const index = async (req, res) => {
 
 const create = async (req, res) => {
 	try {
-		const user = await User.createUser(req.body);
+		const specialities = await Doctor.getAllSpeciality();
 
+		return res.render('./admin/users/create', {
+			title: 'Thêm người dùng',
+			specialities: specialities,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot create user',
+			data: [],
+		});
+	}
+};
+
+const store = async (req, res) => {
+	try {
+		const { role } = req.body;
+		if (role == RolesEnum.DOCTOR) {
+			const { speciality_id, rank, price, description, ...user_data } =
+				req.body;
+			const user = await User.createUser(user_data);
+			const doctor_data = {
+				speciality_id: speciality_id,
+				rank: rank,
+				price: price,
+				description: description,
+				user_id: user.id,
+			};
+
+			await Doctor.createDoctor(doctor_data);
+		} else {
+			await User.createUser(req.body);
+		}
 		return res.redirect('/admin/users?page=1&limit=10');
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
@@ -102,6 +136,23 @@ const updateUserStatus = async (req, res) => {
 	}
 };
 
+const getPercentageOfEachRole = async (req, res) => {
+	try {
+		const usersPercentage = User.getPercentageOfEachRole();
+		usersPercentage.then(data => {
+			return res.status(StatusCodes.OK).json({
+				message: 'Get percentage of each role successfully',
+				data: data,
+			});
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot get percentage of each role',
+			data: [],
+		});
+	}
+};
+
 const resetPassword = async (req, res) => {
 	try {
 		const user = await User.resetPassword(req.params.id);
@@ -118,4 +169,13 @@ const resetPassword = async (req, res) => {
 	}
 };
 
-export default { index, create, update, destroy, updateUserStatus, resetPassword };
+export default {
+	index,
+	create,
+	store,
+	update,
+	destroy,
+	getPercentageOfEachRole,
+	resetPassword,
+	updateUserStatus,
+};

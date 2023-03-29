@@ -106,14 +106,22 @@
 							</div>
 						</div>
 					</div>
+					<div class="mb-2 ml-2">
+						<a href="/admin/users/create" class="btn btn-primary">
+							<i class="fe-plus-circle"></i> Thêm mới
+						</a>
+					</div>
 				</div>
 			</form>
 
 			<div class="table-responsive">
-				<table class="table table-bordered table-hover mb-0">
+				<table
+					class="table table-bordered table-hover mb-0 text-center"
+				>
 					<thead class="thead-dark">
 						<tr>
 							<th>#</th>
+							<th>Ảnh</th>
 							<th>Tên người dùng</th>
 							<th>Ngày sinh</th>
 							<th>Giới tính</th>
@@ -128,9 +136,20 @@
 						users.forEach(function(user) { %>
 						<tr>
 							<th scope="row"><%= user.id %></th>
+							<td>
+								<% if (user.avatar) { %>
+								<img
+									src="<%= user.avatar %>"
+									alt="user-image"
+									height="100px"
+									width="100px"
+								/>
+								<% } else { %> no image <% } %>
+							</td>
+
 							<td><%= user.name %></td>
 							<td><%= user.birthday %></td>
-							<td><%= user.gender %></td>
+							<td><%= user.getGenderName() %></td>
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>
 							<% if (user.role == 1) { %>
@@ -289,7 +308,7 @@
 						<% } %>
 					</tbody>
 				</table>
-				<!-- pagination -->
+				// pagination
 				<div class="row pt-2">
 					<div class="col-12">
 						<nav aria-label="...">
@@ -305,7 +324,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=1&limit=<%= limit %>"
+										href="/admin/users?page=1&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										tabindex="-1"
 									>
 										Đầu
@@ -326,7 +345,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%=i%>&limit=<%= limit %>"
+										href="/admin/users?page=<%=i%>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										><%=i%>
 									</a>
 								</li>
@@ -343,7 +362,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%= pages %>&limit=<%= limit %>"
+										href="/admin/users?page=<%= pages %>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 									>
 										Cuối
 									</a>
@@ -358,6 +377,11 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	<figure class="highcharts-figure col-12">
+		<div id="users-chart-container"></div>
+	</figure>
+</div>
 
 <%- contentFor('css') %>
 <link
@@ -369,6 +393,8 @@
 <%- contentFor('js') %>
 <script src="assets/libs/toastr/toastr.min.js"></script>
 <script src="assets/js/pages/toastr.init.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
 	$(document).ready(function () {
 		toastr.options = {
@@ -457,6 +483,66 @@
 			$('#confirm-update-status-btn').click(function () {
 				updateUserStatus(userId, currentBtn);
 			});
+		});
+
+		//get percent of users by role
+		$.ajax({
+			type: 'POST',
+			url: '/admin/users/userPercentage',
+			dataType: 'json',
+			success: function (response) {
+				const { data } = response;
+				//display users chart
+				Highcharts.chart('users-chart-container', {
+					chart: {
+						type: 'pie',
+					},
+					title: {
+						text: 'Tỷ lệ người dùng',
+						align: 'center',
+					},
+
+					plotOptions: {
+						series: {
+							dataLabels: {
+								enabled: true,
+								format: '{point.name}: {point.y:.1f}%',
+							},
+						},
+					},
+
+					tooltip: {
+						headerFormat:
+							'<span style="font-size:11px">{series.name}</span><br>',
+						pointFormat:
+							'<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
+					},
+
+					series: [
+						{
+							name: 'Người dùng',
+							colorByPoint: true,
+							data: [
+								{
+									name: 'Admin',
+									y: data.adminPercentage,
+								},
+								{
+									name: 'Y tá',
+									y: data.nursePercentage,
+								},
+								{
+									name: 'Bác sĩ',
+									y: data.doctorPercentage,
+								},
+							],
+						},
+					],
+				});
+			},
+			error: function (error) {
+				console.log(error);
+			},
 		});
 	});
 </script>

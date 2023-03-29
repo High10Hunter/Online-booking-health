@@ -2,7 +2,9 @@ import { User } from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import { hashPassword } from '../../utils';
-import createError from 'http-errors';
+import NodeCache from 'node-cache';
+
+const myCache = new NodeCache();
 
 const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 	try {
@@ -67,11 +69,52 @@ const getAllUserByRole = async (role, q = '', currentPage = 1, limit = 10) => {
 	}
 };
 
+const getPercentageOfEachRole = async (req, res) => {
+	try {
+		let usersPercentage = await myCache.get('usersPercentage');
+
+		if (usersPercentage == undefined) {
+			const users = await User.findAll();
+
+			let adminCount = 0;
+			let nurseCount = 0;
+			let doctorCount = 0;
+
+			users.forEach(user => {
+				if (user.role === 1) adminCount++;
+				else if (user.role === 2) nurseCount++;
+				else if (user.role === 3) doctorCount++;
+			});
+
+			const totalCount = adminCount + nurseCount + doctorCount;
+			const adminPercentage =
+				Math.round((adminCount / totalCount) * 100 * 100) / 100;
+			const nursePercentage =
+				Math.round((nurseCount / totalCount) * 100 * 100) / 100;
+			const doctorPercentage =
+				Math.round((doctorCount / totalCount) * 100 * 100) / 100;
+
+			usersPercentage = {
+				adminPercentage,
+				nursePercentage,
+				doctorPercentage,
+			};
+
+			myCache.set('usersPercentage', usersPercentage, 86400);
+		}
+
+		return usersPercentage;
+	} catch (error) {
+		throw new NotFoundError('Cannot calculate percentage of each role');
+	}
+};
+
 const createUser = async data => {
 	try {
-		const { birthday, gender, email } = data;
+		const { birthday, gender, email, avatar } = data;
 		let genderInput = 1;
 		if (gender === 'female') genderInput = 0;
+
 		//ex: birthday: 1999-03-01 => password: 01031999
 		let dateArr = birthday.split('-');
 		dateArr.reverse();
@@ -79,11 +122,16 @@ const createUser = async data => {
 
 		const hashedPassword = await hashPassword(dateArr);
 
+		// given avatar = src/public/media/avatar-1619780000000.jpg
+		// => avatar = /media/avatar-1619780000000.jpg
+		const avatarInput = avatar.split('public')[1];
+
 		const user = await User.create({
 			...data,
 			password: hashedPassword,
 			username: email,
 			gender: genderInput,
+			avatar: avatarInput,
 			status: 1,
 		});
 
@@ -101,7 +149,6 @@ const updateUser = async (id, data) => {
 		const { password } = data;
 
 		if (password) {
-			console.log(1);
 			throw new Error('Cannot update password');
 		}
 
@@ -135,7 +182,7 @@ const deleteUser = async id => {
 	}
 };
 
-const updateUserStatus = async (id) => {
+const updateUserStatus = async id => {
 	try {
 		const user = await User.findByPk(id);
 
@@ -159,11 +206,11 @@ const updateUserStatus = async (id) => {
 	}
 };
 
-const resetPassword = async (id) => {
+const resetPassword = async id => {
 	try {
 		const user = await User.findByPk(id);
 
-		const {birthday} = user;
+		const { birthday } = user;
 
 		let dateArr = birthday.split('-');
 		dateArr.reverse();
@@ -172,7 +219,7 @@ const resetPassword = async (id) => {
 		const hashedPassword = await hashPassword(dateArr);
 
 		user.set({
-			password: hashedPassword, // set mật khẩu mặc định
+			password: hashedPassword,
 		});
 
 		await user.save();
@@ -187,7 +234,6 @@ const resetPassword = async (id) => {
 	}
 };
 
-
 export default {
 	getAllUser,
 	getAllUserByRole,
@@ -195,5 +241,6 @@ export default {
 	updateUser,
 	deleteUser,
 	updateUserStatus,
-	resetPassword
+	resetPassword,
+	getPercentageOfEachRole,
 };

@@ -48,5 +48,13 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: 'Doctor',
 		}
 	);
+
+	Doctor.prototype.getRankName = function () {
+		if (this.rank === 1) return 'PGS-TS';
+		else if (this.rank === 2) return 'TS';
+		else if (this.rank === 3) return 'BS CKII';
+		else return 'BS CKI';
+	};
+
 	return Doctor;
 };

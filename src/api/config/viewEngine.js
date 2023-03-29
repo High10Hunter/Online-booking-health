@@ -6,7 +6,7 @@ let configViewEngine = app => {
 	app.set('view engine', 'ejs');
 	app.set('views', './src/views');
 	app.use(expressLayouts);
-	app.set('layout', './layouts/master');
+	app.set('layout', './layouts/admin_layout/master');
 };
 
 module.exports = configViewEngine;
