@@ -31,6 +31,7 @@ const getScheduleOfDoctor = async (req, res) => {
 		const data = [];
 		for (let i = 0; i < schedules.length; i++) {
 			data.push({
+				id: schedules[i].id,
 				title: 'Lịch khám',
 				start: schedules[i].start_time,
 				end: schedules[i].end_time,
@@ -78,8 +79,32 @@ const create = async (req, res) => {
 	}
 };
 
+const destroy = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { date } = req.body;
+		const schedule = await ScheduleServices.getScheduleById(id);
+
+		if (!schedule) {
+			throw new Error('Schedule not found');
+		}
+
+		await ScheduleServices.deleteSchedule(id, date);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'success',
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot delete schedule',
+			data: [],
+		});
+	}
+};
+
 export default {
 	index,
 	create,
+	destroy,
 	getScheduleOfDoctor,
 };

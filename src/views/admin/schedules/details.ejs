@@ -99,6 +99,55 @@
 	<!-- /.modal-dialog -->
 </div>
 
+<!-- delete schedule modal -->
+<div
+	id="delete-schedule-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+	aria-hidden="true"
+	data-id=""
+	data-date=""
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Xoá lịch khám</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-hidden="true"
+				>
+					×
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>Bạn có chắc chắn muốn xoá lịch khám này ?</h4>
+			</div>
+			<div class="modal-footer">
+				<button
+					id="delete-schedule-btn"
+					type="button"
+					class="btn btn-primary waves-effect waves-light"
+				>
+					Có
+				</button>
+				<button
+					type="button"
+					class="btn btn-danger waves-effect"
+					data-dismiss="modal"
+				>
+					Không
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
 <%- contentFor('css') %>
 <style>
 	.fc-event:hover {
@@ -294,6 +343,27 @@
 				$('#end_time').val(endTime);
 				$('#schedule-date').val(dateOnly);
 			},
+
+			eventClick: function (info) {
+				// get the date of the event
+
+				//split date to get date and time
+				let date = info.event.start;
+
+				//check if date is in the past
+				let today = moment().format('YYYY-MM-DD');
+
+				let selectedDate = moment(date).format('YYYY-MM-DD');
+				if (selectedDate < today) {
+					toastr.error('Không thể xoá ca khám trong quá khứ');
+					return;
+				}
+
+				$('#delete-schedule-modal')
+					.attr('data-id', info.event.id)
+					.attr('data-date', selectedDate)
+					.modal('show');
+			},
 		});
 		calendar.render();
 
@@ -315,7 +385,7 @@
 			newestOnTop: false,
 			progressBar: false,
 			positionClass: 'toast-bottom-left',
-			preventDuplicates: false,
+			preventDuplicates: true,
 			onclick: null,
 			progressBar: true,
 			showDuration: '300',
@@ -351,6 +421,30 @@
 				})
 				.fail(function (err) {
 					toastr['error']('Không thể tạo lịch khám', 'Thất bại');
+				});
+		});
+
+		$('#delete-schedule-btn').click(function () {
+			let id = $('#delete-schedule-modal').attr('data-id');
+			let date = $('#delete-schedule-modal').attr('data-date');
+
+			$.ajax({
+				url: `/admin/api/schedule/delete/${id}`,
+				data: {
+					date,
+				},
+				type: 'DELETE',
+			})
+				.done(function (res) {
+					if (res.message === 'success') {
+						$('#delete-schedule-modal').modal('hide');
+						toastr['success']('Đã xoá lịch khám', 'Thành công');
+
+						calendar.refetchEvents();
+					}
+				})
+				.fail(function (err) {
+					toastr['error']('Không thể xoá lịch khám này', 'Thất bại');
 				});
 		});
 	});

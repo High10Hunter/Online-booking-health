@@ -96,6 +96,13 @@ const adminRoutes = app => {
 		ScheduleController.create
 	);
 
+	router.delete(
+		'/api/schedule/delete/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.destroy
+	);
+
 	app.use('/admin', router);
 };
 

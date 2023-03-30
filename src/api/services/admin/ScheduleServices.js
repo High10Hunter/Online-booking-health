@@ -2,6 +2,16 @@ import { Schedule, Shift } from '../../models';
 import { Op } from 'sequelize';
 import moment from 'moment';
 
+const getScheduleById = async id => {
+	try {
+		const schedule = await Schedule.findByPk(id);
+
+		return schedule;
+	} catch (error) {
+		throw new Error(error.message || 'Cannot get schedule by id');
+	}
+};
+
 const getScheduleOfDoctor = async doctorId => {
 	try {
 		const data = await Schedule.findAll({
@@ -30,7 +40,7 @@ const getScheduleOfDoctor = async doctorId => {
 					subQuery: false,
 				},
 			],
-			attributes: ['date'],
+			attributes: ['id', 'date'],
 		});
 
 		let schedules = [];
@@ -38,6 +48,7 @@ const getScheduleOfDoctor = async doctorId => {
 			//ex: date: 2023-01-01, start_time: 08:00:00
 			// => 2023-01-01T08:00:00
 			schedules.push({
+				id: item.id,
 				start_time: item.date + 'T' + item.shift.start_time,
 				end_time: item.date + 'T' + item.shift.end_time,
 			});
@@ -51,9 +62,12 @@ const getScheduleOfDoctor = async doctorId => {
 
 const createSchedule = async (doctorId, date, start_time) => {
 	try {
-		//check if start time is in the past with HH:mm format
-		if (moment(start_time, 'HH:mm').isBefore(moment())) {
-			throw new Error('Start time is in the past');
+		// check if date is today
+		if (moment(date).isSame(moment().format('YYYY-MM-DD'))) {
+			//check if start time today is in the past with HH:mm format
+			if (moment(start_time, 'HH:mm').isBefore(moment())) {
+				throw new Error('Start time is in the past');
+			}
 		}
 
 		//check if date is in the past with YYYY-MM-DD format
@@ -147,8 +161,27 @@ const createScheduleEachWeek = async () => {
 	}
 };
 
+const deleteSchedule = async (id, date) => {
+	try {
+		//check if date is in the past with YYYY-MM-DD format
+		if (moment(date).isBefore(moment().format('YYYY-MM-DD'))) {
+			throw new Error('Date is in the past');
+		}
+
+		await Schedule.destroy({
+			where: {
+				id: id,
+			},
+		});
+	} catch (error) {
+		throw new Error(error.message || 'Cannot delete schedule');
+	}
+};
+
 export default {
+	getScheduleById,
 	getScheduleOfDoctor,
 	createSchedule,
 	createScheduleEachWeek,
+	deleteSchedule,
 };
