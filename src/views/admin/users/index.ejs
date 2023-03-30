@@ -2,7 +2,6 @@
 	<div class="col-12">
 		<div class="card-box">
 			<h4 class="mt-0 mb-2 header-title">Thông tin người dùng</h4>
-
 			<div class="row">
 				<div class="col-md-2 mb-1">
 					<a href="/admin/users?page=1&limit=10">
@@ -174,136 +173,16 @@
 									data-target="#ModalPassword"
 									data-id="<%= user.id %>"
 								>
-									Reset mật khẩu
+									<i class="fas fa-user-lock"></i>
 								</button>
 								<button
-									class="btn btn-sm btn-warning update-status"
+									class="btn btn-sm btn-danger update-status"
 									data-toggle="modal"
 									data-target="#ModalStatus"
 									data-id="<%= user.id %>"
 								>
-									Trạng thái
+									<i class="dripicons-wrong"></i>
 								</button>
-
-								<div
-									class="modal fade"
-									id="ModalPassword"
-									tabindex="-1"
-									role="dialog"
-									aria-labelledby="myModalLabel"
-								>
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h4
-													class="modal-title"
-													id="myModalLabel"
-												>
-													Thông báo
-												</h4>
-												<button
-													type="button"
-													class="close"
-													data-dismiss="modal"
-													aria-label="Close"
-												>
-													<span aria-hidden="true"
-														>&times;</span
-													>
-												</button>
-											</div>
-											<div class="modal-body">
-												<p>
-													Xác nhận đặt lại mật khẩu
-													của người dùng <%= user.name
-													%>?
-												</p>
-											</div>
-											<div class="modal-footer">
-												<button
-													type="button"
-													class="btn btn-secondary"
-													data-dismiss="modal"
-												>
-													Đóng
-												</button>
-												<button
-													id="confirm-reset-password-btn"
-													type="button"
-													class="btn btn-primary"
-												>
-													Xác nhận
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div
-									class="modal fade"
-									id="ModalStatus"
-									tabindex="-1"
-									role="dialog"
-									aria-labelledby="myModalLabel"
-								>
-									<div class="modal-dialog" role="document">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h4
-													class="modal-title"
-													id="myModalLabel"
-												>
-													Thông báo
-												</h4>
-												<button
-													type="button"
-													class="close"
-													data-dismiss="modal"
-													aria-label="Close"
-												>
-													<span aria-hidden="true"
-														>&times;</span
-													>
-												</button>
-											</div>
-											<div class="modal-body">
-												<p>
-													Trạng thái người dùng <%=
-													user.name %> hiện tại:
-												</p>
-												<% if (user.status == 1) { %>
-												<p class="text-primary">
-													Đang đi làm
-												</p>
-												<% } else if (user.status == 0)
-												{ %>
-												<p class="text-success">
-													Đã nghỉ việc
-												</p>
-												<% } %>
-												<p>
-													Xác nhận thay đổi trạng
-													thái?
-												</p>
-											</div>
-											<div class="modal-footer">
-												<button
-													type="button"
-													class="btn btn-secondary"
-													data-dismiss="modal"
-												>
-													Đóng
-												</button>
-												<button
-													id="confirm-update-status-btn"
-													type="button"
-													class="btn btn-primary"
-												>
-													Xác nhận
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
 							</td>
 						</tr>
 						<% }); %> <% } else { %>
@@ -383,6 +262,93 @@
 		</div>
 	</div>
 </div>
+
+<div
+	class="modal fade"
+	id="ModalPassword"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Xác nhận đặt lại mật khẩu của người dùng này ?</p>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-dismiss="modal"
+				>
+					Đóng
+				</button>
+				<button
+					id="confirm-reset-password-btn"
+					type="button"
+					class="btn btn-primary"
+				>
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	class="modal fade"
+	id="ModalStatus"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Xác nhận thay đổi trạng thái của người dùng này ?</p>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-dismiss="modal"
+				>
+					Đóng
+				</button>
+				<button
+					id="confirm-update-status-btn"
+					type="button"
+					class="btn btn-primary"
+				>
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="row">
 	<figure class="highcharts-figure col-12">
 		<div id="users-chart-container"></div>
@@ -409,7 +375,7 @@
 			newestOnTop: false,
 			progressBar: false,
 			positionClass: 'toast-bottom-left',
-			preventDuplicates: false,
+			preventDuplicates: true,
 			onclick: null,
 			showDuration: '300',
 			hideDuration: '1000',
@@ -421,9 +387,24 @@
 			hideMethod: 'fadeOut',
 		};
 
+		(function insertSuccessNotify() {
+			const params = new URLSearchParams(window.location.search);
+
+			if (params.has('success')) {
+				toastr['success'](
+					'Đã thêm người dùng mới thành công',
+					'Thành công'
+				);
+
+				//remove success param from url but keep other params
+				const url = new URL(window.location.href);
+				url.searchParams.delete('success');
+				window.history.replaceState({}, '', url);
+			}
+		})();
+
 		function resetPassword() {
 			var userId = $('#ModalPassword').data('id');
-			console.log(userId);
 			$.ajax({
 				method: 'PUT',
 				url: '/admin/users/' + userId + '/reset-password',

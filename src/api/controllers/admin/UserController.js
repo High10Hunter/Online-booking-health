@@ -103,7 +103,8 @@ const store = async (req, res) => {
 			} else {
 				await User.createUser(req.body);
 			}
-			return res.redirect('/admin/users?page=1&limit=10');
+
+			return res.redirect('/admin/users?page=1&limit=10&success=1');
 		} catch (error) {
 			return res.status(StatusCodes.BAD_REQUEST).json({
 				message: error.message || 'Cannot create user',
