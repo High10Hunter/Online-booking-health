@@ -99,6 +99,15 @@ const adminRoutes = app => {
 		ScheduleController.create
 	);
 
+	//* manage doctors routes
+	router.get(
+		'/doctors/update',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.getDoctor
+	);
+
+	router.post('/doctors/update', DoctorController.update);
 	app.use('/admin', router);
 };
 

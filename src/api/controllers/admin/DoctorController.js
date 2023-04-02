@@ -1,4 +1,7 @@
+import { StatusCodes } from 'http-status-codes';
 import Doctor from '../../services/admin/DoctorServices';
+import RolesEnum from '../../enums/RolesEnum';
+import DoctorServices from '../../services/admin/DoctorServices';
 
 const index = async (req, res) => {
 	try {
@@ -26,6 +29,41 @@ const index = async (req, res) => {
 	}
 };
 
+const getDoctor = async (req, res) => {
+	try {
+		// const { id } = req.user.id;
+		// const doctor = await DoctorServices.getDoctorById(id);
+
+		return res.render('./admin/doctors/update', {
+			// doctor: doctor,
+			title: 'Cập nhật thông tin bác sĩ'
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot create user',
+			data: [],
+		});
+	}
+}
+
+const update = async (req, res) => {
+	try {
+		const doctor = await Doctor.updateDoctor(req.params.id, req.body);
+		//console.log('doctor found:', doctor);
+		return res.status(StatusCodes.OK).json({
+			message: 'Update doctor successfully',
+			data: doctor,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot update doctor',
+			data: [],
+		});
+	}
+};
+
 export default {
 	index,
+	getDoctor,
+	update,
 };
