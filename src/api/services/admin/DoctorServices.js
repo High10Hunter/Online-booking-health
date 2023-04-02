@@ -166,9 +166,33 @@ const createDoctor = async data => {
 	}
 };
 
+const updateDoctor = async (id, data) => {
+	try {
+		const doctor = await Doctor.findByPk(id);
+//
+
+		doctor.set({
+			...data,
+		});
+
+		await doctor.save();
+		//console.log('doctor updated:', doctor);
+
+		return doctor;
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot update doctor');
+		} else {
+			throw new Error(errors[0].message || 'Cannot update doctor');
+		}
+	}
+};
+
 export default {
 	getAllDoctor,
 	getDoctorById,
 	getAllSpeciality,
 	createDoctor,
+	updateDoctor,
 };

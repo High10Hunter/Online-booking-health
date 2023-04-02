@@ -103,6 +103,22 @@ const adminRoutes = app => {
 		ScheduleController.destroy
 	);
 
+	router.delete(
+		'/api/schedule/delete/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.destroy
+	);
+
+	//* manage doctors routes
+	router.get(
+		'/doctors/update',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.getDoctor
+	);
+
+	router.post('/doctors/update', DoctorController.update);
 	app.use('/admin', router);
 };
 

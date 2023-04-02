@@ -1,0 +1,305 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card-box">
+			<h1>Thông tin bác sĩ</h1>
+			<div class="row">
+				<div class="col-12">
+					<form
+						id="update-doctor-form"
+						class="form-horizontal"
+						action="/admin/doctors/edit"
+						method="POST"
+						//enctype="multipart/form-data"
+					>
+						<div class="form-group left-side">
+							<div class="form-group picture-form">
+								<div class="user-box text-center">
+									<img src="/admin/assets/images/users/user-1.jpg" 
+									alt="user-img" 
+									title="Mat Helme" 
+									class="rounded-circle img-thumbnail avatar-lg"
+									>
+									<div class="dropdown">
+										<a 
+										href="#" 
+										class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" 
+										data-toggle="dropdown">	
+										</a>
+									</div>
+									<p class="text-dark">Nguyễn Nhật Ánh</p>
+								</div>
+							</div>
+							<div class="form-group row info-form">
+								<div class="col-sm-12 info">
+										<label for="name">Số điện thoại:</label>
+										<p class="text-dark">0123456789</p>
+								</div>
+								
+								<div class="col-sm-12 info">
+									<label for="gender">Email liên hệ:</label>
+									<p class="text-dark">nguyennhatanh@gmail.com</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group right-side">
+							<div class="form-group row">
+								<div class="col-12 doctor-info">
+									<label
+										>Chuyên khoa:</label
+									>
+									<span
+									class="error"
+									id="speciality-error"
+									></span>
+
+									<select
+										name="speciality"
+										id="speciality"
+										class="col-sm-12"
+									>
+										<option value="">
+											-- Chọn chuyên khoa --
+										</option>
+                                        <option value="1">Cơ xương khớp</option>
+                                        <option value="2">Thần kinh</option>
+                                        <option value="3">Tim mạch</option>
+									</select>
+								</div>
+								<div class="col-12 doctor-info">
+									<label>Chức danh:</label>
+									<span class="error" id="rank-error"></span>
+									<select class="col-sm-12" name="rank" id="rank">
+										<option value="">
+											-- Chọn chức danh --
+										</option>
+										<option value="1">PGS-TS</option>
+										<option value="2">Tiến sĩ</option>
+										<option value="3">Bác sĩ CKII</option>
+										<option value="4">Bác sĩ CKI</option>
+									</select>
+								</div>
+								<div class="col-12 doctor-info">
+									<label>Giá khám:</label>
+									<span class="error" id="price-error"></span>
+									<div class="row col-12">
+										<input
+										type="number"
+										id="price"
+										class="col-sm-5"
+										name="price"
+										placeholder="Giá khám"
+										/>
+										<h5 class="col-sm-1">VNĐ</h5>
+									</div>
+
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-12 doctor-info">
+									<label>Mô tả:</label>
+									<span class="error" id="description-error"></span>
+									<span
+									class="error"
+									id="description-error"
+									></span>
+									<textarea
+										name="description"
+										id="description"
+										class="col-sm-12"
+										rows="5"
+										placeholder="Mô tả"
+									></textarea>
+								</div>
+							</div>
+
+							<div
+								class="form-group row"
+								style="
+									display: flex;
+									justify-content: start;
+									align-items: center;
+								"
+							>
+								<button type="reset" class="btn btn-sm btn-danger">Reset</button>
+								<button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- contentFor('css') %>
+<style>
+    .card-box{
+		width:80vw;
+		height: 80vh;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		position: relative;
+		top: 5px;
+		overflow:auto;
+	}
+
+	.form-group{
+		display:inline-block;
+	}
+
+	#update-doctor-form{
+		background: #fff;
+		margin: 0 auto;
+		position: relative;
+		box-shadow: 2px 5px 20px
+		rgba(119, 119, 119, .5);
+	}
+
+	.left-side{
+		float:left;
+		position: absolute;
+		width: 20%;
+		height: 100%;
+		background: #71b6f9;
+		box-shadow: 3px 3px 10px
+		rgb(119, 119, 119, .5);
+		border-right: 1px solid #ccc;
+		padding-top: 35px;
+	}
+
+	.right-side{
+		width: 60%;
+		margin-left: 27%;
+		padding-top: 5px;
+	}
+
+	h1 {
+		font-family: "Montserrat", sans-serif;
+		margin-top: 40px;
+		margin-bottom: 35px;
+		text-align: left;
+	}
+
+	label {
+		font-family: "Roboto", sans-serif;
+		text-transform: uppercase;
+		/* display: inline-block; */
+		margin-bottom: 10px;
+		font-weight: bold;
+		font-size: 16px;
+		margin-left: 2px;
+	}
+
+	.picture-form,
+	.info {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		/* border-top: 1px solid #ccc; */
+	}
+
+	.doctor-info{
+		margin-top: 15px;
+	}
+
+	input[type='text'],
+	textarea,
+	select {
+		padding: 7px 5px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-bottom: 10px;
+		background-color: #eee;
+	}
+    input[type='number']{
+		border: 0;
+		border-bottom: 1px solid #969696;
+		/* width: 95%; */
+		margin-bottom: 10px;
+		font-size: 1em;
+		padding: 7px 5px;
+		outline: none;
+	}
+
+
+	span.error {
+		color: red;
+		display: inline-block;
+		font-size: 12px;
+	}
+
+	button[type='submit'],
+	button[type='reset'] {
+		text-transform: uppercase;
+		padding: 7px 15px;
+		margin-left: 10px;
+		border-radius: 5px;
+		cursor: pointer;
+		box-shadow: 0px 2px 4px 0px
+		rgb(0,0,0,.2);
+		margin-top: 15px;
+	}
+</style>
+
+<%- contentFor('js') %>
+<script>
+	const form = document.getElementById('edit-doctor-form');
+
+	function previewImage(event) {
+		const preview = document.getElementById('preview');
+		preview.style.display = 'block';
+		preview.src = URL.createObjectURL(event.target.files[0]);
+	}
+
+	form.addEventListener('submit', e => {
+		e.preventDefault();
+
+		let valid = true;
+
+		if (document.getElementById('speciality').value === '') {
+			valid = false;
+			document.getElementById('speciality-error').innerHTML =
+				'Vui lòng chọn chuyên khoa';
+		} else {
+			document.getElementById('speciality-error').innerHTML = '';
+		}
+
+		if (document.getElementById('rank').value === '') {
+			valid = false;
+			document.getElementById('rank-error').innerHTML =
+				'Vui lòng chức danh';
+		} else {
+			document.getElementById('rank-error').innerHTML = '';
+		}
+
+		if (document.getElementById('price').value === '') {
+			valid = false;
+			document.getElementById('price-error').innerHTML =
+				'Vui lòng nhập giá khám';
+		} else {
+			document.getElementById('price-error').innerHTML = '';
+		}
+
+		if (document.getElementById('description').value === '') {
+			valid = false;
+			document.getElementById('description-error').innerHTML =
+				'Vui lòng nhập mô tả';
+		} else {
+			document.getElementById('description-error').innerHTML = '';
+		}
+
+		if (valid) {
+			form.submit();
+		}
+	});
+	form.addEventListener('reset', e => {
+		e.preventDefault;
+		document
+			.querySelectorAll('.error')
+			.forEach(item => (item.innerHTML = ''));
+	});
+</script>
+
