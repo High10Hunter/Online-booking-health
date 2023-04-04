@@ -1,1 +1,113 @@
-<h1>Client index</h1>
+<div class="banner-wrap">
+	<div
+		style="
+			background-image: url('./client/assets/images/svg/banner-bg.svg');
+		"
+		class="banner-bg"
+	>
+		<div class="banner-intro-image-wrap">
+			<div class="banner-bg__intro">
+				<div class="banner-bg__descri">
+					<h1 class="descri__title">
+						Đặt lịch hẹn với bác sĩ dễ dàng
+					</h1>
+					<div class="descri__text">
+						<p>
+							Đơn giản hóa việc tìm kiếm bác sĩ và đặt lịch khám
+						</p>
+					</div>
+
+					<div
+						class="descri__btn-booking"
+						onclick="openNewBookingPage()"
+					>
+						<!-- redirect to doctor list page -->
+						<a href="/doctor-list">
+							<button class="btn-booking btn">
+								Đặt lịch ngay
+							</button>
+						</a>
+					</div>
+				</div>
+
+				<div class="banner-bg-btn">
+					<button></button>
+				</div>
+			</div>
+
+			<div class="banner-bg-doctor-wrap">
+				<img
+					class="banner-bg-doctor-img"
+					src="./client/assets/images/banner_doctor.png"
+					alt="QTN clinic"
+				/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="content-segment-wrap">
+	<div class="content-segment-margin">
+		<div class="content-segment">
+			<div class="content-segment-header">
+				<h2 class="content-segment-title">Bác sĩ từ xa qua Video</h2>
+			</div>
+
+			<div class="content-segment-body">
+				<button class="slick-prev"></button>
+
+				<div class="slick-list">
+					<div class="slick-track">
+						<a href="" class="slick-side">
+							<div class="rectangle-img img-size-16x9">
+								<img
+									src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
+									alt=""
+								/>
+							</div>
+							<h3>Tư vấn, trị liệu Tâm lý từ xa</h3>
+						</a>
+
+						<a href="" class="slick-side">
+							<div class="rectangle-img img-size-16x9">
+								<img
+									src="./client/assets/images/chuyenkhoa-tamthan.jpg"
+									alt=""
+								/>
+							</div>
+							<h3>Sức khỏe tâm thần từ xa</h3>
+						</a>
+
+						<a href="" class="slick-side">
+							<div class="rectangle-img img-size-16x9">
+								<img
+									src="./client/assets/images/chuyenkhoa-dalieu.jpg"
+									alt=""
+								/>
+							</div>
+							<h3>Bác sĩ Da liễu từ xa</h3>
+						</a>
+
+						<a href="" class="slick-side">
+							<div class="rectangle-img img-size-16x9">
+								<img
+									src="./client/assets/images/chuyenkhoa-xuongkhop.jpg"
+									alt=""
+								/>
+							</div>
+							<h3>Bác sĩ Cơ-Xương-Khớp từ xa</h3>
+						</a>
+					</div>
+				</div>
+
+				<button class="slick-next"></button>
+			</div>
+
+			<div class="content-segment-extend">
+				<a class="content-segment-extend-btn" href="">Xem thêm</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- contentFor('css') %> <%- include('style') %>
