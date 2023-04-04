@@ -1,11 +1,10 @@
-<h1>Booking</h1>
 <div class="booking-page">
     <div class="booking-page-heading">
         <div class="heading-wrapper">
             <div class="heading-intro">
                 <div class="heading-intro-img-wrapper">
                     <a href="">
-                        <img class="heading-intro-img" src="/client/assets/images/logo.png"  alt="">
+                        <img class="heading-intro-img" src="/client/assets/images/155419nguyen-thi-kim-loan.jpg"  alt="">
                     </a>
                 </div>
 
@@ -14,7 +13,7 @@
                         ĐẶT LỊCH KHÁM
                     </h1>
                     <h2>
-                        <a href="">Dịch vụ xét nghiệm tại Phòng khám QTN</a>
+                        <a href=""> Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan </a>
                     </h2>
 
                     <div class="heading-intro-time">
@@ -35,7 +34,7 @@
                         <span>Giá khám<span>
                         <div>150.000</div>
                     </div>
-                    <div class="booking-page-price" onclick="choose(event)">
+                    <!-- <div class="booking-page-price" onclick="choose(event)">
                         <input type="radio" name="price" value="539" id="">
                         <span>Giá khám<span>
                         <div>200.000</div>
@@ -44,10 +43,10 @@
                         <input type="radio" name="price" value="539" id="">
                         <span>Giá khám<span>
                         <div>250.000</div>
-                    </div>
+                    </div> -->
                 </div>
                
-                <div class="input-group display_flex">
+                <!-- <div class="input-group display_flex">
                     <label>
                         <input class="" type="radio" name="book_for" value="0" dl-luu="book_for" dl-name="datcho" dl-value="minh"> Đặt cho mình
                     </label>
@@ -55,7 +54,7 @@
                     <label>
                         <input class="" type="radio" name="book_for" value="1" dl-luu="book_for" dl-name="datcho" dl-value="nguoi"> Đặt cho người thân
                     </label>
-                </div>
+                </div> -->
 
                 <div class="input-group">
                     <div class="input-wrapper">
@@ -97,14 +96,14 @@
                     <div class="input-wrapper">
                         <span class="dauvao-bt bt-g bt-g-nguoi"></span>
                         
-                        <input class="input-line" id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="text" placeholder="Ngày/tháng/năm sinh (bắt buộc)" autocomplete="name">
+                        <input class="input-line" id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="text" placeholder="Địa chỉ email" autocomplete="name">
                     </div>
 
                     
                     <div class="dauvao-thongbao"></div>
                 </div>
 
-                <div class="input-group">
+                <!-- <div class="input-group">
                     <div class="input-select-wrapper">
                         <span class="dauvao-bt bt-g bt-g-diadiem">
                         </span>
@@ -241,7 +240,7 @@
                             </option>
                         </select>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="input-group">
                     <div class="input-wrapper">
@@ -254,22 +253,53 @@
                     <div class="dauvao-thongbao"></div>
                 </div>
 
+
+
                 <div class="input-group">
                     <div class="input-wrapper">
                         <span class="dauvao-bt bt-g bt-g-cong-tron"></span>
                         
-                        <textarea name="text-area-reason" class="dauvao-nhap" placeholder="Lý do khám"></textarea>
+                        <textarea name="" class="dauvao-nhap text-area-reason" placeholder="Lý do khám"></textarea>
                     </div>
                         
                     <div class="dauvao-thongbao">
                     </div>
                 </div>
 
+                <div class="input-ground">
+                    <div class="input-wrapper">
+                        <p class="input-payingMethod">Hình thức thanh toán</p>
+
+                        <div class="input-payingMedthod-choice">
+                            <input class="dauvao-nhap" type="radio" name="pay_type" value="1" checked="checked">
+                            <label for="">
+                                Thanh toán sau tại cơ sở y tế
+                            </label>
+                        </div>
+                    </div>
+                </div>
                
+                <div class="booking-paying-note">
+                    <p>
+                        <b>LƯU Ý</b>
+                    </p>
+                    <p>
+                        Thông tin anh/chị cung cấp sẽ được sử dụng làm hồ sơ khám bệnh, khi điền thông tin anh/chị vui lòng:
+                    </p>
+                    <ul>
+                        <li>
+                            Ghi rõ họ và tên, viết hoa những chữ cái đầu tiên, ví dụ: <b>Trần Văn Phú </b>
+                        </li>
+                        <li>Điền đầy đủ, đúng và vui lòng kiểm tra lại thông tin trước khi ấn "Xác nhận"</li>
+                    </ul>
+                </div>
+
                 <div class="input-group">
                     <button class="submit-btn">Xác nhận đặt khám</button>
                     <p class="input-policy">Bằng việc xác nhận đặt khám, bạn đã hoàn toàn đồng ý với <a href="/page/dieu-khoan-su-dung-p7" target="_blank">Điều khoản sử dụng</a> dịch vụ của chúng tôi.</p>
                 </div>    
+
+
             </form>
         </div>
     </div>
@@ -294,3 +324,4 @@
         }
     };
 </script>
+
