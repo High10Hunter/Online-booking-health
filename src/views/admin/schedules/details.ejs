@@ -1,0 +1,451 @@
+<div>
+	<h3><%= doctor_rank %> <%= doctor_name %></h3>
+</div>
+<div id="calendar"></div>
+
+<!-- create schedule modal -->
+<div
+	id="create-schedule-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Thêm lịch khám</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-hidden="true"
+				>
+					×
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>Bạn có chắc chắn muốn thêm lịch khám này ?</h4>
+				<form id="new-schedule-form" method="POST" class="form-group">
+					<div class="form-group">
+						<label for="schedule-date">Ngày</label>
+						<input
+							type="date"
+							class="form-control"
+							id="schedule-date"
+							name="date"
+							disabled
+							style="background-color: #e3e3e3"
+						/>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="start_time">Giờ bắt đầu</label>
+							<input
+								type="text"
+								class="form-control"
+								id="start_time"
+								name="start_time"
+								disabled
+								style="background-color: #e3e3e3"
+							/>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="end_time">Giờ kết thúc</label>
+							<input
+								type="text"
+								class="form-control"
+								id="end_time"
+								name="end_time"
+								disabled
+								style="background-color: #e3e3e3"
+							/>
+						</div>
+					</div>
+					<div class="form-row">
+						<label for="doctor">Bác sĩ</label>
+						<input
+							type="text"
+							class="form-control"
+							id="doctor"
+							name="doctor"
+							value="<%= doctor_rank %> <%= doctor_name %>"
+							disabled
+							style="background-color: #e3e3e3"
+						/>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button
+					id="create-schedule-btn"
+					type="button"
+					class="btn btn-primary waves-effect waves-light"
+				>
+					Có
+				</button>
+				<button
+					type="button"
+					class="btn btn-danger waves-effect"
+					data-dismiss="modal"
+				>
+					Không
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+<!-- delete schedule modal -->
+<div
+	id="delete-schedule-modal"
+	class="modal fade"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+	aria-hidden="true"
+	data-id=""
+	data-date=""
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Xoá lịch khám</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-hidden="true"
+				>
+					×
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4>Bạn có chắc chắn muốn xoá lịch khám này ?</h4>
+			</div>
+			<div class="modal-footer">
+				<button
+					id="delete-schedule-btn"
+					type="button"
+					class="btn btn-primary waves-effect waves-light"
+				>
+					Có
+				</button>
+				<button
+					type="button"
+					class="btn btn-danger waves-effect"
+					data-dismiss="modal"
+				>
+					Không
+				</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+<%- contentFor('css') %>
+<style>
+	.fc-event:hover {
+		cursor: pointer;
+	}
+</style>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css"
+/>
+<link
+	href="/admin/assets/libs/toastr/toastr.min.css"
+	rel="stylesheet"
+	type="text/css"
+/>
+
+<%- contentFor('js') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+<!-- fullcalendar libs -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/locales-all.js"></script>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+
+<script src="/admin/assets/libs/toastr/toastr.min.js"></script>
+<script src="/admin/assets/js/pages/toastr.init.js"></script>
+<script>
+	$(document).ready(function () {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			locale: 'vi',
+			timeZone: 'Asia/Ho_Chi_Minh',
+			firstDay: 1, //start from monday
+			buttonText: {
+				today: 'Hôm nay',
+				week: 'Tuần',
+				day: 'Ngày',
+			},
+
+			height: 600,
+			expandRows: true,
+			selectable: true,
+			initialView: 'timeGridWeek',
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'timeGridWeek,timeGridDay',
+			},
+			eventTimeFormat: {
+				// like '14:30'
+				hour: '2-digit',
+				minute: '2-digit',
+				meridiem: false,
+			},
+			hiddenDays: [0],
+			nowIndicator: true,
+			handleWindowResize: true,
+			stickyHeaderDates: true,
+
+			businessHours: [
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '7:00',
+					endTime: '11:30',
+				},
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '13:00',
+					endTime: '17:30',
+				},
+			],
+
+			views: {
+				timeGrid: {
+					dayMaxEventRows: 3,
+					eventMaxStack: 2,
+					eventMinHeight: 50,
+				},
+			},
+
+			events: '/admin/api/getScheduleOfDoctor/<%= doctor_id %>',
+
+			selectAllow: function (selectInfo) {
+				var today = moment();
+				var selectedDate = moment(selectInfo.start);
+				return selectedDate >= today;
+			},
+
+			eventDataTransform: function (event) {
+				event.doctor = '<%= doctor_rank %> <%= doctor_name %>';
+				return event;
+			},
+
+			eventDidMount: function (info) {
+				$(info.el).popover({
+					title: 'Chi tiết ca khám',
+					placement: 'top',
+					trigger: 'hover',
+					html: true,
+					content: `<ul class="form-group">
+		                           <li>
+		                               Bắt đầu: ${info.event.extendedProps.startTime}
+		                           </li>
+								<li>
+									Kết thúc: ${info.event.extendedProps.endTime}
+								</li>
+								<li>
+									Người khám: ${info.event.extendedProps.doctor}
+								</li>
+		                       </ul>
+		                       `,
+					container: 'body',
+				});
+			},
+
+			dateClick: function (info) {
+				//split date to get date and time
+				let date = info.dateStr;
+
+				let dateArr = date.split('T');
+				let startTime = dateArr[1];
+				//plus 30 minutes to get end time
+				let endTime = moment(startTime, 'HH:mm:ss')
+					.add(30, 'minutes')
+					.format('HH:mm:ss');
+
+				let dateOnly = dateArr[0];
+
+				//check if date is in the past
+				let today = moment().format('YYYY-MM-DD');
+
+				let selectedDate = moment(dateOnly).format('YYYY-MM-DD');
+				if (selectedDate < today) {
+					toastr.error(
+						'Không thể tạo ca khám cho ngày trong quá khứ'
+					);
+					return;
+				}
+
+				//check if the date is in business hours
+				let businessHoursMorning =
+					calendar.getOption('businessHours')[0];
+				let businessHoursStartInMorning =
+					businessHoursMorning.startTime;
+				let businessHoursEndInMorning = businessHoursMorning.endTime;
+
+				businessHoursStartInMorning = moment(
+					businessHoursStartInMorning,
+					'HH:mm'
+				).format('HH:mm:ss');
+				businessHoursEndInMorning = moment(
+					businessHoursEndInMorning,
+					'HH:mm'
+				).format('HH:mm:ss');
+
+				let businessHoursAfternoon =
+					calendar.getOption('businessHours')[1];
+				let businessHoursStartInAfternoon =
+					businessHoursAfternoon.startTime;
+				let businessHoursEndInAfternoon =
+					businessHoursAfternoon.endTime;
+
+				businessHoursStartInAfternoon = moment(
+					businessHoursStartInAfternoon,
+					'HH:mm'
+				).format('HH:mm:ss');
+
+				businessHoursEndInAfternoon = moment(
+					businessHoursEndInAfternoon,
+					'HH:mm'
+				).format('HH:mm:ss');
+
+				if (
+					(startTime < businessHoursStartInMorning ||
+						endTime > businessHoursEndInMorning) &&
+					(startTime < businessHoursStartInAfternoon ||
+						endTime > businessHoursEndInAfternoon)
+				) {
+					toastr.error('Không thể tạo ca khám ngoài giờ làm việc');
+					return;
+				}
+
+				$('#create-schedule-modal').modal('show');
+
+				//set date and time to input
+				$('#start_time').val(startTime);
+				$('#end_time').val(endTime);
+				$('#schedule-date').val(dateOnly);
+			},
+
+			eventClick: function (info) {
+				// get the date of the event
+
+				//split date to get date and time
+				let date = info.event.start;
+
+				//check if date is in the past
+				let today = moment().format('YYYY-MM-DD');
+
+				let selectedDate = moment(date).format('YYYY-MM-DD');
+				if (selectedDate < today) {
+					toastr.error('Không thể xoá ca khám trong quá khứ');
+					return;
+				}
+
+				$('#delete-schedule-modal')
+					.attr('data-id', info.event.id)
+					.attr('data-date', selectedDate)
+					.modal('show');
+			},
+		});
+		calendar.render();
+
+		$('#start_time').timepicker({
+			timeFormat: 'HH:mm:ss',
+			showMeridian: false,
+			minuteStep: 30,
+		});
+
+		$('#end_time').timepicker({
+			timeFormat: 'HH:mm:ss',
+			showMeridian: false,
+			minuteStep: 30,
+		});
+
+		toastr.options = {
+			closeButton: true,
+			debug: false,
+			newestOnTop: false,
+			progressBar: false,
+			positionClass: 'toast-bottom-left',
+			preventDuplicates: true,
+			onclick: null,
+			progressBar: true,
+			showDuration: '300',
+			hideDuration: '1000',
+			timeOut: '2000',
+			extendedTimeOut: '1000',
+			showEasing: 'swing',
+			hideEasing: 'linear',
+			showMethod: 'fadeIn',
+			hideMethod: 'fadeOut',
+		};
+
+		$('#create-schedule-btn').click(function () {
+			let start_time = $('#start_time').val();
+			let date = $('#schedule-date').val();
+			let doctor_id = '<%= doctor_id %>';
+
+			$.ajax({
+				url: '/admin/api/schedule/create',
+				type: 'POST',
+				data: {
+					start_time,
+					date,
+					doctor_id,
+				},
+			})
+				.done(function (data) {
+					if (data.message === 'success') {
+						$('#create-schedule-modal').modal('hide');
+						toastr['success']('Đã tạo lịch khám', 'Thành công');
+						calendar.refetchEvents();
+					}
+				})
+				.fail(function (err) {
+					toastr['error']('Không thể tạo lịch khám', 'Thất bại');
+				});
+		});
+
+		$('#delete-schedule-btn').click(function () {
+			let id = $('#delete-schedule-modal').attr('data-id');
+			let date = $('#delete-schedule-modal').attr('data-date');
+
+			$.ajax({
+				url: `/admin/api/schedule/delete/${id}`,
+				data: {
+					date,
+				},
+				type: 'DELETE',
+			})
+				.done(function (res) {
+					if (res.message === 'success') {
+						$('#delete-schedule-modal').modal('hide');
+						toastr['success']('Đã xoá lịch khám', 'Thành công');
+
+						calendar.refetchEvents();
+					}
+				})
+				.fail(function (err) {
+					toastr['error']('Không thể xoá lịch khám này', 'Thất bại');
+				});
+		});
+	});
+</script>

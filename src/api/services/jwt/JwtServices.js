@@ -65,6 +65,8 @@ const verifyAccessToken = (req, res, next) => {
 				}
 			}
 			req.payload = payload;
+			//populate payload of authenticated user
+			res.locals.authUser = payload;
 			next();
 		}
 	);

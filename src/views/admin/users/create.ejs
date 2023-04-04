@@ -1,0 +1,401 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card-box">
+			<h1>Thêm người dùng</h1>
+			<div class="row">
+				<div class="col-12">
+					<form
+						id="add-user-form"
+						class="form-horizontal"
+						action="/admin/users/create"
+						method="POST"
+						enctype="multipart/form-data"
+					>
+						<div class="form-group row">
+							<div class="col-6">
+								<label for="name">Họ tên:</label>
+								<span class="error" id="name-error"></span>
+								<input
+									type="text"
+									id="name"
+									name="name"
+									placeholder="Họ và tên"
+								/>
+							</div>
+							<div class="col-6">
+								<label for="gender">Giới tính:</label>
+								<span class="error" id="gender-error"></span>
+								<br />
+								<input
+									type="radio"
+									id="male"
+									name="gender"
+									value="male"
+								/>
+								<label class="radioText" for="male">Nam</label>
+								<input
+									type="radio"
+									id="female"
+									name="gender"
+									value="female"
+								/>
+								<label class="radioText" for="female">Nữ</label>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-4">
+								<label for="phone">Số điện thoại:</label>
+								<span class="error" id="phone-error"></span>
+								<input
+									type="number"
+									id="phone"
+									name="phone_number"
+									placeholder="Số điện thoại"
+								/>
+							</div>
+							<div class="col-4">
+								<label for="email">Email:</label>
+								<span class="error" id="email-error"></span>
+								<input
+									type="text"
+									id="email"
+									name="email"
+									placeholder="email@gmail.com"
+								/>
+							</div>
+							<div class="col-4">
+								<label for="avatar">Ảnh:</label>
+								<input
+									type="file"
+									name="avatar"
+									onchange="previewImage(event)"
+								/>
+								<img
+									id="preview"
+									src="#"
+									alt="Image Preview"
+									style="display: none"
+									width="300px"
+									height="300px"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<div class="col-6">
+								<label for="dob">Ngày sinh:</label>
+								<span class="error" id="dob-error"></span>
+								<input type="date" id="dob" name="birthday" />
+							</div>
+							<div class="col-6">
+								<label for="role">Vai trò:</label>
+								<span class="error" id="role-error"></span>
+								<select id="role" name="role">
+									<option value="">-- Chọn Vai trò --</option>
+									<option value="1">Quản trị viên</option>
+									<option value="2">Y tá</option>
+									<option value="3">Bác sĩ</option>
+								</select>
+							</div>
+						</div>
+
+						<div id="additional-fields" style="display: none">
+							<div class="form-group row">
+								<div class="col-4">
+									<label for="speciality_id"
+										>Chuyên khoa:</label
+									>
+									<span
+										class="error"
+										id="speciality-id-error"
+									></span>
+									<select
+										name="speciality_id"
+										id="speciality_id"
+									>
+										<option value="">
+											-- Chọn chuyên khoa --
+										</option>
+										<% if (specialities.length != 0) { %> <%
+										specialities.forEach((speciality) => {
+										%>
+										<option value="<%= speciality.id %>">
+											<%= speciality.name %>
+										</option>
+										<% }) %> <% } %>
+									</select>
+								</div>
+								<div class="col-4">
+									<label for="rank">Chức danh:</label>
+									<span class="error" id="rank-error"></span>
+									<select name="rank" id="rank">
+										<option value="">
+											-- Chọn chức danh --
+										</option>
+										<option value="1">PGS-TS</option>
+										<option value="2">Tiến sĩ</option>
+										<option value="3">Bác sĩ CKII</option>
+										<option value="4">Bác sĩ CKI</option>
+									</select>
+								</div>
+								<div class="col-4">
+									<label for="price">Giá khám:</label>
+									<span class="error" id="price-error"></span>
+									<input
+										type="number"
+										id="price"
+										name="price"
+										placeholder="Giá khám"
+									/>
+									VNĐ
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-12">
+									<label for="description">Mô tả:</label>
+									<span
+										class="error"
+										id="description-error"
+									></span>
+									<textarea
+										name="description"
+										id="description"
+										rows="4"
+										style="width: 100%"
+										placeholder="Mô tả"
+									></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div
+							class="form-group row"
+							style="
+								display: flex;
+								justify-content: center;
+								align-items: center;
+							"
+						>
+							<button type="reset">Reset</button>
+							<button type="submit">Tạo người dùng</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- contentFor('css') %>
+<style>
+	h1 {
+		font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
+		text-align: center;
+		margin-bottom: 30px;
+	}
+
+	label {
+		display: inline-block;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+
+	input[type='text'],
+	input[type='email'],
+	input[type='date'],
+	select {
+		width: calc(100% - 1em);
+		padding: 5px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-bottom: 10px;
+	}
+
+	input[type='radio'] {
+		width: 20px;
+		height: 20px;
+		margin-right: 5px;
+		position: relative;
+		bottom: 10px;
+		left: 1em;
+	}
+
+	.radioText {
+		margin-right: 40px;
+		font-weight: normal;
+		font-size: 16px;
+		position: relative;
+		bottom: 14px;
+		left: 24px;
+	}
+
+	span.error {
+		color: red;
+		display: block;
+		font-size: 12px;
+	}
+
+	button[type='submit'],
+	button[type='reset'] {
+		display: block;
+		padding: 10px;
+		margin-left: 10px;
+		background-color: #4caf50;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		width: 10em;
+	}
+	button[type='reset'] {
+		background-color: #f44336;
+		color: white;
+		margin-right: 10px;
+		width: 4em;
+	}
+
+	#additional-fields {
+		margin-top: 30px;
+	}
+</style>
+
+<%- contentFor('js') %>
+<script>
+	const form = document.getElementById('add-user-form');
+	const name = document.getElementById('name');
+	const gender = document.getElementsByName('gender');
+	const dob = document.getElementById('dob');
+	const phone = document.getElementById('phone');
+	const email = document.getElementById('email');
+	const role = document.getElementById('role');
+	const status = document.getElementsByName('status');
+
+	const roleSelect = document.getElementById('role');
+	const additionalFields = document.getElementById('additional-fields');
+
+	function previewImage(event) {
+		const preview = document.getElementById('preview');
+		preview.style.display = 'block';
+		preview.src = URL.createObjectURL(event.target.files[0]);
+	}
+
+	document.getElementById('role').addEventListener('change', function () {
+		if (this.value === '3') {
+			additionalFields.style.display = 'block';
+			additionalFields.style.borderTop = '1px solid #ccc';
+			additionalFields.style.paddingTop = '20px';
+		} else {
+			additionalFields.style.display = 'none';
+			additionalFields.style.borderTop = 'none';
+			additionalFields.style.paddingTop = '0';
+		}
+	});
+
+	form.addEventListener('submit', e => {
+		e.preventDefault();
+
+		let valid = true;
+
+		if (name.value === '') {
+			valid = false;
+			document.getElementById('name-error').innerHTML =
+				'Vui lòng nhập tên người dùng';
+		} else {
+			document.getElementById('name-error').innerHTML = '';
+		}
+
+		let selectedGender = '';
+		for (let i = 0; i < gender.length; i++) {
+			if (gender[i].checked) {
+				selectedGender = gender[i].value;
+			}
+		}
+		if (selectedGender === '') {
+			valid = false;
+			document.getElementById('gender-error').innerHTML =
+				'Vui lòng chọn giới tính';
+		} else {
+			document.getElementById('gender-error').innerHTML = '';
+		}
+
+		if (dob.value === '') {
+			valid = false;
+			document.getElementById('dob-error').innerHTML =
+				'Vui lòng nhập ngày sinh';
+		} else {
+			document.getElementById('dob-error').innerHTML = '';
+		}
+
+		if (phone.value === '' || phone.value.length < 10) {
+			valid = false;
+			document.getElementById('phone-error').innerHTML =
+				'Số điện thoại không hợp lệ';
+		} else {
+			document.getElementById('phone-error').innerHTML = '';
+		}
+
+		if (email.value === '') {
+			valid = false;
+			document.getElementById('email-error').innerHTML =
+				'Vui lòng nhập email';
+		} else if (!email.value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
+			valid = false;
+			document.getElementById('email-error').innerHTML =
+				'Email không hợp lệ';
+		} else {
+			document.getElementById('email-error').innerHTML = '';
+		}
+
+		if (role.value === '') {
+			valid = false;
+			document.getElementById('role-error').innerHTML =
+				'Vui lòng chọn vai trò';
+		} else {
+			document.getElementById('role-error').innerHTML = '';
+		}
+
+		if (role.value === '3') {
+			if (document.getElementById('speciality_id').value === '') {
+				valid = false;
+				document.getElementById('speciality-id-error').innerHTML =
+					'Vui lòng chọn chuyên khoa';
+			} else {
+				document.getElementById('speciality-id-error').innerHTML = '';
+			}
+
+			if (document.getElementById('rank').value === '') {
+				valid = false;
+				document.getElementById('rank-error').innerHTML =
+					'Vui lòng chức danh';
+			} else {
+				document.getElementById('rank-error').innerHTML = '';
+			}
+
+			if (document.getElementById('price').value === '') {
+				valid = false;
+				document.getElementById('price-error').innerHTML =
+					'Vui lòng nhập giá khám';
+			} else {
+				document.getElementById('price-error').innerHTML = '';
+			}
+
+			if (document.getElementById('description').value === '') {
+				valid = false;
+				document.getElementById('description-error').innerHTML =
+					'Vui lòng nhập mô tả';
+			} else {
+				document.getElementById('description-error').innerHTML = '';
+			}
+		}
+
+		if (valid) {
+			form.submit();
+		}
+	});
+	form.addEventListener('reset', e => {
+		e.preventDefault;
+		document
+			.querySelectorAll('.error')
+			.forEach(item => (item.innerHTML = ''));
+	});
+</script>

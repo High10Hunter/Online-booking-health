@@ -2,7 +2,6 @@
 	<div class="col-12">
 		<div class="card-box">
 			<h4 class="mt-0 mb-2 header-title">Thông tin người dùng</h4>
-
 			<div class="row">
 				<div class="col-md-2 mb-1">
 					<a href="/admin/users?page=1&limit=10">
@@ -106,20 +105,29 @@
 							</div>
 						</div>
 					</div>
+					<div class="mb-2 ml-2">
+						<a href="/admin/users/create" class="btn btn-primary">
+							<i class="fe-plus-circle"></i> Thêm mới
+						</a>
+					</div>
 				</div>
 			</form>
 
 			<div class="table-responsive">
-				<table class="table table-bordered table-hover mb-0">
+				<table
+					class="table table-bordered table-hover mb-0 text-center"
+				>
 					<thead class="thead-dark">
 						<tr>
 							<th>#</th>
+							<th>Ảnh</th>
 							<th>Tên người dùng</th>
 							<th>Ngày sinh</th>
 							<th>Giới tính</th>
 							<th>Email</th>
 							<th>Số điện thoại</th>
 							<th>Vai trò</th>
+							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -127,9 +135,28 @@
 						users.forEach(function(user) { %>
 						<tr>
 							<th scope="row"><%= user.id %></th>
+							<td>
+								<% if (user.avatar) { %>
+								<img
+									src="<%= user.avatar %>"
+									alt="user-image"
+									height="100px"
+									width="100px"
+								/>
+								<% } else { %>
+								<img
+									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>"
+									alt="avatar"
+									height="100px"
+									width="100px"
+								/>
+
+								<% } %>
+							</td>
+
 							<td><%= user.name %></td>
 							<td><%= user.birthday %></td>
-							<td><%= user.gender %></td>
+							<td><%= user.getGenderName() %></td>
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>
 							<% if (user.role == 1) { %>
@@ -139,6 +166,24 @@
 							<% } else if (user.role == 3) { %>
 							<td class="text-success">Bác sĩ</td>
 							<% } %>
+							<td>
+								<button
+									class="btn btn-sm btn-primary reset-password"
+									data-toggle="modal"
+									data-target="#ModalPassword"
+									data-id="<%= user.id %>"
+								>
+									<i class="fas fa-user-lock"></i>
+								</button>
+								<button
+									class="btn btn-sm btn-danger update-status"
+									data-toggle="modal"
+									data-target="#ModalStatus"
+									data-id="<%= user.id %>"
+								>
+									<i class="dripicons-wrong"></i>
+								</button>
+							</td>
 						</tr>
 						<% }); %> <% } else { %>
 						<tr>
@@ -149,7 +194,6 @@
 						<% } %>
 					</tbody>
 				</table>
-				<!-- pagination -->
 				<div class="row pt-2">
 					<div class="col-12">
 						<nav aria-label="...">
@@ -165,7 +209,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=1&limit=<%= limit %>"
+										href="/admin/users?page=1&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										tabindex="-1"
 									>
 										Đầu
@@ -186,7 +230,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%=i%>&limit=<%= limit %>"
+										href="/admin/users?page=<%=i%>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 										><%=i%>
 									</a>
 								</li>
@@ -203,7 +247,7 @@
 								<li class="page-item">
 									<a
 										class="page-link"
-										href="/admin/users?page=<%= pages %>&limit=<%= limit %>"
+										href="/admin/users?page=<%= pages %>&limit=<%= limit %>&role=<%= role %>&q=<%= search %>"
 									>
 										Cuối
 									</a>
@@ -219,11 +263,278 @@
 	</div>
 </div>
 
+<div
+	class="modal fade"
+	id="ModalPassword"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Xác nhận đặt lại mật khẩu của người dùng này ?</p>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-dismiss="modal"
+				>
+					Đóng
+				</button>
+				<button
+					id="confirm-reset-password-btn"
+					type="button"
+					class="btn btn-primary"
+				>
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	class="modal fade"
+	id="ModalStatus"
+	tabindex="-1"
+	role="dialog"
+	aria-labelledby="myModalLabel"
+>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Xác nhận thay đổi trạng thái của người dùng này ?</p>
+			</div>
+			<div class="modal-footer">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					data-dismiss="modal"
+				>
+					Đóng
+				</button>
+				<button
+					id="confirm-update-status-btn"
+					type="button"
+					class="btn btn-primary"
+				>
+					Xác nhận
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<figure class="highcharts-figure col-12">
+		<div id="users-chart-container"></div>
+	</figure>
+</div>
+
+<%- contentFor('css') %>
+<link
+	href="assets/libs/toastr/toastr.min.css"
+	rel="stylesheet"
+	type="text/css"
+/>
+
 <%- contentFor('js') %>
+<script src="assets/libs/toastr/toastr.min.js"></script>
+<script src="assets/js/pages/toastr.init.js"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
 	$(document).ready(function () {
+		toastr.options = {
+			closeButton: true,
+			debug: false,
+			newestOnTop: false,
+			progressBar: false,
+			positionClass: 'toast-bottom-left',
+			preventDuplicates: true,
+			onclick: null,
+			showDuration: '300',
+			hideDuration: '1000',
+			timeOut: '5000',
+			extendedTimeOut: '1000',
+			showEasing: 'swing',
+			hideEasing: 'linear',
+			showMethod: 'fadeIn',
+			hideMethod: 'fadeOut',
+		};
+
+		(function insertSuccessNotify() {
+			const params = new URLSearchParams(window.location.search);
+
+			if (params.has('success')) {
+				toastr['success'](
+					'Đã thêm người dùng mới thành công',
+					'Thành công'
+				);
+
+				//remove success param from url but keep other params
+				const url = new URL(window.location.href);
+				url.searchParams.delete('success');
+				window.history.replaceState({}, '', url);
+			}
+		})();
+
+		function resetPassword() {
+			var userId = $('#ModalPassword').data('id');
+			$.ajax({
+				method: 'PUT',
+				url: '/admin/users/' + userId + '/reset-password',
+				success: function (response) {
+					$('#ModalPassword').hide();
+					$('body').removeClass('modal-open');
+					$('.modal-backdrop').remove();
+
+					toastr['success'](
+						'Reset mật khẩu thành công',
+						'Thành công'
+					);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Không thể reset mật khẩu người dùng này',
+						'Thất bại'
+					);
+				},
+			});
+		}
+
+		function updateUserStatus(userId, currentBtn) {
+			$.ajax({
+				method: 'PUT',
+				url: '/admin/users/' + userId + '/update-status',
+				data: { status: status },
+				success: function (response) {
+					$('#ModalStatus').hide();
+					$('body').removeClass('modal-open');
+					$('.modal-backdrop').remove();
+
+					// remove the current row
+					let currentRow = currentBtn.closest('tr');
+					currentRow.remove();
+
+					toastr['success'](
+						'Cập nhật trạng thái thành công',
+						'Thành công'
+					);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Không cập nhật trạng thái người dùng này',
+						'Thất bại'
+					);
+				},
+			});
+		}
+
 		$('.select-filter').change(function () {
 			$('#form-filter').submit();
+		});
+
+		$('.reset-password').click(function () {
+			var userId = $(this).data('id');
+			$('#ModalPassword').data('id', userId).modal('show');
+		});
+
+		$('#confirm-reset-password-btn').click(function () {
+			resetPassword();
+		});
+
+		$('.update-status').click(function () {
+			let userId = $(this).data('id');
+			let currentBtn = $(this);
+
+			$('#confirm-update-status-btn').click(function () {
+				updateUserStatus(userId, currentBtn);
+			});
+		});
+
+		//get percent of users by role
+		$.ajax({
+			type: 'POST',
+			url: '/admin/users/userPercentage',
+			dataType: 'json',
+			success: function (response) {
+				const { data } = response;
+				//display users chart
+				Highcharts.chart('users-chart-container', {
+					chart: {
+						type: 'pie',
+					},
+					title: {
+						text: 'Tỷ lệ người dùng',
+						align: 'center',
+					},
+
+					plotOptions: {
+						series: {
+							dataLabels: {
+								enabled: true,
+								format: '{point.name}: {point.y:.1f}%',
+							},
+						},
+					},
+
+					tooltip: {
+						headerFormat:
+							'<span style="font-size:11px">{series.name}</span><br>',
+						pointFormat:
+							'<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>',
+					},
+
+					series: [
+						{
+							name: 'Người dùng',
+							colorByPoint: true,
+							data: [
+								{
+									name: 'Admin',
+									y: data.adminPercentage,
+								},
+								{
+									name: 'Y tá',
+									y: data.nursePercentage,
+								},
+								{
+									name: 'Bác sĩ',
+									y: data.doctorPercentage,
+								},
+							],
+						},
+					],
+				});
+			},
+			error: function (error) {
+				console.log(error);
+			},
 		});
 	});
 </script>
