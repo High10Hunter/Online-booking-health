@@ -18,7 +18,7 @@
 							</div>
 	
 							<div class="descri__btn-booking" onclick="openNewBookingPage()">
-								<a href="/booking">
+								<a href="/#" onclick="openNewWindow()">
 									<button class="btn-booking btn" >Đặt lịch với bác sĩ</button>
 								</a>
 							</div>
@@ -136,4 +136,15 @@
 		const bookingPage = document.querySelector('.booking-page');
 		bookingPage.style.display = "block";
 	}
+
+	const openNewWindow = () => {
+		const newWindow = document.querySelector('.new-window');
+		newWindow.style.display = "block";
+	};
+
+	const closeNewWindow = () => {
+		const newWindow = document.querySelector('.new-window');
+		newWindow.style.display = "none";
+	};
+
 </script>
