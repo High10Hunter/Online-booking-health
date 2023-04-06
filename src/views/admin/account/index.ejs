@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
-			<h1>Cài đặt</h1>
+			<h3>Cài đặt</h3>
 			<div class="row">
 				<div class="col-12">
 					<form
@@ -133,7 +133,7 @@
 										<div class="col-6">
 											<label for="role">Vai trò:</label>
 											<span class="error" id="role-error"></span>
-											<select class="col-sm-12" id="role" name="role" disabled>
+											<select class="col-sm-12" id="role" name="role" style="opacity: 0.5;" disabled>
 												<option value="1">Quản trị viên</option>
 												<option value="2">Y tá</option>
 												<option value="3">Bác sĩ</option>
@@ -264,8 +264,8 @@
 <%- contentFor('css') %>
 <style>
     .card-box{
-		width:80vw;
-		height: 80vh;
+		width: 100%;
+		height: 100%;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
@@ -309,6 +309,13 @@
 		margin-top: 40px;
 		margin-bottom: 35px;
 		text-align: left;
+	}
+
+	p{
+		font-family: "Roboto", sans-serif;
+		color: #323a46;
+		font-size: 16px;
+		font-weight: normal;
 	}
 
 	label {
