@@ -4,6 +4,7 @@ import adminRoutes from './admin.route';
 import nurseRoutes from './nurse.route';
 import doctorRoutes from './doctor.route';
 import clientRoutes from './client.route';
+import accountRoutes from './account.route';
 
 export default {
 	testRoute,
@@ -12,4 +13,5 @@ export default {
 	nurseRoutes,
 	doctorRoutes,
 	clientRoutes,
+	accountRoutes,
 };

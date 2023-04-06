@@ -1,61 +1,63 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
-			<h3>Cài đặt</h3>
+			<h3>Cài đặt tài khoản</h3>
 			<div class="row">
 				<div class="col-12">
 					<form
 						id="account-settings-form"
 						class="form-horizontal"
-						action="/admin/account"
+						action="/account"
 						method="POST"
-						//enctype="multipart/form-data"
 					>
 						<div class="form-group left-side">
 							<div class="form-group picture-form">
 								<div class="user-box text-center">
-									<img src="/admin/assets/images/users/user-1.jpg" 
-									alt="user-img" 
-									title="Mat Helme" 
-									class="rounded-circle img-thumbnail avatar-lg"
-									>
+									<img
+										src="/admin/assets/images/users/user-1.jpg"
+										alt="user-img"
+										title="Mat Helme"
+										class="rounded-circle img-thumbnail avatar-lg"
+									/>
 									<div class="dropdown">
-										<a 
-										href="#" 
-										class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block" 
-										data-toggle="dropdown">	
+										<a
+											href="#"
+											class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+											data-toggle="dropdown"
+										>
 										</a>
 									</div>
-									<p class="text-dark">Nguyễn Nhật Ánh</p>
+									<p class="text-dark"><%= user.name %></p>
 								</div>
 							</div>
 							<div class="form-group row info-form">
 								<div class="col-sm-12 info">
-										<label for="name">Số điện thoại:</label>
-										<p class="text-dark">0123456789</p>
+									<label for="name">Số điện thoại:</label>
+									<p class="text-dark">
+										<%= user.phone_number %>
+									</p>
 								</div>
-								
+
 								<div class="col-sm-12 info">
 									<label for="gender">Email liên hệ:</label>
-									<p class="text-dark">nguyennhatanh@gmail.com</p>
+									<p class="text-dark"><%= user.email %></p>
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="form-group col-9 right-side">
 							<!-- Tab items -->
 							<div class="form-group col-12 tabs">
 								<div class="tab-item col-sm-6 active">
-								<i class="tab-icon fas fa-user"></i>
-								Thông tin cá nhân
+									<i class="tab-icon fas fa-user"></i>
+									Thông tin cá nhân
 								</div>
 								<div class="tab-item col-sm-6">
-								<i class="tab-icon fas fa-shield-alt"></i>
-								Mật khẩu và bảo mật
+									<i class="tab-icon fas fa-shield-alt"></i>
+									Mật khẩu và bảo mật
 								</div>
 								<div class="line"></div>
 							</div>
-
 
 							<!-- Tab content -->
 							<div class="form-group col-12">
@@ -63,84 +65,118 @@
 									<div class="form-group row col-12">
 										<div class="col-6">
 											<label for="name">Họ tên:</label>
-											<span class="error" id="name-error"></span>
+											<span
+												class="error"
+												id="name-error"
+											></span>
 											<input
 												type="text"
 												class="col-sm-12"
 												id="name"
 												name="name"
 												placeholder="Họ và tên"
+												value="<%= user.name %>"
 											/>
 										</div>
 										<div class="col-6">
-											<label for="gender">Giới tính:</label>
-											<span class="error" id="gender-error"></span>
+											<label for="gender">
+												Giới tính:
+											</label>
+											<span
+												class="error"
+												id="gender-error"
+											></span>
 											<br />
 											<div class="radioBox">
 												<input
-												type="radio"
-												class="col-sm-12"
-												id="male"
-												name="gender"
-												value="male"
-											/>
-											<label class="radioText" for="male">Nam</label>
+													type="radio"
+													class="col-sm-12"
+													id="male"
+													name="gender"
+													value="1"
+													<% if (user.gender) { %>
+														checked 
+													<% } %> 
+													/>
+												<label
+													class="radioText"
+													for="male"
+													>Nam</label
+												>
 											</div>
 											<div class="radioBox">
 												<input
-												type="radio"
-												class="col-sm-12"
-												id="female"
-												name="gender"
-												value="female"
-											/>
-											<label class="radioText" for="female">Nữ</label>
+													type="radio"
+													class="col-sm-12"
+													id="female"
+													name="gender"
+													value="0"
+													<% if (!user.gender) { %>
+														checked 
+													<% } %> 
+												/>
+												<label
+													class="radioText"
+													for="female"
+													>Nữ</label
+												>
 											</div>
 										</div>
 									</div>
 									<div class="form-group row col-12">
 										<div class="col-6">
-											<label for="phone">Số điện thoại:</label>
-											<span class="error" id="phone-error"></span>
+											<label for="phone"
+												>Số điện thoại:</label
+											>
+											<span
+												class="error"
+												id="phone-error"
+											></span>
 											<input
 												type="number"
 												class="col-sm-12"
 												id="phone"
 												name="phone_number"
 												placeholder="Số điện thoại"
+												value="<%= user.phone_number %>"
 											/>
 										</div>
 										<div class="col-6">
 											<label for="email">Email:</label>
-											<span class="error" id="email-error"></span>
+											<span
+												class="error"
+												id="email-error"
+											></span>
 											<input
 												type="text"
 												class="col-sm-12"
 												id="email"
 												name="email"
 												placeholder="email@gmail.com"
+												value="<%= user.email %>"
 											/>
 										</div>
-										
 									</div>
-			
+
 									<div class="form-group row col-12">
 										<div class="col-6">
-											<label for="birthday">Ngày sinh:</label>
-											<span class="error" id="birthday-error"></span>
-											<input type="date" class="col-sm-12" id="birthday" name="birthday" />
-										</div>
-										<div class="col-6">
-											<label for="role">Vai trò:</label>
-											<span class="error" id="role-error"></span>
-											<select class="col-sm-12" id="role" name="role" style="opacity: 0.5;" disabled>
-												<option value="1">Quản trị viên</option>
-												<option value="2">Y tá</option>
-												<option value="3">Bác sĩ</option>
-											</select>
+											<label for="birthday"
+												>Ngày sinh:</label
+											>
+											<span
+												class="error"
+												id="birthday-error"
+											></span>
+											<input
+												type="date"
+												class="col-sm-12"
+												id="birthday"
+												name="birthday"
+												value="<%= user.birthday %>"
+											/>
 										</div>
 									</div>
-	
+
 									<div
 										class="form-group row"
 										style="
@@ -149,19 +185,30 @@
 											align-items: center;
 										"
 									>
-										<button type="reset" class="btn btn-sm btn-danger update-info-btn">Reset</button>
-										<button type="submit" class="btn btn-sm btn-primary update-info-btn">Cập nhật</button>
+										<button
+											type="submit"
+											class="btn btn-sm btn-primary update-info-btn"
+										>
+											Cập nhật
+										</button>
 									</div>
 								</div>
-	
-	
+
 								<div class="login-info tab-pane">
 									<div class="form-group row col-12">
 										<div class="col-8">
 											<div>
-												<i class="tab-icon  mdi mdi-account-circle" style="color:#333"></i>
-												<label for="username">Tài khoản đăng nhập</label>
-												<span class="error" id="username-error"></span>
+												<i
+													class="tab-icon mdi mdi-account-circle"
+													style="color: #333"
+												></i>
+												<label for="username"
+													>Tài khoản đăng nhập</label
+												>
+												<span
+													class="error"
+													id="username-error"
+												></span>
 											</div>
 
 											<input
@@ -174,85 +221,157 @@
 											/>
 										</div>
 										<div class="col-4">
-											<button class="btn btn-sm edit-btn" id="edit-username-btn">Chỉnh sửa</button>
-											<div id="confirm-edit-username-btn" style="display:none;">
-												<button type="reset" id="cancel-username-btn" class="btn btn-sm edit-btn" style="display:inline-block;">Hủy</button>
-												<button type="submit" id="save-username-btn" class="btn btn-sm edit-btn" style="display:inline-block;">Lưu</button>
+											<button
+												class="btn btn-sm edit-btn"
+												id="edit-username-btn"
+											>
+												Chỉnh sửa
+											</button>
+											<div
+												id="confirm-edit-username-btn"
+												style="display: none"
+											>
+												<button
+													type="reset"
+													id="cancel-username-btn"
+													class="btn btn-sm edit-btn"
+													style="
+														display: inline-block;
+													"
+												>
+													Hủy
+												</button>
+												<button
+													type="submit"
+													id="save-username-btn"
+													class="btn btn-sm edit-btn"
+													style="
+														display: inline-block;
+													"
+												>
+													Lưu
+												</button>
 											</div>
 										</div>
 									</div>
 									<div class="form-group row col-12">
 										<div class="col-8">
 											<div>
-												<i class="tab-icon fas fa-key fa-lg"></i>
-												<label for="password">Đổi mật khẩu</label>
-												<span class="error" id="password-error"></span>
+												<i
+													class="tab-icon fas fa-key fa-lg"
+												></i>
+												<label for="password"
+													>Đổi mật khẩu</label
+												>
+												<span
+													class="error"
+													id="password-error"
+												></span>
 											</div>
 
-											<p style="margin-left:0.2em;">Bạn nên sử dụng mật khẩu mạnh mà mình chưa sử dụng ở đâu khác</p>
-											<div class="col-12" id="change-password-form" style="display:none;">
-												<table style="border:0;">
+											<p style="margin-left: 0.2em">
+												Bạn nên sử dụng mật khẩu mạnh mà
+												mình chưa sử dụng ở đâu khác
+											</p>
+											<div
+												class="col-12"
+												id="change-password-form"
+												style="display: none"
+											>
+												<table style="border: 0">
 													<tbody>
 														<tr>
-															<td align="right">Mật khẩu cũ: </td>
+															<td align="right">
+																Mật khẩu cũ:
+															</td>
 															<td>
 																<input
-																type="password"
-																class="col-sm-12"
-																id="old-password"
-																name="password"
-																placeholder="Mật khẩu hiện tại"
+																	type="password"
+																	class="col-sm-12"
+																	id="old-password"
+																	name="old_password"
+																	placeholder="Mật khẩu hiện tại"
 																/>
 															</td>
 															<td>
-																<span class="error" id="old-password-error"></span>
+																<span
+																	class="error"
+																	id="old-password-error"
+																></span>
 															</td>
 														</tr>
 														<tr>
-															<td align="right">Mật khẩu mới: </td>
+															<td align="right">
+																Mật khẩu mới:
+															</td>
 															<td>
 																<input
-																type="password"
-																class="col-sm-12"
-																id="new-password"
-																name="password"
-																placeholder="Mật khẩu mới"
+																	type="password"
+																	class="col-sm-12"
+																	id="new-password"
+																	name="new_password"
+																	placeholder="Mật khẩu mới"
 																/>
 															</td>
 															<td>
-																<span class="error" id="new-password-error"></span>
+																<span
+																	class="error"
+																	id="new-password-error"
+																></span>
 															</td>
 														</tr>
 														<tr>
-															<td align="right">Xác nhận mật khẩu: </td>
+															<td align="right">
+																Xác nhận mật
+																khẩu:
+															</td>
 															<td>
 																<input
-																type="password"
-																class="col-sm-12"
-																id="confirm-password"
-																name="password"
-																placeholder="Xác nhận mật khẩu"
+																	type="password"
+																	class="col-sm-12"
+																	id="confirm-password"
+																	name="confirm_password"
+																	placeholder="Xác nhận mật khẩu"
 																/>
 															</td>
 															<td>
-																<span class="error" id="confirm-password-error"></span>
+																<span
+																	class="error"
+																	id="confirm-password-error"
+																></span>
 															</td>
 														</tr>
 													</tbody>
 												</table>
-												<div >
-													<button type="reset" class="btn btn-sm edit-btn" id="cancel-password-btn">Hủy</button>
-													<button type="submit" class="btn btn-sm edit-btn" id="save-password-btn">Lưu</button>
+												<div>
+													<button
+														type="reset"
+														class="btn btn-sm edit-btn"
+														id="cancel-password-btn"
+													>
+														Hủy
+													</button>
+													<button
+														type="submit"
+														class="btn btn-sm edit-btn"
+														id="save-password-btn"
+													>
+														Lưu
+													</button>
 												</div>
 											</div>
 										</div>
 										<div class="col-4">
-											<button class="btn btn-sm edit-btn" id="change-password-btn">Chỉnh sửa</button>
+											<button
+												class="btn btn-sm edit-btn"
+												id="change-password-btn"
+											>
+												Chỉnh sửa
+											</button>
 										</div>
 									</div>
 								</div>
 							</div>
-							
 						</div>
 					</form>
 				</div>
@@ -263,7 +382,7 @@
 
 <%- contentFor('css') %>
 <style>
-    .card-box{
+	.card-box {
 		width: 100%;
 		height: 100%;
 		justify-content: center;
@@ -271,41 +390,39 @@
 		flex-direction: column;
 		position: relative;
 		top: 5px;
-		overflow:auto;
+		overflow: auto;
 	}
 
-	.form-group{
-		display:inline-block;
+	.form-group {
+		display: inline-block;
 	}
 
-	#account-settings-form{
+	#account-settings-form {
 		min-height: 470px;
 		background: #fff;
 		margin: 0 auto;
 		position: relative;
-		box-shadow: 2px 5px 20px
-		rgba(119, 119, 119, .5);
+		box-shadow: 2px 5px 20px rgba(119, 119, 119, 0.5);
 	}
 
-	.left-side{
-		float:left;
+	.left-side {
+		float: left;
 		position: absolute;
 		width: 20%;
 		height: 100%;
 		background: #71b6f9;
-		box-shadow: -2px 3px 10px
-		rgb(119, 119, 119, .5);
+		box-shadow: -2px 3px 10px rgb(119, 119, 119, 0.5);
 		border-right: 1px solid #ccc;
 		padding-top: 35px;
 	}
 
-	.right-side{
+	.right-side {
 		margin-left: 22%;
 		padding-top: 5px;
 	}
 
-	p{
-		font-family: "Roboto", sans-serif;
+	p {
+		font-family: 'Roboto', sans-serif;
 		color: #323a46;
 		font-size: 16px;
 		font-weight: normal;
@@ -313,7 +430,7 @@
 
 	label {
 		display: inline-block;
-		font-family: "Roboto", sans-serif;
+		font-family: 'Roboto', sans-serif;
 		text-transform: uppercase;
 		margin-bottom: 10px;
 		font-weight: bold;
@@ -330,8 +447,6 @@
 		/* border-top: 1px solid #ccc; */
 	}
 
-
-
 	input[type='text'],
 	input[type='password'],
 	input[type='email'],
@@ -345,7 +460,7 @@
 		background-color: #eee;
 	}
 
-	select{
+	select {
 		padding: 9px 0;
 	}
 
@@ -364,7 +479,7 @@
 		font-size: 16px;
 	}
 
-	.radioBox{
+	.radioBox {
 		width: 110px;
 		display: inline-block;
 		margin-right: 10px;
@@ -386,21 +501,19 @@
 		margin-left: 25px;
 		border-radius: 5px;
 		cursor: pointer;
-		box-shadow: 0px 2px 4px 0px
-		rgb(0,0,0,.2);
+		box-shadow: 0px 2px 4px 0px rgb(0, 0, 0, 0.2);
 		margin-top: 15px;
 	}
 
-	.btn.btn-sm.edit-btn{
+	.btn.btn-sm.edit-btn {
 		background-color: #ccc;
 		color: #000000;
 		padding: 7px 15px;
 		margin-left: 10px;
 		border-radius: 50px;
-		border:0;
+		border: 0;
 		cursor: pointer;
-		box-shadow: 0px 2px 4px 0px
-		rgba(0, 0, 0, 0.2);
+		box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
 		margin-top: 27px;
 	}
 
@@ -463,39 +576,34 @@
 		preview.src = URL.createObjectURL(event.target.files[0]);
 	}
 
-
 	const $ = document.querySelector.bind(document);
 	const $$ = document.querySelectorAll.bind(document);
 
-	const tabs = $$(".tab-item");
-	const panes = $$(".tab-pane");
+	const tabs = $$('.tab-item');
+	const panes = $$('.tab-pane');
 
-	const tabActive = $(".tab-item.active");
-	const line = $(".tabs .line");
+	const tabActive = $('.tab-item.active');
+	const line = $('.tabs .line');
 
 	requestIdleCallback(function () {
-	line.style.left = tabActive.offsetLeft + "px";
-	line.style.width = tabActive.offsetWidth + "px";
+		line.style.left = tabActive.offsetLeft + 'px';
+		line.style.width = tabActive.offsetWidth + 'px';
 	});
 
 	tabs.forEach((tab, index) => {
-	const pane = panes[index];
+		const pane = panes[index];
 
-	tab.onclick = function () {
-		$(".tab-item.active").classList.remove("active");
-		$(".tab-pane.active").classList.remove("active");
+		tab.onclick = function () {
+			$('.tab-item.active').classList.remove('active');
+			$('.tab-pane.active').classList.remove('active');
 
-		line.style.left = this.offsetLeft + "px";
-		line.style.width = this.offsetWidth + "px";
+			line.style.left = this.offsetLeft + 'px';
+			line.style.width = this.offsetWidth + 'px';
 
-		this.classList.add("active");
-		pane.classList.add("active");
-	};
+			this.classList.add('active');
+			pane.classList.add('active');
+		};
 	});
-
-
-
-
 
 	const form = document.getElementById('account-settings-form');
 	const name = document.getElementById('name');
@@ -573,10 +681,6 @@
 			.forEach(item => (item.innerHTML = ''));
 	});
 
-
-
-
-	
 	const editUsernameButton = document.getElementById('edit-username-btn');
 	const cancelUsernameButton = document.getElementById('cancel-username-btn');
 	const saveUsernameButton = document.getElementById('save-username-btn');
@@ -587,100 +691,104 @@
 	const cancelPasswordButton = document.getElementById('cancel-password-btn');
 	const savePasswordButton = document.getElementById('save-password-btn');
 
-	editUsernameButton.addEventListener('click', function() {
+	editUsernameButton.addEventListener('click', function (e) {
+		e.preventDefault();
+		
 		editUsernameButton.style.display = 'none';
 		usernameInput.disabled = false;
 		usernameInput.focus();
-		document.getElementById('confirm-edit-username-btn').style.display = 'block';
+		document.getElementById('confirm-edit-username-btn').style.display =
+			'block';
 	});
 
-	cancelUsernameButton.addEventListener('click', function() {
+	cancelUsernameButton.addEventListener('click', function () {
 		editUsernameButton.style.display = 'block';
 		usernameInput.disabled = true;
-		document.getElementById('confirm-edit-username-btn').style.display = 'none';
+		document.getElementById('confirm-edit-username-btn').style.display =
+			'none';
 	});
 
-	saveUsernameButton.addEventListener('click', function() {
-	// do something to save the new username
-	// for now we'll just disable the input and hide the buttons again
-		if(usernameInput.value === '') {
-			document.getElementById('username-error').innerHTML = 'Tên người dùng không hợp lệ';
+	saveUsernameButton.addEventListener('click', function (e) {
+		e.preventDefault();
+		// do something to save the new username
+		// for now we'll just disable the input and hide the buttons again
+		if (usernameInput.value === '') {
+			document.getElementById('username-error').innerHTML =
+				'Tên người dùng không hợp lệ';
 			return;
-		}
-		else{
+		} else {
 			document.getElementById('username-error').innerHTML = '';
 			// form.submit();
 		}
-		
+
 		usernameInput.disabled = true;
-		document.getElementById('confirm-edit-username-btn').style.display = 'none';
+		document.getElementById('confirm-edit-username-btn').style.display =
+			'none';
 		editUsernameButton.style.display = 'block';
 	});
 
-	changePasswordForm.addEventListener('submit', function(event) {
-		event.preventDefault();
-		const oldPasswordInput = document.getElementById('old-password');
-		const newPasswordInput = document.getElementById('new-password');
-		const confirmPasswordInput = document.getElementById('confirm-password');
-		// do something to check if the old password is correct and the new password matches
-		// for now we'll just log the values to the console
-		//console.log(oldPasswordInput.value, newPasswordInput.value, confirmPasswordInput.value);
-	});
+	changePasswordButton.addEventListener('click', function (e) {
+		e.preventDefault();
 
-	changePasswordButton.addEventListener('click', function() {
 		changePasswordButton.style.display = 'none';
 		changePasswordForm.style.display = 'block';
 	});
 
-	cancelPasswordButton.addEventListener('click', function() {
+	cancelPasswordButton.addEventListener('click', function () {
 		changePasswordButton.style.display = 'block';
 		changePasswordForm.style.display = 'none';
 		// reset all elements in the form changePasswordForm
-		changePasswordForm
-
-
+		changePasswordForm;
 	});
 
-	savePasswordButton.addEventListener('click', function() {
-			// do something to save the new username
-			// for now we'll just disable the input and hide the buttons again
-
+	savePasswordButton.addEventListener('click', function (e) {
+		e.preventDefault();
+		// do something to save the new username
+		// for now we'll just disable the input and hide the buttons again
 
 		let valid = true;
 
 		const oldPasswordInput = document.getElementById('old-password').value;
 		const newPasswordInput = document.getElementById('new-password').value;
-		const confirmPasswordInput = document.getElementById('confirm-password').value;
+		const confirmPasswordInput =
+			document.getElementById('confirm-password').value;
 
-		if(oldPasswordInput === '') {
+		if (oldPasswordInput === '') {
 			valid = false;
-			document.getElementById('old-password-error').innerHTML = 'Vui lòng nhập mật khẩu cũ';
+			document.getElementById('old-password-error').innerHTML =
+				'Vui lòng nhập mật khẩu cũ';
 		} else {
 			document.getElementById('old-password-error').innerHTML = '';
 		}
-		if(newPasswordInput === '') {
+		if (newPasswordInput === '') {
 			valid = false;
-			document.getElementById('new-password-error').innerHTML = 'Vui lòng nhập mật khẩu mới';
+			document.getElementById('new-password-error').innerHTML =
+				'Vui lòng nhập mật khẩu mới';
 		} else {
 			document.getElementById('new-password-error').innerHTML = '';
 		}
-		if(confirmPasswordInput === '') {
+		if (confirmPasswordInput === '') {
 			valid = false;
-			document.getElementById('confirm-password-error').innerHTML = 'Vui lòng nhập lại mật khẩu mới';
+			document.getElementById('confirm-password-error').innerHTML =
+				'Vui lòng nhập lại mật khẩu mới';
 		} else {
 			document.getElementById('confirm-password-error').innerHTML = '';
 		}
 
-		if((newPasswordInput!=='' && !confirmPasswordInput!=='')  && (newPasswordInput !== confirmPasswordInput)) {
+		if (
+			newPasswordInput !== '' &&
+			!confirmPasswordInput !== '' &&
+			newPasswordInput !== confirmPasswordInput
+		) {
 			valid = false;
-			document.getElementById('confirm-password-error').innerHTML = 'Mật khẩu không khớp';
+			document.getElementById('confirm-password-error').innerHTML =
+				'Mật khẩu không khớp';
 		}
 
-		if(valid) {
-			changePasswordForm.submit();
+		if (valid) {
+			form.submit();
 			changePasswordButton.style.display = 'block';
 			changePasswordForm.style.display = 'none';
 		}
 	});
 </script>
-

@@ -25,6 +25,7 @@ app.use(issueAuthHeader);
 
 web.testRoute(app); // for testing only
 web.authRoutes(app);
+web.accountRoutes(app);
 web.adminRoutes(app);
 web.nurseRoutes(app);
 web.doctorRoutes(app);

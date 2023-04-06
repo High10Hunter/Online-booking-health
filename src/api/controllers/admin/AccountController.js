@@ -1,26 +1,33 @@
 import { StatusCodes } from 'http-status-codes';
-import AccountServices from '../../services/admin/AccountServices';
+import UserServices from '../../services/admin/UserServices';
 
 const index = async (req, res) => {
 	try {
-		// const { id } = req.user.id;
-		// const user = await AccountServices.getUserById(req.user.id);
-		
+		const { id } = req.payload;
+		const user = await UserServices.getUserById(id);
 
 		return res.render('./admin/account', {
-			// user : user,
-			title: 'Cài đặt',
+			title: 'Cài đặt tài khoản',
+			id,
+			user,
 		});
 	} catch (error) {
 		return res.redirect('/admin');
 	}
 };
 
-
-
 const update = async (req, res) => {
 	try {
-		const user = await AccountServices.updateUser(req.params.id, req.body);
+		const {new_password, confirm_password} = req.body;
+
+		if (new_password !== confirm_password) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: 'Password does not match',
+				data: [],
+			});
+		}
+
+		const user = await UserServices.updateUser(req.payload.id, req.body);
 
 		return res.status(StatusCodes.OK).json({
 			message: 'Update user successfully',
