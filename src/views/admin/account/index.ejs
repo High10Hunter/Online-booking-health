@@ -764,7 +764,14 @@
 			valid = false;
 			document.getElementById('new-password-error').innerHTML =
 				'Vui lòng nhập mật khẩu mới';
-		} else {
+		}
+		else if (newPasswordInput.match(/^(?=.[\W_])(?=.[a-zA-Z]).{8,}$/) === null) {
+			// regex to check if password contains special characters, 8 length
+			valid = false;
+			document.getElementById('new-password-error').innerHTML =
+				'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số, chứa ký tự đặc biệt';
+		}
+		else {
 			document.getElementById('new-password-error').innerHTML = '';
 		}
 		if (confirmPasswordInput === '') {
