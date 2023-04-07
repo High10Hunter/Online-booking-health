@@ -17,19 +17,6 @@ const getScheduleOfDoctor = async doctorId => {
 		const data = await Schedule.findAll({
 			where: {
 				doctor_id: doctorId,
-				//having the date is within the current week and the next week
-				//ex: current week: 2023-01-01 -> 2023-01-07
-				//next week: 2023-01-08 -> 2023-01-14
-
-				date: {
-					[Op.between]: [
-						moment().startOf('week').format('YYYY-MM-DD'),
-						moment()
-							.add(1, 'week')
-							.endOf('week')
-							.format('YYYY-MM-DD'),
-					],
-				},
 			},
 			include: [
 				{
