@@ -107,7 +107,9 @@
 							<td><%= user.doctor.speciality.name %></td>
 							<td><%= user.doctor.getRankName() %></td>
 							<td>
-								<a href="/admin/schedule/<%= user.doctor.id %>">
+								<a
+									href="/admin/doctor/<%= user.doctor.id %>/schedules"
+								>
 									<button
 										class="btn btn-icon waves-effect btn-purple"
 									>
