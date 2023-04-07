@@ -15,7 +15,7 @@ const clientRoutes = app => {
 		});
 	});
 
-	router.get('/doctor-list', (req, res) => {
+	router.get('/doctors', (req, res) => {
 		res.render('./client/doctor_list', {
 			layout: './layouts/client_layouts/master',
 		});

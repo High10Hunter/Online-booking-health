@@ -76,14 +76,14 @@ const adminRoutes = app => {
 	);
 
 	router.get(
-		'/doctor/:id/schedules',
+		'/doctors/:id/schedules',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.index
 	);
 
 	router.get(
-		'/api/doctor/:id/schedules',
+		'/api/doctors/:id/schedules',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.getScheduleOfDoctor
