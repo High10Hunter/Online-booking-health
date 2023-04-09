@@ -124,7 +124,7 @@ const adminRoutes = app => {
 	router.post('/account', AccountController.update);
 
 	router.post(
-		'/users/userPercentage',
+		'/users/users-percentage',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.getPercentageOfEachRole
@@ -139,28 +139,28 @@ const adminRoutes = app => {
 	);
 
 	router.get(
-		'/schedule/:id',
+		'/doctors/:id/schedules',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.index
 	);
 
 	router.get(
-		'/api/getScheduleOfDoctor/:id',
+		'/api/doctors/:id/schedules',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.getScheduleOfDoctor
 	);
 
 	router.post(
-		'/api/schedule/create',
+		'/api/schedules/create',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.create
 	);
 
 	router.delete(
-		'/api/schedule/delete/:id',
+		'/api/schedules/delete/:id',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.destroy
