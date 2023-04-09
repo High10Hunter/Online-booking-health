@@ -13,7 +13,7 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 
 		const offset = (currentPage - 1) * limit;
 
-		if (speciality_id) {
+		if (speciality_id != undefined) {
 			const { count, rows } = await User.findAndCountAll({
 				offset: offset,
 				limit: limit,
@@ -93,6 +93,8 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 
 				order: [['createdAt', 'DESC']],
 			});
+
+			console.log(rows);
 
 			if (count === 0) {
 				return { rows: [], currentPage: 1, endPage: 1 };

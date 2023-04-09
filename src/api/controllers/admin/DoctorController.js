@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import Doctor from '../../services/admin/DoctorServices';
 import RolesEnum from '../../enums/RolesEnum';
-import DoctorServices from '../../services/admin/DoctorServices';
 
 const index = async (req, res) => {
 	try {
