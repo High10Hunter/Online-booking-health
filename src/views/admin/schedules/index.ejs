@@ -88,6 +88,7 @@
 							<th>Số điện thoại</th>
 							<th>Chuyên khoa</th>
 							<th>Chức danh</th>
+							<th>Chỉnh sửa</th>
 							<th>Lịch khám</th>
 						</tr>
 					</thead>
@@ -106,6 +107,17 @@
 							<td><%= user.phone_number %></td>
 							<td><%= user.doctor.speciality.name %></td>
 							<td><%= user.doctor.getRankName() %></td>
+							<td>
+								<a
+									href="/admin/doctors/<%= user.doctor.id %>/update"
+								>
+									<button
+										class="btn btn-icon waves-effect btn-warning"
+									>
+										<i class="far fa-edit"></i>
+									</button>
+								</a>
+							</td>
 							<td>
 								<a
 									href="/admin/doctors/<%= user.doctor.id %>/schedules"

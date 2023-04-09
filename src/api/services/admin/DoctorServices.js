@@ -118,10 +118,10 @@ const getDoctorById = async id => {
 				{
 					model: User,
 					as: 'user',
-					attributes: ['name'],
+					attributes: ['name','phone_number','email'],
 				},
 			],
-			attributes: ['rank'],
+			attributes: ['id','speciality_id','rank','price','description'],
 		});
 
 		if (!doctor) throw new Error('Doctor not found');
@@ -171,15 +171,10 @@ const createDoctor = async data => {
 const updateDoctor = async (id, data) => {
 	try {
 		const doctor = await Doctor.findByPk(id);
-//
-
 		doctor.set({
 			...data,
 		});
-
 		await doctor.save();
-		//console.log('doctor updated:', doctor);
-
 		return doctor;
 	} catch (error) {
 		const { errors } = error;

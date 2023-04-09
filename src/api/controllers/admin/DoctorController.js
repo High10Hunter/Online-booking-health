@@ -30,11 +30,13 @@ const index = async (req, res) => {
 
 const getDoctor = async (req, res) => {
 	try {
-		// const { id } = req.user.id;
-		// const doctor = await DoctorServices.getDoctorById(id);
+		const doctor = await Doctor.getDoctorById(req.params.id);
+
+		const specialities = await Doctor.getAllSpeciality();
 
 		return res.render('./admin/doctors/update', {
-			// doctor: doctor,
+			doctor: doctor,
+			specialities: specialities,
 			title: 'Cập nhật thông tin bác sĩ'
 		});
 	} catch (error) {
@@ -48,7 +50,6 @@ const getDoctor = async (req, res) => {
 const update = async (req, res) => {
 	try {
 		const doctor = await Doctor.updateDoctor(req.params.id, req.body);
-		//console.log('doctor found:', doctor);
 		return res.status(StatusCodes.OK).json({
 			message: 'Update doctor successfully',
 			data: doctor,

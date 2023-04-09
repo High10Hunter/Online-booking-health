@@ -1,15 +1,20 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
+			<div class="row">
+				<div class="col-md-2 mb-1">
+					<a href="/admin/schedules?page=1">
+						<i class="dripicons-arrow-thin-left"> Quay lại</i>
+					</a>
+				</div>
+			</div>
 			<h3>Thông tin bác sĩ</h3>
 			<div class="row">
 				<div class="col-12">
 					<form
 						id="update-doctor-form"
 						class="form-horizontal"
-						action="/admin/doctors/edit"
-						method="POST"
-						//enctype="multipart/form-data"
+						data-doctor-id="<%= doctor.id %>"
 					>
 						<div class="form-group left-side">
 							<div class="form-group picture-form">
@@ -26,18 +31,20 @@
 										data-toggle="dropdown">	
 										</a>
 									</div>
-									<p class="text-dark">Nguyễn Nhật Ánh</p>
+									<p class="text-dark">
+										<%= doctor.user.name %>
+									</p>
 								</div>
 							</div>
 							<div class="form-group row info-form">
 								<div class="col-sm-12 info">
 										<label for="name">Số điện thoại:</label>
-										<p class="text-dark">0123456789</p>
+										<p class="text-dark"><%= doctor.user.phone_number %></p>
 								</div>
 								
 								<div class="col-sm-12 info">
 									<label for="gender">Email liên hệ:</label>
-									<p class="text-dark">nguyennhatanh@gmail.com</p>
+									<p class="text-dark"><%= doctor.user.email %></p>
 								</div>
 							</div>
 						</div>
@@ -58,25 +65,23 @@
 										id="speciality"
 										class="col-sm-12"
 									>
-										<option value="">
-											-- Chọn chuyên khoa --
+										<% if (specialities.length != 0) { %> <%
+										specialities.forEach((speciality) => {
+										%>
+										<option value="<%= speciality.id %> <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>">
+											<%= speciality.name %>
 										</option>
-                                        <option value="1">Cơ xương khớp</option>
-                                        <option value="2">Thần kinh</option>
-                                        <option value="3">Tim mạch</option>
+										<% }) %> <% } %>
 									</select>
 								</div>
 								<div class="col-12 doctor-info">
 									<label>Chức danh:</label>
 									<span class="error" id="rank-error"></span>
 									<select class="col-sm-12" name="rank" id="rank">
-										<option value="">
-											-- Chọn chức danh --
-										</option>
-										<option value="1">PGS-TS</option>
-										<option value="2">Tiến sĩ</option>
-										<option value="3">Bác sĩ CKII</option>
-										<option value="4">Bác sĩ CKI</option>
+										<option value="1" <%= doctor.rank == 1 ? 'selected' : '' %>>PGS-TS</option>
+										<option value="2" <%= doctor.rank == 2 ? 'selected' : '' %>>Tiến sĩ</option>
+										<option value="3" <%= doctor.rank == 3 ? 'selected' : '' %>>Bác sĩ CKII</option>
+										<option value="4" <%= doctor.rank == 4 ? 'selected' : '' %>>Bác sĩ CKI</option>
 									</select>
 								</div>
 								<div class="col-12 doctor-info">
@@ -89,6 +94,7 @@
 										class="col-sm-5"
 										name="price"
 										placeholder="Giá khám"
+										value="<%= doctor.price %>"
 										/>
 										<h5 class="col-sm-1">VNĐ</h5>
 									</div>
@@ -108,7 +114,7 @@
 										class="col-sm-12"
 										rows="5"
 										placeholder="Mô tả"
-									></textarea>
+									><%= doctor.description %></textarea>
 								</div>
 							</div>
 
@@ -121,7 +127,7 @@
 								"
 							>
 								<button type="reset" class="btn btn-sm btn-danger">Reset</button>
-								<button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+								<button type="button" id="update-doctor" class="btn btn-sm btn-primary">Cập nhật</button>
 							</div>
 						</div>
 					</form>
@@ -132,6 +138,7 @@
 </div>
 
 <%- contentFor('css') %>
+
 <style>
     .card-box{
 		width: 100%;
@@ -230,7 +237,7 @@
 		font-size: 12px;
 	}
 
-	button[type='submit'],
+	button[type='button'],
 	button[type='reset'] {
 		text-transform: uppercase;
 		padding: 7px 15px;
@@ -242,63 +249,110 @@
 		margin-top: 15px;
 	}
 </style>
+<!-- <link
+	href="assets/libs/toastr/toastr.min.css"
+	rel="stylesheet"
+	type="text/css"
+/> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 <%- contentFor('js') %>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!-- <script src="assets/js/vendor.min.js"></script> -->
+<!-- <script src="assets/libs/toastr/toastr.min.js"></script>
+<script src="assets/js/pages/toastr.init.js"></script> -->
+
 <script>
-	const form = document.getElementById('update-doctor-form');
+	$(document).ready(function () {
+		toastr.options = {
+			closeButton: true,
+			debug: false,
+			newestOnTop: false,
+			progressBar: false,
+			positionClass: 'toast-bottom-left',
+			preventDuplicates: true,
+			onclick: null,
+			showDuration: '300',
+			hideDuration: '1000',
+			timeOut: '5000',
+			extendedTimeOut: '1000',
+			showEasing: 'swing',
+			hideEasing: 'linear',
+			showMethod: 'fadeIn',
+			hideMethod: 'fadeOut',
+		};
 
-	function previewImage(event) {
-		const preview = document.getElementById('preview');
-		preview.style.display = 'block';
-		preview.src = URL.createObjectURL(event.target.files[0]);
-	}
+		const form = $('#update-doctor-form');
 
-	form.addEventListener('submit', e => {
-		e.preventDefault();
-
-		let valid = true;
-
-		if (document.getElementById('speciality').value === '') {
-			valid = false;
-			document.getElementById('speciality-error').innerHTML =
-				'Vui lòng chọn chuyên khoa';
-		} else {
-			document.getElementById('speciality-error').innerHTML = '';
+		function successNotify(){
+			
+			var doctorId = $('#update-doctor-form').data('doctor-id');
+			$.ajax({
+				method: 'POST',
+				url: '/admin/doctors/' + doctorId + '/update',
+				// data
+				data: form.serialize(),
+				success: function (response) {
+					toastr['success'](
+						'Cập nhật thông tin bác sĩ thành công',
+						'Thành công'
+					);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Không thể cập nhật thông tin bác sĩ này',
+						'Thất bại'
+					);
+				},
+			});
 		}
 
-		if (document.getElementById('rank').value === '') {
-			valid = false;
-			document.getElementById('rank-error').innerHTML =
-				'Vui lòng chức danh';
-		} else {
-			document.getElementById('rank-error').innerHTML = '';
-		}
+			
+		
 
-		if (document.getElementById('price').value === '') {
-			valid = false;
-			document.getElementById('price-error').innerHTML =
-				'Vui lòng nhập giá khám';
-		} else {
-			document.getElementById('price-error').innerHTML = '';
-		}
+		$('#update-doctor').click(function (e) {
+			e.preventDefault();
+			let valid = true;
 
-		if (document.getElementById('description').value === '') {
-			valid = false;
-			document.getElementById('description-error').innerHTML =
-				'Vui lòng nhập mô tả';
-		} else {
-			document.getElementById('description-error').innerHTML = '';
-		}
+			if ($('#speciality').val() === '') {
+				valid = false;
+				$('#speciality-error').html('Vui lòng chọn chuyên khoa');
+			} else {
+				$('#speciality-error').html('');
+			}
 
-		if (valid) {
-			form.submit();
-		}
-	});
-	form.addEventListener('reset', e => {
-		e.preventDefault;
-		document
-			.querySelectorAll('.error')
-			.forEach(item => (item.innerHTML = ''));
+			if ($('#rank').val() === '') {
+				valid = false;
+				$('#rank-error').html('Vui lòng chọn chức danh');
+			} else {
+				$('#rank-error').html('');
+			}
+
+			if ($('#price').val() === '') {
+				valid = false;
+				$('#price-error').html('Vui lòng nhập giá khám');
+			} else {
+				$('#price-error').html('');
+			}
+
+			if ($('#description').val() === '') {
+				valid = false;
+				$('#description-error').html('Vui lòng nhập mô tả');
+			} else {
+				$('#description-error').html('');
+			}
+
+			if (valid) {
+				successNotify();
+			}
+		});
+
+		form.on('reset', function (e) {
+			e.preventDefault();
+			$('.error').html('');
+		});
 	});
 </script>
 
