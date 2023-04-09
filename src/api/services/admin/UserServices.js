@@ -1,7 +1,7 @@
 import { User } from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
-import { hashPassword } from '../../utils';
+import { hashPassword, validPassword } from '../../utils';
 import NodeCache from 'node-cache';
 
 const myCache = new NodeCache();
@@ -34,6 +34,22 @@ const getAllUser = async (q = '', currentPage = 1, limit = 10) => {
 		return { rows, currentPage, endPage };
 	} catch (error) {
 		throw new NotFoundError('Cannot get users');
+	}
+};
+
+const getUserById = async id => {
+	try {
+		const user = await User.findByPk(id, {
+			attributes: {
+				exclude: ['password'],
+			},
+		});
+
+		if (!user) throw new NotFoundError('User not found');
+
+		return user;
+	} catch (error) {
+		throw new NotFoundError('Cannot get user');
 	}
 };
 
@@ -146,10 +162,19 @@ const updateUser = async (id, data) => {
 	try {
 		const user = await User.findByPk(id);
 
-		const { password } = data;
+		const {old_password, new_password} = data;
 
-		if (password) {
-			throw new Error('Cannot update password');
+		if (old_password) {
+			const isPasswordValid = await validPassword(old_password, user.password);
+			
+			if (!isPasswordValid) {
+				throw new Error('Old password is invalid');
+			}
+		}
+
+		if (new_password) {
+			const hashedPassword = await hashPassword(new_password);
+			data.password = hashedPassword;
 		}
 
 		user.set({
@@ -157,7 +182,6 @@ const updateUser = async (id, data) => {
 		});
 
 		await user.save();
-
 		return user;
 	} catch (error) {
 		const { errors } = error;
@@ -236,6 +260,7 @@ const resetPassword = async id => {
 
 export default {
 	getAllUser,
+	getUserById,
 	getAllUserByRole,
 	createUser,
 	updateUser,

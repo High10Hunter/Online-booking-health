@@ -89,7 +89,6 @@ const adminRoutes = app => {
 		ScheduleController.index
 	);
 
-
 	router.get(
 		'/api/getScheduleOfDoctor/:id',
 		verifyAccessToken,
@@ -115,11 +114,7 @@ const adminRoutes = app => {
 	router.post('/doctors/update', DoctorController.update);
 
 	//* account settings
-	router.get(
-		'/account',
-		verifyAccessToken,
-		AccountController.index
-	);
+	router.get('/account', verifyAccessToken, AccountController.index);
 
 	router.post('/account', AccountController.update);
 
@@ -173,15 +168,8 @@ const adminRoutes = app => {
 		ScheduleController.destroy
 	);
 
-	//* manage doctors routes
-	router.get(
-		'/doctors/update',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		DoctorController.getDoctor
-	);
-
 	router.post('/doctors/update', DoctorController.update);
+
 	app.use('/admin', router);
 };
 
