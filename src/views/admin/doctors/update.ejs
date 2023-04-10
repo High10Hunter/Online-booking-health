@@ -292,7 +292,6 @@
 			$.ajax({
 				method: 'POST',
 				url: '/admin/doctors/' + doctorId + '/update',
-				// data
 				data: form.serialize(),
 				success: function (response) {
 					toastr['success'](

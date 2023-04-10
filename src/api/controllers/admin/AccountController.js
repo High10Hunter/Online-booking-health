@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import UserServices from '../../services/admin/UserServices';
+import User from '../../services/admin/UserServices';
 
 const index = async (req, res) => {
 	try {
 		const { id } = req.payload;
-		const user = await UserServices.getUserById(id);
+		const user = await User.getUserById(id);
 
 		return res.render('./admin/account', {
 			title: 'Cài đặt tài khoản',
@@ -27,7 +27,7 @@ const update = async (req, res) => {
 			});
 		}
 
-		const user = await UserServices.updateUser(req.payload.id, req.body);
+		const user = await User.updateUser(req.payload.id, req.body);
 
 		return res.status(StatusCodes.OK).json({
 			message: 'Update user successfully',

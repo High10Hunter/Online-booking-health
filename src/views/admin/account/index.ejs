@@ -1,51 +1,22 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
+			<div class="row">
+				<div class="col-md-2 mb-1">
+					<a href="/admin">
+						<i class="dripicons-arrow-thin-left"> Quay lại</i>
+					</a>
+				</div>
+			</div>
 			<h3>Cài đặt tài khoản</h3>
 			<div class="row">
 				<div class="col-12">
 					<form
 						id="account-settings-form"
 						class="form-horizontal"
-						action="/account"
-						method="POST"
+						data-user-id="<%= user.id %>"
 					>
-						<div class="form-group left-side">
-							<div class="form-group picture-form">
-								<div class="user-box text-center">
-									<img
-										src="/admin/assets/images/users/user-1.jpg"
-										alt="user-img"
-										title="Mat Helme"
-										class="rounded-circle img-thumbnail avatar-lg"
-									/>
-									<div class="dropdown">
-										<a
-											href="#"
-											class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
-											data-toggle="dropdown"
-										>
-										</a>
-									</div>
-									<p class="text-dark"><%= user.name %></p>
-								</div>
-							</div>
-							<div class="form-group row info-form">
-								<div class="col-sm-12 info">
-									<label for="name">Số điện thoại:</label>
-									<p class="text-dark">
-										<%= user.phone_number %>
-									</p>
-								</div>
-
-								<div class="col-sm-12 info">
-									<label for="gender">Email liên hệ:</label>
-									<p class="text-dark"><%= user.email %></p>
-								</div>
-							</div>
-						</div>
-
-						<div class="form-group col-9 right-side">
+						<div class="form-group col-12">
 							<!-- Tab items -->
 							<div class="form-group col-12 tabs">
 								<div class="tab-item col-sm-6 active">
@@ -76,6 +47,90 @@
 												name="name"
 												placeholder="Họ và tên"
 												value="<%= user.name %>"
+											/>
+										</div>
+										<div class="form-group col-6 picture-row">
+											
+											<!-- <div class="form-group picture-form">
+												<div class="user-box text-center">
+													<img
+														src="/admin/assets/images/users/user-1.jpg"
+														alt="user-img"
+														title="Mat Helme"
+														class="rounded-circle img-thumbnail avatar-lg"
+													/>
+													<div class="dropdown">
+														<a
+															href="#"
+															class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+															data-toggle="dropdown"
+														>
+														</a>
+													</div>
+												</div>
+											</div> -->
+											<label for="avatar">Ảnh:</label>
+											<div>
+												<input
+												type="file"
+												name="avatar"
+												id="fileInput"
+												accept="image/jpg, image/jpeg, image/png"
+												style="margin-top:10px; max-width:95%; display:none;"
+												/>
+												<label for="fileInput" class="btn btn-sm btn-primary" style="width: 90px;">Thay đổi</label>
+												
+												<button id="remove-picture" class="btn btn-sm btn-secondary" style="width: 90px; margin-bottom:8px; margin-left:10px;">XÓA ẢNH</button>
+											</div>
+											<div>
+												<% if (user.avatar) { %>
+													<img
+														id="preview"
+														src="<%= user.avatar %>"
+														alt="user-image"
+														class="rounded-circle img-thumbnail picture-form"
+													/>
+													<% } else { %>
+													<img
+														id="preview"
+														src="https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>"
+														alt="avatar"
+														class="rounded-circle img-thumbnail picture-form"
+													/>
+					
+													<% } %>
+	
+											</div>
+											<!-- <label for="avatar">
+												<div class="PhotoField_chooseAva__w-IYZ">
+													<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="camera" class="svg-inline--fa fa-camera PhotoField_chooseImg__-hTB8" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+														<path fill="currentColor" d="M194.6 32H317.4C338.1 32 356.4 45.22 362.9 64.82L373.3 96H448C483.3 96 512 124.7 512 160V416C512 451.3 483.3 480 448 480H64C28.65 480 0 451.3 0 416V160C0 124.7 28.65 96 64 96H138.7L149.1 64.82C155.6 45.22 173.9 32 194.6 32H194.6zM256 384C309 384 352 341 352 288C352 234.1 309 192 256 192C202.1 192 160 234.1 160 288C160 341 202.1 384 256 384z">
+
+														</path>
+													</svg>
+												</div>
+												<div class="PhotoField_pickAva__h-Ysn">
+													<input type="file" accept="image/jpg, image/jpeg, image/png" id="avatar">
+												</div>
+											</label> -->
+
+										</div>
+									</div>
+									<div class="form-group row col-12">
+										<div class="col-6">
+											<label for="birthday"
+												>Ngày sinh:</label
+											>
+											<span
+												class="error"
+												id="birthday-error"
+											></span>
+											<input
+												type="date"
+												class="col-sm-12"
+												id="birthday"
+												name="birthday"
+												value="<%= user.birthday %>"
 											/>
 										</div>
 										<div class="col-6">
@@ -124,6 +179,7 @@
 										</div>
 									</div>
 									<div class="form-group row col-12">
+
 										<div class="col-6">
 											<label for="phone"
 												>Số điện thoại:</label
@@ -132,6 +188,9 @@
 												class="error"
 												id="phone-error"
 											></span>
+											<span>
+												<i class=""></i>
+											</span>
 											<input
 												type="number"
 												class="col-sm-12"
@@ -158,24 +217,7 @@
 										</div>
 									</div>
 
-									<div class="form-group row col-12">
-										<div class="col-6">
-											<label for="birthday"
-												>Ngày sinh:</label
-											>
-											<span
-												class="error"
-												id="birthday-error"
-											></span>
-											<input
-												type="date"
-												class="col-sm-12"
-												id="birthday"
-												name="birthday"
-												value="<%= user.birthday %>"
-											/>
-										</div>
-									</div>
+
 
 									<div
 										class="form-group row"
@@ -186,7 +228,8 @@
 										"
 									>
 										<button
-											type="submit"
+											type="button"
+											id="save-btn"
 											class="btn btn-sm btn-primary update-info-btn"
 										>
 											Cập nhật
@@ -217,6 +260,7 @@
 												id="username"
 												name="username"
 												placeholder="Tên đăng nhập"
+												value="<%= user.username %>"
 												disabled
 											/>
 										</div>
@@ -401,24 +445,9 @@
 		min-height: 470px;
 		background: #fff;
 		margin: 0 auto;
+		padding: 0 30px;
 		position: relative;
 		box-shadow: 2px 5px 20px rgba(119, 119, 119, 0.5);
-	}
-
-	.left-side {
-		float: left;
-		position: absolute;
-		width: 20%;
-		height: 100%;
-		background: #71b6f9;
-		box-shadow: -2px 3px 10px rgb(119, 119, 119, 0.5);
-		border-right: 1px solid #ccc;
-		padding-top: 35px;
-	}
-
-	.right-side {
-		margin-left: 22%;
-		padding-top: 5px;
 	}
 
 	p {
@@ -438,21 +467,20 @@
 		margin-left: 2px;
 	}
 
-	.picture-form,
-	.info {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		/* border-top: 1px solid #ccc; */
+	.rounded-circle.img-thumbnail.picture-form {
+		display: block;
+		width: 12vw;
+		height: 12vw;
+		position: absolute;
+		top:0;
+		right:10%;
 	}
 
 	input[type='text'],
 	input[type='password'],
 	input[type='email'],
 	input[type='number'],
-	input[type='date'],
-	select {
+	input[type='date']{
 		padding: 7px 5px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
@@ -567,219 +595,252 @@
 		display: block;
 	}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 <%- contentFor('js') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
 <script>
-	function previewImage(event) {
-		const preview = document.getElementById('preview');
-		preview.style.display = 'block';
-		preview.src = URL.createObjectURL(event.target.files[0]);
-	}
+$(document).ready(function () {
+	$('#fileInput').change(function() {
+		var input = this;
+		if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			$('#preview').attr('src', e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]); // convert to base64 string
+		}
+	});
+	$('#remove-picture').click(function(){
+		$('#preview').attr('src', 'https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>');
+		$('#fileInput').val('');
+	});
 
-	const $ = document.querySelector.bind(document);
-	const $$ = document.querySelectorAll.bind(document);
-
-	const tabs = $$('.tab-item');
-	const panes = $$('.tab-pane');
+	const tabs = $('.tab-item');
+	const panes = $('.tab-pane');
 
 	const tabActive = $('.tab-item.active');
 	const line = $('.tabs .line');
 
 	requestIdleCallback(function () {
-		line.style.left = tabActive.offsetLeft + 'px';
-		line.style.width = tabActive.offsetWidth + 'px';
+		line.css('left', tabActive.offsetLeft + 'px');
+		line.css('width', tabActive.offsetWidth + 'px');
 	});
 
-	tabs.forEach((tab, index) => {
-		const pane = panes[index];
+	tabs.each(function (index, tab) {
+		const pane = panes.eq(index);
 
-		tab.onclick = function () {
-			$('.tab-item.active').classList.remove('active');
-			$('.tab-pane.active').classList.remove('active');
+		$(tab).click(function () {
+		$('.tab-item.active').removeClass('active');
+		$('.tab-pane.active').removeClass('active');
 
-			line.style.left = this.offsetLeft + 'px';
-			line.style.width = this.offsetWidth + 'px';
+		line.css('left', $(this).offsetLeft + 'px');
+		line.css('width', $(this).offsetWidth + 'px');
 
-			this.classList.add('active');
-			pane.classList.add('active');
-		};
+		$(this).addClass('active');
+		pane.addClass('active');
+		});
 	});
 
-	const form = document.getElementById('account-settings-form');
-	const name = document.getElementById('name');
-	const gender = document.getElementsByName('gender');
-	const birthday = document.getElementById('birthday');
-	const phone = document.getElementById('phone');
-	const email = document.getElementById('email');
-	const role = document.getElementById('role');
-	const status = document.getElementsByName('status');
+	const form = $('#account-settings-form');
 
-	form.addEventListener('submit', e => {
+
+	toastr.options = {
+		closeButton: true,
+		debug: false,
+		newestOnTop: false,
+		progressBar: false,
+		positionClass: 'toast-bottom-left',
+		preventDuplicates: true,
+		onclick: null,
+		showDuration: '300',
+		hideDuration: '1000',
+		timeOut: '5000',
+		extendedTimeOut: '1000',
+		showEasing: 'swing',
+		hideEasing: 'linear',
+		showMethod: 'fadeIn',
+		hideMethod: 'fadeOut',
+	};
+
+	function successNotify(){
+		
+		var userId = $('#account-settings-form').data('user-id');
+		$.ajax({
+			method: 'POST',
+			url: '/account',
+			data: form.serialize(),
+			success: function (response) {
+				toastr['success'](
+					'Cập nhật tài khoản thành công',
+					'Thành công'
+				);
+			},
+			error: function (xhr, status, error) {
+				toastr['error'](
+					'Không thể cập nhật tài khoản này',
+					'Thất bại'
+				);
+			},
+		});
+		
+	}
+
+	$('#save-btn').click(function (e)  {
 		e.preventDefault();
 
 		let valid = true;
 
-		if (name.value === '') {
+		if ($('#name').val() === '') {
 			valid = false;
-			document.getElementById('name-error').innerHTML =
-				'Vui lòng nhập tên người dùng';
+			$('#name-error').html('Vui lòng nhập tên người dùng');
 		} else {
-			document.getElementById('name-error').innerHTML = '';
+			$('#name-error').html('');
 		}
 
 		let selectedGender = '';
-		for (let i = 0; i < gender.length; i++) {
-			if (gender[i].checked) {
-				selectedGender = gender[i].value;
+		$('input[name="gender"]').each(function (index, item) {
+			if ($(item).prop('checked')) {
+			selectedGender = $(item).val();
 			}
-		}
+		});
 		if (selectedGender === '') {
 			valid = false;
-			document.getElementById('gender-error').innerHTML =
-				'Giới tính không hợp lệ';
+			$('#gender-error').html('Giới tính không hợp lệ');
 		} else {
-			document.getElementById('gender-error').innerHTML = '';
+			$('#gender-error').html('');
 		}
 
-		if (birthday.value === '') {
+		if ($('#birthday').val() === '') {
 			valid = false;
-			document.getElementById('birthday-error').innerHTML =
-				'Ngày sinh không hợp lệ';
+			$('#birthday-error').html('Ngày sinh không hợp lệ');
 		} else {
-			document.getElementById('birthday-error').innerHTML = '';
+			$('#birthday-error').html('');
 		}
 
-		if (phone.value === '' || phone.value.length < 10) {
+		if ($('#phone').val() === '' || $('#phone').val().length < 10) {
 			valid = false;
-			document.getElementById('phone-error').innerHTML =
-				'Số điện thoại không hợp lệ';
+			$('#phone-error').html('Số điện thoại không hợp lệ');
 		} else {
-			document.getElementById('phone-error').innerHTML = '';
+			$('#phone-error').html('');
 		}
 
-		if (email.value === '') {
+		if ($('#email').val() === '') {
 			valid = false;
-			document.getElementById('email-error').innerHTML =
-				'Vui lòng nhập email';
-		} else if (!email.value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
+			$('#email-error').html('Vui lòng nhập email');
+		} else if (!$('#email').val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
 			valid = false;
-			document.getElementById('email-error').innerHTML =
-				'Email không hợp lệ';
+			$('#email-error').html('Email không hợp lệ');
 		} else {
-			document.getElementById('email-error').innerHTML = '';
+			$('#email-error').html('');
 		}
 
 		if (valid) {
-			form.submit();
+			successNotify();
 		}
 	});
 
-	form.addEventListener('reset', e => {
+	form.on('reset', function (e) {
 		e.preventDefault;
-		document
-			.querySelectorAll('.error')
-			.forEach(item => (item.innerHTML = ''));
+		$('.error').each(function (index, item) {
+			$(item).html('');
+		});
 	});
 
-	const editUsernameButton = document.getElementById('edit-username-btn');
-	const cancelUsernameButton = document.getElementById('cancel-username-btn');
-	const saveUsernameButton = document.getElementById('save-username-btn');
-	const usernameInput = document.getElementById('username');
+	const editUsernameButton = $('#edit-username-btn');
+	const cancelUsernameButton = $('#cancel-username-btn');
+	const saveUsernameButton = $('#save-username-btn');
+	const usernameInput = $('#username');
 
-	const changePasswordForm = document.getElementById('change-password-form');
-	const changePasswordButton = document.getElementById('change-password-btn');
-	const cancelPasswordButton = document.getElementById('cancel-password-btn');
-	const savePasswordButton = document.getElementById('save-password-btn');
+	const changePasswordForm = $('#change-password-form');
+	const changePasswordButton = $('#change-password-btn');
+	const cancelPasswordButton = $('#cancel-password-btn');
+	const savePasswordButton = $('#save-password-btn');
 
-	editUsernameButton.addEventListener('click', function (e) {
+	editUsernameButton.click(function (e) {
 		e.preventDefault();
-		
-		editUsernameButton.style.display = 'none';
-		usernameInput.disabled = false;
+		editUsernameButton.hide();
+		usernameInput.prop('disabled', false);
 		usernameInput.focus();
-		document.getElementById('confirm-edit-username-btn').style.display =
-			'block';
+		usernameInput.css({
+			'border': '3px solid #71b6f9',
+		});
+		$('#confirm-edit-username-btn').show();
 	});
 
-	cancelUsernameButton.addEventListener('click', function () {
-		editUsernameButton.style.display = 'block';
-		usernameInput.disabled = true;
-		document.getElementById('confirm-edit-username-btn').style.display =
-			'none';
+	cancelUsernameButton.click(function () {
+		editUsernameButton.show();
+		usernameInput.prop('disabled', true);
+		usernameInput.css({
+			'border': '1px solid #ccc',
+		});
+		$('#confirm-edit-username-btn').hide();
 	});
 
-	saveUsernameButton.addEventListener('click', function (e) {
+	saveUsernameButton.click(function (e) {
 		e.preventDefault();
-		// do something to save the new username
-		// for now we'll just disable the input and hide the buttons again
-		if (usernameInput.value === '') {
-			document.getElementById('username-error').innerHTML =
-				'Tên người dùng không hợp lệ';
+		if (usernameInput.val() === '') {
+			$('#username-error').html('Tên người dùng không hợp lệ');
 			return;
 		} else {
-			document.getElementById('username-error').innerHTML = '';
-			// form.submit();
+			$('#username-error').html('');
+			successNotify();
 		}
-
-		usernameInput.disabled = true;
-		document.getElementById('confirm-edit-username-btn').style.display =
-			'none';
-		editUsernameButton.style.display = 'block';
+		usernameInput.prop('disabled', true);
+		usernameInput.css({
+			'border': '1px solid #ccc',
+		});
+		$('#confirm-edit-username-btn').hide();
+		editUsernameButton.show();
 	});
 
-	changePasswordButton.addEventListener('click', function (e) {
+	changePasswordButton.click(function (e) {
 		e.preventDefault();
 
-		changePasswordButton.style.display = 'none';
-		changePasswordForm.style.display = 'block';
+		changePasswordButton.hide();
+		changePasswordForm.show();
 	});
 
-	cancelPasswordButton.addEventListener('click', function () {
-		changePasswordButton.style.display = 'block';
-		changePasswordForm.style.display = 'none';
-		// reset all elements in the form changePasswordForm
-		changePasswordForm;
+	cancelPasswordButton.click(function () {
+		changePasswordButton.show();
+		changePasswordForm.hide();
 	});
 
-	savePasswordButton.addEventListener('click', function (e) {
+	savePasswordButton.click(function (e) {
 		e.preventDefault();
-		// do something to save the new username
-		// for now we'll just disable the input and hide the buttons again
 
 		let valid = true;
 
-		const oldPasswordInput = document.getElementById('old-password').value;
-		const newPasswordInput = document.getElementById('new-password').value;
-		const confirmPasswordInput =
-			document.getElementById('confirm-password').value;
+		const oldPasswordInput = $('#old-password').val();
+		const newPasswordInput = $('#new-password').val();
+		const confirmPasswordInput = $('#confirm-password').val();
 
 		if (oldPasswordInput === '') {
 			valid = false;
-			document.getElementById('old-password-error').innerHTML =
-				'Vui lòng nhập mật khẩu cũ';
+			$('#old-password-error').html('Vui lòng nhập mật khẩu cũ');
 		} else {
-			document.getElementById('old-password-error').innerHTML = '';
+			$('#old-password-error').html('');
 		}
 		if (newPasswordInput === '') {
 			valid = false;
-			document.getElementById('new-password-error').innerHTML =
-				'Vui lòng nhập mật khẩu mới';
+			$('#new-password-error').html('Vui lòng nhập mật khẩu mới');
 		}
-		else if (newPasswordInput.match(/^(?=.[\W_])(?=.[a-zA-Z]).{8,}$/) === null) {
-			// regex to check if password contains special characters, 8 length
+		else if (!newPasswordInput.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/)) {
+
 			valid = false;
-			document.getElementById('new-password-error').innerHTML =
-				'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số, chứa ký tự đặc biệt';
+			alert(newPasswordInput + '  ' + newPasswordInput.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/));
+			// console.log(newPasswordInput.match(/^(?=.[\W_])(?=.[a-zA-Z]).{8,}$/)===null);
+			$('#new-password-error').html('Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ và số, chứa ký tự đặc biệt');
 		}
 		else {
-			document.getElementById('new-password-error').innerHTML = '';
+			$('#new-password-error').html('');
 		}
 		if (confirmPasswordInput === '') {
 			valid = false;
-			document.getElementById('confirm-password-error').innerHTML =
-				'Vui lòng nhập lại mật khẩu mới';
+			$('#confirm-password-error').html('Vui lòng nhập lại mật khẩu mới');
 		} else {
-			document.getElementById('confirm-password-error').innerHTML = '';
+			$('#confirm-password-error').html('');
 		}
 
 		if (
@@ -788,14 +849,14 @@
 			newPasswordInput !== confirmPasswordInput
 		) {
 			valid = false;
-			document.getElementById('confirm-password-error').innerHTML =
-				'Mật khẩu không khớp';
+			$('#confirm-password-error').html('Mật khẩu không khớp');
 		}
 
 		if (valid) {
-			form.submit();
-			changePasswordButton.style.display = 'block';
-			changePasswordForm.style.display = 'none';
+			successNotify();
+			changePasswordButton.show();
+			changePasswordForm.hide();
 		}
 	});
+});
 </script>
