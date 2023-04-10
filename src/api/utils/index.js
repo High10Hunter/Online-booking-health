@@ -1,12 +1,18 @@
 const { hashPassword, validPassword } = require('./hashPassword');
 const { handleAsync } = require('./handleAsync');
-const { cronJob } = require('./cronJob');
+const {
+	createScheduleCronJob,
+	deleteUnconfirmedAppointmentCronJob,
+} = require('./cronJob');
 const { configureMulter } = require('./uploadMedia');
+const { sendMail } = require('./sendMail');
 
 module.exports = {
 	hashPassword,
 	validPassword,
 	handleAsync,
-	cronJob,
+	createScheduleCronJob,
+	deleteUnconfirmedAppointmentCronJob,
 	configureMulter,
+	sendMail,
 };

@@ -7,7 +7,10 @@ import viewEngine from './api/config/viewEngine';
 import notFoundMiddleware from './api/middlewares/not-found';
 import errorHandlerMiddleware from './api/middlewares/error-handler';
 import issueAuthHeader from './api/middlewares/issueAuthHeader';
-import { cronJob } from './api/utils';
+import {
+	createScheduleCronJob,
+	deleteUnconfirmedAppointmentCronJob,
+} from './api/utils';
 
 const app = express();
 
@@ -17,7 +20,8 @@ app.use(cookieParser());
 viewEngine(app);
 
 //start cron job to create schedule for next week
-cronJob();
+// createScheduleCronJob();
+// deleteUnconfirmedAppointmentCronJob();
 
 web.clientRoutes(app);
 
