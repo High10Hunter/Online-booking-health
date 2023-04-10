@@ -4,7 +4,17 @@
             <div class="heading-intro">
                 <div class="heading-intro-img-wrapper">
                     <a href="">
-                        <img class="heading-intro-img" src="/client/assets/images/155419nguyen-thi-kim-loan.jpg"  alt="">
+                        <% if (schedule.doctor.user.avatar) { %>
+                            <img
+                                src="<%= schedule.doctor.user.avatar %>"
+                                class="heading-intro-img"
+                            />
+                            <% } else { %>
+                            <img
+                                src="https://api.dicebear.com/6.x/initials/svg?seed=<%= schedule.doctor.user.name %>"
+                                class="heading-intro-img"
+                            />
+                            <% } %>
                     </a>
                 </div>
 
@@ -13,11 +23,16 @@
                         ĐẶT LỊCH KHÁM
                     </h1>
                     <h2>
-                        <a href=""> Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan </a>
+                        <a href=""> 
+                            <%= schedule.doctor.getRankName() %> <%= schedule.doctor.user.name %>
+                        </a>
                     </h2>
+                    <b>Chuyên khoa:</b> <%= schedule.doctor.speciality.name %>
 
                     <div class="heading-intro-time">
-                        07:30 - 08:00 - Thứ 6 - 17/03/2023
+                        <b> Ca khám: </b> <%= schedule.shift.start_time.slice(0, -3) %> - <%= schedule.shift.end_time.slice(0, -3) %> 
+                        <span> | <b> Ngày khám: </b> </span>
+                        <%= new Date(schedule.date).toLocaleDateString('en-GB') %>
                     </div>
 
                 </div>
@@ -27,108 +42,108 @@
 
     <div class="booking-page-content">
         <div class="booking-page-wrapper">
-            <form action="" id="booking-form">
-                <div class="booking-price-list">
-                    <div class="booking-page-price">
-                        <span>Giá khám<span>
-                        <div>150.000 đ</div>
-                    </div>
-                </div>
-                Họ và tên (<span style="color: red">*</span>)
-                <div class="input-describe">
-                    Hãy ghi rõ Họ Và Tên, viết hoa những chữ cái đầu tiên, ví dụ: Trần Văn Phú
-                </div>
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="dauvao-bt bt-g bt-g-nguoi"></span>
-                        <input class="input-line" id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="text" placeholder="Nhập họ và tên" autocomplete="name">
-                    </div>
-                    <div class="dauvao-thongbao"></div>
-                </div>
-
-                Ngày sinh (<span style="color: red">*</span>)
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="dauvao-bt bt-g bt-g-nguoi"></span>
-                        <input  id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="date" placeholder="Nhập ngày sinh" autocomplete="name">
-                    </div>
-                    <div class="dauvao-thongbao"></div>
-                </div>
-
-                Giới tính (<span style="color: red">*</span>)
-                <div class="input-group display_flex">
-                    <label>
-                        <input class="" type="radio" name="book_for" value="0" dl-luu="book_for" dl-name="datcho" dl-value="minh">
-                        Nam
-                    </label>
-
-                    <label>
-                        <input class="" type="radio" name="book_for" value="1" dl-luu="book_for" dl-name="datcho" dl-value="nguoi">
-                        Nữ
-                    </label>
-                </div>
-
-                Số điện thoại (<span style="color: red">*</span>)
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="dauvao-bt bt-g bt-g-nguoi"></span>
-                        <input class="input-line" id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="text" placeholder="Nhập số điện thoại liên hệ" autocomplete="name">
-                    </div>
-                    <div class="dauvao-thongbao"></div>
-                </div>
-
-                Email (<span style="color: red">*</span>)
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="dauvao-bt bt-g bt-g-nguoi"></span>
-                        <input class="input-line" id="name" name="name" onblur="normalizeName()" value="" dl-luu="name" type="text" placeholder="Nhập địa chỉ email" autocomplete="name">
-                    </div>
-                    <div class="dauvao-thongbao"></div>
-                </div>
-                Lý do khám (<span style="color: red">*</span>)
-                <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="dauvao-bt bt-g bt-g-cong-tron"></span>
-                        <textarea name="" class="dauvao-nhap text-area-reason" placeholder="Lý do khám"></textarea>
-                    </div>
-                    <div class="dauvao-thongbao">
-                    </div>
-                </div>
-
-                <div class="input-ground">
-                    <div class="input-wrapper">
-                        <p class="input-payingMethod">Hình thức thanh toán</p>
-
-                        <div class="input-payingMedthod-choice">
-                            <input class="dauvao-nhap" type="radio" name="pay_type" value="1" checked="checked">
-                            <label for="">
-                                Thanh toán sau tại cơ sở y tế
+            <div class="card">
+                <div class="card-body">
+                    <form action="/booking" method="POST" id="booking-form" role="form" class="form-horizontal" >
+                        <div class="booking-price-list">
+                            <div class="booking-page-price">
+                                <span>Giá khám<span>
+                                <div>
+                                    <span class="booking-page-price-value">
+                                        <%= new Intl.NumberFormat('vi-VN', { style:
+                                        'currency', currency: 'VND'
+                                        }).format(schedule.doctor.price); %> 
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="schedule_id" value="<%= schedule.id %>">
+                        <input type="hidden" name="price" value="<%= schedule.doctor.price %>">
+                        Họ và tên (<span style="color: red">*</span>)
+                        <div class="input-describe mb-1">
+                            Hãy ghi rõ Họ Và Tên, viết hoa những chữ cái đầu tiên, ví dụ: Trần Văn Phú
+                        </div>
+                        <div class="form-group row my-1">
+                            <div class="col-sm-10">
+                                <input type="text" name="name" class="form-control py-2" placeholder="Nhập họ và tên...">
+                            </div>
+                        </div>
+        
+                        Ngày sinh (<span style="color: red">*</span>)
+                        <div class="form-group row my-1">
+                            <div class="col-sm-4">
+                                <input class="form-control py-2" name="birthday" type="date">
+                            </div>
+                        </div>
+        
+                        Giới tính (<span style="color: red">*</span>)
+                        <div class="input-group display_flex">
+                            <label>
+                                <input class="" type="radio" name="gender" value="1" dl-luu="book_for" dl-name="datcho" dl-value="minh">
+                                Nam
+                            </label>
+        
+                            <label>
+                                <input class="" type="radio" name="gender" value="0" dl-luu="book_for" dl-name="datcho" dl-value="nguoi">
+                                Nữ
                             </label>
                         </div>
+        
+                        Số điện thoại (<span style="color: red">*</span>)
+                        <div class="form-group row my-1">
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control py-2" name="phone_number" placeholder="Nhập số điện thoại...">
+                            </div>
+                        </div>
+        
+                        Email (<span style="color: red">*</span>)
+                        <div class="form-group row my-1">
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control py-2" name="email" placeholder="Nhập email...">
+                            </div>
+                        </div>
+                        Lý do khám (<span style="color: red">*</span>)
+                        <div class="form-group row my-1">
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="5" name="description" placeholder="Nhập lý do khám..."
+                                style="font-size: medium"></textarea>
+                            </div>
+                        </div>
+        
+                        <div class="input-ground">
+                            <div class="input-wrapper">
+                                <p class="input-payingMethod">Hình thức thanh toán</p>
+        
+                                <div class="input-payingMedthod-choice">
+                                    <input class="dauvao-nhap" type="radio" value="1" checked="checked">
+                                    <label for="">
+                                        Thanh toán sau tại cơ sở y tế
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="booking-paying-note">
+                            <p>
+                                <b>LƯU Ý</b>
+                            </p>
+                            <p>
+                                Thông tin anh/chị cung cấp sẽ được sử dụng làm hồ sơ khám bệnh, khi điền thông tin anh/chị vui lòng:
+                            </p>
+                            <ul>
+                                <li>
+                                    Ghi rõ họ và tên, viết hoa những chữ cái đầu tiên, ví dụ: <b>Trần Văn Phú </b>
+                                </li>
+                                <li>Điền đầy đủ, đúng và vui lòng kiểm tra lại thông tin trước khi ấn "Xác nhận"</li>
+                            </ul>
+                        </div>
+        
+                    </form>
+                    <div class="input-group">
+                        <button class="submit-btn" data-toggle="modal" data-target="#confirmModal">Xác nhận đặt khám</button>
                     </div>
                 </div>
-               
-                <div class="booking-paying-note">
-                    <p>
-                        <b>LƯU Ý</b>
-                    </p>
-                    <p>
-                        Thông tin anh/chị cung cấp sẽ được sử dụng làm hồ sơ khám bệnh, khi điền thông tin anh/chị vui lòng:
-                    </p>
-                    <ul>
-                        <li>
-                            Ghi rõ họ và tên, viết hoa những chữ cái đầu tiên, ví dụ: <b>Trần Văn Phú </b>
-                        </li>
-                        <li>Điền đầy đủ, đúng và vui lòng kiểm tra lại thông tin trước khi ấn "Xác nhận"</li>
-                    </ul>
-                </div>
-
-                <div class="input-group">
-                    <button class="submit-btn">Xác nhận đặt khám</button>
-                </div>    
-
-
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -137,23 +152,46 @@
 <%- include('style') %>
 
 <%- contentFor('js') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    const choose = (event) => {
-        const priceDivs = document.querySelectorAll('.booking-page-price');
-        const priceDiv = event.target.closest('.booking-page-price');
-        if (priceDiv) {
-            const radioBtn = priceDiv.querySelector('input[name="price"]');
-            if (radioBtn) {
-            radioBtn.checked = true;
-            }
-            priceDivs.forEach((div) => {
-            if (div === priceDiv) {
-                div.classList.add('choose');
-            } else {
-                div.classList.remove('choose');
-            }
-            });
-        }
-    };
+    $(document).ready(function () {
+        $('.submit-btn').click(function () {
+            Swal.fire({
+                title: 'Xác nhận đặt khám ?',
+                text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Huỷ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/api/booking",
+                            data: $('#booking-form').serialize(),
+                            dataType: "JSON",
+                        }).done(function (response) {
+                            Swal.fire(
+                                'Thành công',
+                                'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "/";
+                                }
+                            });
+                        }).fail(function (err) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Đã xảy ra lỗi',
+                                text: 'Không thể đặt đơn khám',
+                            })
+                        });
+                    }
+                })
+        });
+    });
 </script>
 

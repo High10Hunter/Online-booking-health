@@ -1,5 +1,8 @@
 'use strict';
 const { Model } = require('sequelize');
+const {
+	default: AppointmentStatusEnum,
+} = require('../enums/AppoimentStatusEnum');
 module.exports = (sequelize, DataTypes) => {
 	class Appointment extends Model {
 		/**
@@ -22,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(User, {
 				foreignKey: 'user_id',
 				as: 'user',
-				allowNull: false,
+				allowNull: true,
 			});
 		}
 	}
@@ -30,16 +33,43 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			description: {
 				type: DataTypes.TEXT,
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: 'Description is required',
+					},
+					notNull: {
+						msg: 'Description is required',
+					},
+				},
 			},
 			diagnosis: {
 				type: DataTypes.TEXT,
 			},
 			price: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: 'Price is required',
+					},
+					notNull: {
+						msg: 'Price is required',
+					},
+				},
 			},
 			status: {
 				type: DataTypes.SMALLINT,
 				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: 'Status is required',
+					},
+					notNull: {
+						msg: 'Status is required',
+					},
+				},
+				defaultValue: AppointmentStatusEnum.NOT_CONFIRMED,
 			},
 		},
 		{
