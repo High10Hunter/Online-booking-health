@@ -6,6 +6,7 @@ import {
 	signAppointmentToken,
 	verifyAppointmentToken,
 } from '../../services/jwt/JwtServices';
+import Doctor from '../../services/client/DoctorServices';
 
 const index = async (req, res) => {
 	const { schedule_id } = req.params;
@@ -15,10 +16,13 @@ const index = async (req, res) => {
 		return res.redirect('/doctors');
 	}
 
+	const specialities = await Doctor.getAllSpeciality();
+
 	res.render('./client/booking', {
 		layout: './layouts/client_layouts/master',
 		title: 'Đặt lịch khám',
 		schedule,
+		specialities,
 	});
 };
 

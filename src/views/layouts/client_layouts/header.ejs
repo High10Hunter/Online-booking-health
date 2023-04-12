@@ -14,7 +14,7 @@
 			</div>
 			<!-- .logo-box -->
 
-			<form method="get" class="searchform">
+			<form method="get" action="/doctors" class="searchform">
 			<div class="form-group row active search">
 					<div class="input-group">
 						<input type="text" class="form-control" name="q" placeholder="Tìm kiếm bác sĩ..."
@@ -40,10 +40,26 @@
 
 		<ul id="menu-mainmenu" class="menu">
 			<li class="current-menu-item parent" onclick="openNewWindow()">
-				<a href="#">
-					Chuyên khoa
-					<span>Tìm bác sĩ theo chuyên khoa</span>
-				</a>
+				<div class="btn-group my-2">
+					<button type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"
+					style="
+						font-weight: 400;
+						font-variant: none;
+						color: black;
+						"
+					>
+						<strong>
+							Chọn chuyên khoa
+						</strong>
+					</button>
+					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+						<% if (typeof specialities !== 'undefined') { %>
+							<% specialities.forEach(function(speciality) { %>
+								<a href="/doctors?page=1&speciality_id=<%= speciality.id %>" class="dropdown-item"><%= speciality.name %></a>
+							<% }) %>
+						<% } %>
+					</div>
+				</div>
 			</li>
 			
 			<li>

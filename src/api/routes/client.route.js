@@ -5,11 +5,7 @@ import AppointmentController from '../controllers/client/AppointmentController';
 const router = Router();
 
 const clientRoutes = app => {
-	router.get('/', (req, res) => {
-		res.render('./client/index', {
-			layout: './layouts/client_layouts/master',
-		});
-	});
+	router.get('/', DoctorController.homepage);
 	router.get('/doctors', DoctorController.index);
 	router.get('/doctor_profile', DoctorController.show);
 	router.get('/booking/:schedule_id', AppointmentController.index);
