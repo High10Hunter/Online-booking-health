@@ -118,10 +118,10 @@ const getDoctorById = async id => {
 				{
 					model: User,
 					as: 'user',
-					attributes: ['name','phone_number','email'],
+					attributes: ['name', 'phone_number', 'email'],
 				},
 			],
-			attributes: ['id','speciality_id','rank','price','description'],
+			attributes: ['id', 'speciality_id', 'rank', 'price', 'description'],
 		});
 
 		if (!doctor) throw new Error('Doctor not found');

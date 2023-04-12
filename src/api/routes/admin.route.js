@@ -103,13 +103,6 @@ const adminRoutes = app => {
 		ScheduleController.create
 	);
 
-	router.post(
-		'/users/users-percentage',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		UserController.getPercentageOfEachRole
-	);
-
 	//* manage doctor's schedule routes
 	router.get(
 		'/schedules',
@@ -141,13 +134,6 @@ const adminRoutes = app => {
 
 	router.delete(
 		'/api/schedules/delete/:id',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.destroy
-	);
-
-	router.delete(
-		'/api/schedule/delete/:id',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.destroy

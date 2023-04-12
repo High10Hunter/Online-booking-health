@@ -61,14 +61,14 @@
 									></span>
 
 									<select
-										name="speciality"
+										name="speciality_id"
 										id="speciality"
 										class="col-sm-12"
 									>
 										<% if (specialities.length != 0) { %> <%
 										specialities.forEach((speciality) => {
 										%>
-										<option value="<%= speciality.id %> <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>">
+										<option value="<%= speciality.id %>" <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>>
 											<%= speciality.name %>
 										</option>
 										<% }) %> <% } %>
