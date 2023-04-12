@@ -113,7 +113,9 @@
 				>
 					<div class="a-doctor-infor">
 						<div class="a-doctor-img">
-							<a href="/doctor_profile">
+							<a
+								href="/doctor_profile?doctor_id=<%= user.doctor.id %>&date=<%= user.doctor.schedules[0].date %>"
+							>
 								<% if (user.avatar) { %>
 								<img
 									data-src=""
@@ -133,13 +135,15 @@
 									alt="Ảnh của bác sĩ"
 								/>
 								<% } %>
-								<div>Xem thêm</div>
+								<div>Chi tiết</div>
 							</a>
 						</div>
 
 						<div class="a-doctor-describe">
 							<h2 class="a-doctor-name">
-								<a href="/doctor_profile">
+								<a
+									href="/doctor_profile?doctor_id=<%=user.doctor.id %>&date=<%= user.doctor.schedules[0].date %>"
+								>
 									<%= user.doctor.getRankName() %> <%=
 									user.name %>
 								</a>
@@ -244,7 +248,11 @@
 
 					<div class="xeplai clearfix"></div>
 				</div>
-				<% }) %> <% } %>
+				<% }) %> <% } else { %>
+				<div class="alert alert-warning" role="alert">
+					Không tìm thấy bác sĩ nào
+				</div>
+				<% } %>
 			</div>
 		</div>
 		<!-- pagination -->

@@ -36,6 +36,7 @@
 					name="doctor_id"
 					value="<%= doctor.id %>"
 				/>
+				<% if (selectedDate) { %>
 				<p class="a-doctor-select-time">
 					<select class="date-select" name="date">
 						<% if (doctor.schedules.length != 0) { %> <%
@@ -53,6 +54,7 @@
 						<% } %> <% }) %> <% } %>
 					</select>
 				</p>
+				<% } %>
 			</form>
 
 			<div
@@ -82,7 +84,9 @@
 								<%= each.shift.start_time.slice(0, -3) %> - <%=
 								each.shift.end_time.slice(0, -3) %>
 							</a>
-							<% }) %> <% } %>
+							<% }) %> <% } else { %>
+							<div class="no-schedule">Không có lịch khám</div>
+							<% } %>
 						</div>
 						<div class="a-doctor-shedule-guide">
 							Chọn
