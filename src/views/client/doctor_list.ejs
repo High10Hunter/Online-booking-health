@@ -9,8 +9,9 @@
 			<div class="wrapper">
 				<div class="specialty-title">
 					<h1 style="margin-bottom: 0">
-						<% if (typeof speciality_id != 'undefined') { %> <%=
-						selectedSpeciality %> <% } else { %> Các bác sĩ của
+						<% if (typeof selectedSpeciality != 'undefined' &&
+						typeof selectedSpecialityName != 'undefined') { %> <%=
+						selectedSpecialityName %> <% } else { %> Các bác sĩ của
 						phòng khám <% } %>
 					</h1>
 				</div>

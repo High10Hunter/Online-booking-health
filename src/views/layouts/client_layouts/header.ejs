@@ -53,6 +53,7 @@
 						</strong>
 					</button>
 					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+						<a href="/doctors?page=1" class="dropdown-item">Tất cả</a>
 						<% if (typeof specialities !== 'undefined') { %>
 							<% specialities.forEach(function(speciality) { %>
 								<a href="/doctors?page=1&speciality_id=<%= speciality.id %>" class="dropdown-item"><%= speciality.name %></a>
