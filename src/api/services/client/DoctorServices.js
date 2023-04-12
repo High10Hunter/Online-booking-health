@@ -12,12 +12,11 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 		if (currentPage < 0 || limit <= 0)
 			throw new Error('Page or limit is invalid');
 
-		const offset = (currentPage - 1) * limit;
+		const startIndex = (currentPage - 1) * limit;
+		const endIndex = startIndex + limit;
 
 		if (speciality_id) {
-			const { count, rows } = await User.findAndCountAll({
-				offset: offset,
-				limit: limit,
+			let rows = await User.findAll({
 				where: {
 					name: {
 						[Op.iLike]: `%${q}%`,
@@ -26,6 +25,7 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 					role: 3,
 					'$doctor.speciality_id$': speciality_id,
 				},
+				required: true,
 				include: [
 					{
 						model: Doctor,
@@ -37,20 +37,13 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 							'price',
 							'description',
 						],
-						required: false,
+						required: true,
 						subQuery: false,
 						include: [
 							{
-								model: Speciality,
-								as: 'speciality',
-								attributes: ['name'],
-								required: false,
-								subQuery: false,
-							},
-							{
 								model: Schedule,
 								as: 'schedules',
-								required: false,
+								required: true,
 								subQuery: false,
 								where: {
 									// having the date is greater than today to the next 7 days
@@ -64,11 +57,24 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 								attributes: ['date'],
 								order: [['date', 'ASC']],
 							},
+							{
+								model: Speciality,
+								as: 'speciality',
+								attributes: ['name'],
+								required: true,
+								subQuery: false,
+							},
 						],
 					},
 				],
 				attributes: {
-					exclude: ['username', 'refresh_token', 'role', 'status'],
+					exclude: [
+						'username',
+						'password',
+						'refresh_token',
+						'role',
+						'status',
+					],
 				},
 				order: [
 					[
@@ -86,84 +92,8 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 				],
 			});
 
-			if (count === 0) {
-				return { rows: [], currentPage: 1, endPage: 1 };
-			}
+			const count = rows.length;
 
-			const endPage = Math.ceil(count / limit);
-			if (currentPage > endPage) throw new Error('Page is invalid');
-
-			return { rows, currentPage, endPage };
-		} else {
-			let { count, rows } = await User.findAndCountAll({
-				offset: offset,
-				limit: limit,
-				where: {
-					name: {
-						[Op.iLike]: `%${q}%`,
-					},
-					status: true,
-					role: 3,
-				},
-				include: [
-					{
-						model: Doctor,
-						as: 'doctor',
-						attributes: [
-							'id',
-							'speciality_id',
-							'rank',
-							'price',
-							'description',
-						],
-						required: false,
-						subQuery: false,
-						include: [
-							{
-								model: Speciality,
-								as: 'speciality',
-								attributes: ['name'],
-								required: false,
-								subQuery: false,
-							},
-							{
-								model: Schedule,
-								as: 'schedules',
-								required: false,
-								subQuery: false,
-								where: {
-									// having the date is greater than today to the next 7 days
-									date: {
-										[Op.gte]: moment().format('YYYY-MM-DD'),
-										[Op.lte]: moment()
-											.add(7, 'days')
-											.format('YYYY-MM-DD'),
-									},
-								},
-								attributes: ['date'],
-								order: [['date', 'ASC']],
-							},
-						],
-					},
-				],
-				attributes: {
-					exclude: ['username', 'refresh_token', 'role', 'status'],
-				},
-				order: [
-					[
-						{
-							model: Doctor,
-							as: 'doctor',
-						},
-						{
-							model: Schedule,
-							as: 'schedules',
-						},
-						'date',
-						'ASC',
-					],
-				],
-			});
 			if (count === 0) {
 				return { rows: [], currentPage: 1, endPage: 1 };
 			}
@@ -185,6 +115,108 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 				row.doctor.schedules = distinctDateArray;
 			});
 
+			rows = rows.slice(startIndex, endIndex);
+			return { rows, currentPage, endPage };
+		} else {
+			let rows = await User.findAll({
+				where: {
+					name: {
+						[Op.iLike]: `%${q}%`,
+					},
+					status: true,
+					role: 3,
+				},
+				required: true,
+				include: [
+					{
+						model: Doctor,
+						as: 'doctor',
+						attributes: [
+							'id',
+							'speciality_id',
+							'rank',
+							'price',
+							'description',
+						],
+						required: true,
+						subQuery: false,
+						include: [
+							{
+								model: Schedule,
+								as: 'schedules',
+								required: true,
+								subQuery: false,
+								where: {
+									// having the date is greater than today to the next 7 days
+									date: {
+										[Op.gte]: moment().format('YYYY-MM-DD'),
+										[Op.lte]: moment()
+											.add(7, 'days')
+											.format('YYYY-MM-DD'),
+									},
+								},
+								attributes: ['date'],
+								order: [['date', 'ASC']],
+							},
+							{
+								model: Speciality,
+								as: 'speciality',
+								attributes: ['name'],
+								required: true,
+								subQuery: false,
+							},
+						],
+					},
+				],
+				attributes: {
+					exclude: [
+						'username',
+						'password',
+						'refresh_token',
+						'role',
+						'status',
+					],
+				},
+				order: [
+					[
+						{
+							model: Doctor,
+							as: 'doctor',
+						},
+						{
+							model: Schedule,
+							as: 'schedules',
+						},
+						'date',
+						'ASC',
+					],
+				],
+			});
+
+			const count = rows.length;
+
+			if (count === 0) {
+				return { rows: [], currentPage: 1, endPage: 1 };
+			}
+
+			const endPage = Math.ceil(count / limit);
+			if (currentPage > endPage) throw new Error('Page is invalid');
+
+			// loop through the rows to get distinct date
+			rows.forEach(row => {
+				const schedules = row.doctor.schedules;
+				const checkDistinctDate = [];
+				const distinctDateArray = [];
+				schedules.forEach(schedule => {
+					if (!checkDistinctDate.includes(schedule.date)) {
+						checkDistinctDate.push(schedule.date);
+						distinctDateArray.push(schedule);
+					}
+				});
+				row.doctor.schedules = distinctDateArray;
+			});
+
+			rows = rows.slice(startIndex, endIndex);
 			return { rows, currentPage, endPage };
 		}
 	} catch (error) {
