@@ -37,7 +37,7 @@ const getDoctor = async (req, res) => {
 		return res.render('./admin/doctors/update', {
 			doctor: doctor,
 			specialities: specialities,
-			title: 'Cập nhật thông tin bác sĩ'
+			title: 'Cập nhật thông tin bác sĩ',
 		});
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
@@ -45,7 +45,7 @@ const getDoctor = async (req, res) => {
 			data: [],
 		});
 	}
-}
+};
 
 const update = async (req, res) => {
 	try {

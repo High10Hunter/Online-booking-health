@@ -20,6 +20,12 @@ const index = async (req, res) => {
 		);
 
 		const specialities = await Doctor.getAllSpeciality();
+		let selectedSpecialityName = '';
+		if (speciality_id) {
+			selectedSpecialityName = specialities.find(
+				speciality => speciality.id == speciality_id
+			).name;
+		}
 
 		return res.render('./client/doctor_list', {
 			layout: './layouts/client_layouts/master',
@@ -29,6 +35,7 @@ const index = async (req, res) => {
 			search: q,
 			specialities,
 			selectedSpeciality: speciality_id,
+			selectedSpecialityName,
 		});
 	} catch (error) {
 		return res.redirect('/');

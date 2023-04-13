@@ -1,4 +1,12 @@
-import { User, Doctor, Speciality, Schedule, Shift } from '../../models';
+import {
+	User,
+	Doctor,
+	Speciality,
+	Schedule,
+	Shift,
+	Appointment,
+	sequelize,
+} from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import NodeCache from 'node-cache';
@@ -24,6 +32,12 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 					status: true,
 					role: 3,
 					'$doctor.speciality_id$': speciality_id,
+					// schedule is not booked
+					[Op.not]: [
+						sequelize.literal(
+							'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+						),
+					],
 				},
 				required: true,
 				include: [
@@ -54,6 +68,15 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 											.format('YYYY-MM-DD'),
 									},
 								},
+								include: [
+									{
+										model: Appointment,
+										as: 'appointments',
+										required: false,
+										subQuery: false,
+										attributes: ['schedule_id'],
+									},
+								],
 								attributes: ['date'],
 								order: [['date', 'ASC']],
 							},
@@ -125,6 +148,12 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 					},
 					status: true,
 					role: 3,
+					// schedule is not booked
+					[Op.not]: [
+						sequelize.literal(
+							'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+						),
+					],
 				},
 				required: true,
 				include: [
@@ -155,6 +184,15 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 											.format('YYYY-MM-DD'),
 									},
 								},
+								include: [
+									{
+										model: Appointment,
+										as: 'appointments',
+										required: false,
+										subQuery: false,
+										attributes: ['schedule_id'],
+									},
+								],
 								attributes: ['date'],
 								order: [['date', 'ASC']],
 							},
@@ -220,6 +258,111 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 			return { rows, currentPage, endPage };
 		}
 	} catch (error) {
+		console.log(error.message);
+		throw new NotFoundError('Cannot get doctors');
+	}
+};
+
+const getFreeDoctorInShift = async (
+	currentPage = 1,
+	shift_id,
+	speciality_id
+) => {
+	try {
+		const limit = 5;
+
+		if (currentPage < 0 || limit <= 0)
+			throw new Error('Page or limit is invalid');
+
+		const startIndex = (currentPage - 1) * limit;
+		const endIndex = startIndex + limit;
+
+		if (speciality_id) {
+			let rows = await User.findAll({
+				where: {
+					status: true,
+					role: 3,
+					'$doctor.speciality_id$': speciality_id,
+				},
+				required: true,
+				include: [
+					{
+						model: Doctor,
+						as: 'doctor',
+						attributes: ['id', 'rank', 'price', 'description'],
+						required: true,
+						subQuery: false,
+						include: [
+							{
+								model: Schedule,
+								as: 'schedules',
+								required: true,
+								subQuery: false,
+								where: {
+									date: {
+										// equal to today
+										[Op.eq]: moment().format('YYYY-MM-DD'),
+									},
+									shift_id,
+								},
+								attributes: ['date'],
+								order: [['date', 'ASC']],
+							},
+						],
+					},
+				],
+				attributes: {
+					exclude: [
+						'username',
+						'password',
+						'refresh_token',
+						'role',
+						'status',
+					],
+				},
+				order: [
+					[
+						{
+							model: Doctor,
+							as: 'doctor',
+						},
+						{
+							model: Schedule,
+							as: 'schedules',
+						},
+						'date',
+						'ASC',
+					],
+				],
+			});
+
+			const count = rows.length;
+
+			if (count === 0) {
+				return { rows: [], currentPage: 1, endPage: 1 };
+			}
+
+			const endPage = Math.ceil(count / limit);
+			if (currentPage > endPage) throw new Error('Page is invalid');
+
+			// loop through the rows to get distinct date
+			rows.forEach(row => {
+				const schedules = row.doctor.schedules;
+				const checkDistinctDate = [];
+				const distinctDateArray = [];
+				schedules.forEach(schedule => {
+					if (!checkDistinctDate.includes(schedule.date)) {
+						checkDistinctDate.push(schedule.date);
+						distinctDateArray.push(schedule);
+					}
+				});
+				row.doctor.schedules = distinctDateArray;
+			});
+
+			rows = rows.slice(startIndex, endIndex);
+			return { rows, currentPage, endPage };
+		}
+	} catch (error) {
 		console.log(error);
 		throw new NotFoundError('Cannot get doctors');
 	}
@@ -228,6 +371,13 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 const getDoctorById = async id => {
 	try {
 		const doctor = await Doctor.findByPk(id, {
+			where: {
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+					),
+				],
+			},
 			attributes: ['id', 'speciality_id', 'rank', 'price', 'description'],
 			include: [
 				{
@@ -264,6 +414,15 @@ const getDoctorById = async id => {
 								.format('YYYY-MM-DD'),
 						},
 					},
+					include: [
+						{
+							model: Appointment,
+							as: 'appointments',
+							required: false,
+							subQuery: false,
+							attributes: ['schedule_id'],
+						},
+					],
 					attributes: ['date'],
 					order: [['date', 'ASC']],
 				},
@@ -333,9 +492,21 @@ const getShiftsOfDoctor = async (date, doctor_id) => {
 			where: {
 				doctor_id: doctor_id,
 				date: date,
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "appointments"."schedule_id" = "Schedule"."id")'
+					),
+				],
 			},
 			attributes: ['id'],
 			include: [
+				{
+					model: Appointment,
+					as: 'appointments',
+					required: false,
+					subQuery: false,
+					attributes: ['schedule_id'],
+				},
 				{
 					model: Shift,
 					as: 'shift',
@@ -361,6 +532,7 @@ const getShiftsOfDoctor = async (date, doctor_id) => {
 
 		return schedules;
 	} catch (error) {
+		console.log(error.message);
 		throw new Error("Can't get shifts");
 	}
 };
@@ -370,4 +542,5 @@ export default {
 	getDoctorById,
 	getAllSpeciality,
 	getShiftsOfDoctor,
+	getFreeDoctorInShift,
 };
