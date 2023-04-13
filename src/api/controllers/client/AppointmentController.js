@@ -130,6 +130,7 @@ const cancel = async (req, res) => {
 			layout: './client/cancel_appointment',
 			title: 'Hủy lịch khám',
 		});
+		
 	} catch (error) {
 		res.render('./client/error_appointment', {
 			layout: './client/error_appointment',
