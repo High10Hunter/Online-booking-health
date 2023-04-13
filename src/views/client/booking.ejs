@@ -167,11 +167,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-    // const validateEmail = (email) => {
-    //     const regex = /\S+@\S+\.\S+/;
-    //     return regex.test(email);
-    // }
-
 //get input field
 // Get the input fields and the submit button
     const inputName = document.getElementById('form-input-name');
@@ -259,129 +254,83 @@
         }
     });
 
-//         $(document).ready(function () {
-//             $('.submit-btn').click(function () {
-//                 Swal.fire({
-//                     title: 'Xác nhận đặt khám ?',
-//                     text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
-//                     icon: 'question',
-//                     showCancelButton: true,
-//                     confirmButtonColor: '#3085d6',
-//                     cancelButtonColor: '#d33',
-//                     confirmButtonText: 'Xác nhận',
-//                     cancelButtonText: 'Huỷ'
-//                     }).then((result) => {
-//                         if (result.isConfirmed) {
-//                             $.ajax({
-//                                 type: "POST",
-//                                 url: "/api/booking",
-//                                 data: $('#booking-form').serialize(),
-//                                 dataType: "JSON",
-//                             }).done(function (response) {
-//                                 Swal.fire(
-//                                     'Thành công',
-//                                     'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám',
-//                                     'success'
-//                                 ).then((result) => {
-//                                     if (result.isConfirmed) {
-//                                         window.location.href = "/";
-//                                     }
-//                                 });
-//                             }).fail(function (err) {
-//                                 Swal.fire({
-//                                     icon: 'error',
-//                                     title: 'Đã xảy ra lỗi',
-//                                     text: 'Không thể đặt đơn khám',
-//                                 })
-//                             });
-//                         }
-//                     })
-//             });
-// });
-
-$(document).ready(function () {
-  $('.submit-btn').click(function () {
-    // Check the input fields for valid information
-    let errorMessage = '';
-    const inputName = document.getElementById('form-input-name');
-    const inputBirthdate = document.getElementById('form-input-birthdate');
-    const inputPhonenumber = document.getElementById('form-input-phonenumber');
-    const inputEmail = document.getElementById('form-input-email');
-    const inputDescription = document.getElementById('form-texarea-description');
+    $(document).ready(function () {
+    $('.submit-btn').click(function () {
+        // Check the input fields for valid information
+        let errorMessage = '';
+        const inputName = document.getElementById('form-input-name');
+        const inputBirthdate = document.getElementById('form-input-birthdate');
+        const inputPhonenumber = document.getElementById('form-input-phonenumber');
+        const inputEmail = document.getElementById('form-input-email');
+        const inputDescription = document.getElementById('form-texarea-description');
 
 
 
-    if (inputName.value === '') {
-      errorMessage += 'Họ và tên, ';
-    }
+        if (inputName.value === '') {
+        errorMessage += 'Họ và tên, ';
+        }
 
-    if (inputBirthdate.value === '') {
-      errorMessage += 'Ngày sinh, ';
-    }
+        if (inputBirthdate.value === '') {
+        errorMessage += 'Ngày sinh, ';
+        }
 
-    if (inputPhonenumber.value === '' ) {
-      errorMessage += 'Số điện thoại, ';
-    }
+        if (inputPhonenumber.value === '' ) {
+        errorMessage += 'Số điện thoại, ';
+        }
 
-    if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
-      errorMessage += 'Số điện thoại (không hợp lệ), ';
-    }
-    
+        if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
+        errorMessage += 'Số điện thoại (không hợp lệ), ';
+        }
+        
 
-    if (inputEmail.value === '') {
-      errorMessage += 'Email, ';
-    }
+        if (inputEmail.value === '') {
+        errorMessage += 'Email, ';
+        }
 
-    if (inputDescription.value === '') {
-      errorMessage += 'Lý do khám, ';
-    }
+        if (inputDescription.value === '') {
+        errorMessage += 'Lý do khám, ';
+        }
 
-    // If there is an error, show the error message
-    if (errorMessage !== '') {
-      errorMessage = 'Vui lòng nhập đầy đủ thông tin: ' + errorMessage.slice(0, -2);
-      Swal.fire({
-        icon: 'error',
-        title: 'Lỗi',
-        text: errorMessage,
-      });
-      return;
-    }
+        // If there is an error, show the error message
+        if (errorMessage !== '') {
+            return;
+        }
 
-    Swal.fire({
-      title: 'Xác nhận đặt khám ?',
-      text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Xác nhận',
-      cancelButtonText: 'Huỷ',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $.ajax({
-          type: 'POST',
-          url: '/api/booking',
-          data: $('#booking-form').serialize(),
-          dataType: 'JSON',
-        })
-          .done(function (response) {
-            Swal.fire('Thành công', 'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám', 'success').then((result) => {
-              if (result.isConfirmed) {
-                window.location.href = '/';
-              }
+        Swal.fire({
+        title: 'Xác nhận đặt khám ?',
+        text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Huỷ',
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+            type: 'POST',
+            url: '/api/booking',
+            data: $('#booking-form').serialize(),
+            dataType: 'JSON',
+            })
+            .done(function (response) {
+                Swal.fire('Thành công', 'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám', 'success').then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/';
+                }
+                });
+            })
+            .fail(function (err) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Đã xảy ra lỗi',
+                text: 'Không thể đặt đơn khám',
+                });
             });
-          })
-          .fail(function (err) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Đã xảy ra lỗi',
-              text: 'Không thể đặt đơn khám',
-            });
-          });
-      }
+        }
+        });
     });
-  });
-});
+    });
 
 </script>
 
