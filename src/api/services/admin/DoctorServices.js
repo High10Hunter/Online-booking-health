@@ -13,7 +13,7 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 
 		const offset = (currentPage - 1) * limit;
 
-		if (speciality_id != undefined) {
+		if (speciality_id) {
 			const { count, rows } = await User.findAndCountAll({
 				offset: offset,
 				limit: limit,

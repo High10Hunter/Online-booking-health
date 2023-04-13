@@ -1,219 +1,198 @@
 <div class="row">
-	<div class="col-12">
-		<div class="card-box">
-			<h4 class="mt-0 mb-2 header-title">Danh sách bác sĩ</h4>
+  <div class="col-12">
+    <div class="card-box">
+      <h4 class="mt-0 mb-2 header-title">Danh sách bác sĩ</h4>
 
-			<div class="row">
-				<div class="col-md-2 mb-1">
-					<a href="/admin/schedules?page=1">
-						<i class="dripicons-clockwise"> Tải lại </i>
-					</a>
-				</div>
-			</div>
+      <div class="row">
+        <div class="col-md-2 mb-1">
+          <a href="/admin/schedules?page=1">
+            <i class="dripicons-clockwise"> Tải lại </i>
+          </a>
+        </div>
+      </div>
 
-			<form id="form-filter" method="GET" class="form-inline">
-				<div class="row">
-					<div class="form-group">
-						<div class="col-md-5">
-							<label class="d-block" for="role-filter"
-								>Chuyên khoa</label
-							>
-						</div>
-						<div class="col-md-3 mb-1 ml-0 pl-0 mt-1 form-group">
-							<select
-								id="role-filter"
-								name="speciality_id"
-								class="custom-select select-filter mb-1"
-							>
-								<option value="" selected>Tất cả</option>
-								<% if (specialities.length != 0) { %> <%
-								specialities.forEach(function(speciality) { %>
-								<% if (speciality.id == selectedSpeciality) { %>
-								<option value="<%= speciality.id %>" selected>
-									<%= speciality.name %>
-								</option>
-								<% } else { %>
-								<option value="<%= speciality.id %>">
-									<%= speciality.name %> <% } %>
-								</option>
-								<% }); %> <% } %>
-							</select>
-						</div>
-					</div>
+      <form id="form-filter" method="GET" class="form-inline">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-md-5">
+              <label class="d-block" for="role-filter">Chuyên khoa</label>
+            </div>
+            <div class="col-md-3 mb-1 ml-0 pl-0 mt-1 form-group">
+              <select
+                id="role-filter"
+                name="speciality_id"
+                class="custom-select select-filter mb-1"
+              >
+                <option value="" selected>Tất cả</option>
+                <% if (specialities.length != 0) { %> <%
+                specialities.forEach(function(speciality) { %> <% if
+                (speciality.id == selectedSpeciality) { %>
+                <option value="<%= speciality.id %>" selected>
+                  <%= speciality.name %>
+                </option>
+                <% } else { %>
+                <option value="<%= speciality.id %>">
+                  <%= speciality.name %> <% } %>
+                </option>
+                <% }); %> <% } %>
+              </select>
+            </div>
+          </div>
 
-					<div class="form-group">
-						<div
-							class="col-md-1 mb-1 ml-0 pl-0 mb-1 ml-auto form-group"
-						>
-							<div class="form-group app-search-box">
-								<div class="input-group">
-									<% if (typeof search == "undefined") { %>
-									<input
-										type="text"
-										class="form-control"
-										name="q"
-										placeholder="Nhập tên để tìm kiếm..."
-									/>
-									<% } else { %>
-									<input
-										type="text"
-										class="form-control"
-										name="q"
-										value="<%= search %>"
-										placeholder="Nhập tên để tìm kiếm..."
-									/>
-									<% } %>
-									<div class="input-group-append bg-primary">
-										<button class="btn" type="submit">
-											<i class="fe-search"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+          <div class="form-group">
+            <div class="col-md-1 mb-1 ml-0 pl-0 mb-1 ml-auto form-group">
+              <div class="form-group app-search-box">
+                <div class="input-group">
+                  <% if (typeof search == "undefined") { %>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="q"
+                    placeholder="Nhập tên để tìm kiếm..."
+                  />
+                  <% } else { %>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="q"
+                    value="<%= search %>"
+                    placeholder="Nhập tên để tìm kiếm..."
+                  />
+                  <% } %>
+                  <div class="input-group-append bg-primary">
+                    <button class="btn" type="submit">
+                      <i class="fe-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
 
-			<div class="table-responsive">
-				<table
-					class="table table-bordered table-hover mb-0 text-center"
-				>
-					<thead class="thead-dark">
-						<tr>
-							<th>Tên</th>
-							<th>Ngày sinh</th>
-							<th>Giới tính</th>
-							<th>Email</th>
-							<th>Số điện thoại</th>
-							<th>Chuyên khoa</th>
-							<th>Chức danh</th>
-							<th>Chỉnh sửa</th>
-							<th>Lịch khám</th>
-						</tr>
-					</thead>
-					<tbody>
-						<% if (users.length != 0) { %> <%
-						users.forEach(function(user) { %>
-						<tr>
-							<th scope="row"><%= user.name %></th>
-							<td><%= user.birthday %></td>
-							<td><%= user.getGenderName() %></td>
-							<td>
-								<a href="mailto:<%= user.email %>"
-									><%= user.email %>
-								</a>
-							</td>
-							<td><%= user.phone_number %></td>
-							<td><%= user.doctor.speciality.name %></td>
-							<td><%= user.doctor.getRankName() %></td>
-							<td>
-								<a
-									href="/admin/doctors/<%= user.doctor.id %>/update"
-								>
-									<button
-										class="btn btn-icon waves-effect btn-warning"
-									>
-										<i class="far fa-edit"></i>
-									</button>
-								</a>
-							</td>
-							<td>
-								<a
-									href="/admin/doctors/<%= user.doctor.id %>/schedules"
-								>
-									<button
-										class="btn btn-icon waves-effect btn-purple"
-									>
-										<i class="far fa-calendar-check"></i>
-									</button>
-								</a>
-							</td>
-						</tr>
-						<% }); %> <% } else { %>
-						<tr>
-							<td colspan="7" class="text-center">
-								<h4>Không có dữ liệu</h4>
-							</td>
-						</tr>
-						<% } %>
-					</tbody>
-				</table>
-				<!-- pagination -->
-				<div class="row pt-2">
-					<div class="col-12">
-						<nav aria-label="...">
-							<% if (pages > 0) { %>
-							<ul class="pagination text-center">
-								<% if (current == 1) { %>
-								<li class="page-item disabled">
-									<a class="page-link" href="#" tabindex="-1"
-										>Đầu</a
-									>
-								</li>
-								<% } else { %>
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="/admin/schedules?page=1&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
-										tabindex="-1"
-									>
-										Đầu
-									</a>
-								</li>
-								<% } %> <% let i = (Number(current) > 5 ?
-								Number(current) - 4 : 1) %> <% if (i != 1) { %>
-								<li class="page-item disabled">
-									<a class="page-link">...</a>
-								</li>
-								<% } %> <% for (; i <= pages && i <=
-								Number(current) + 4; i++) { %> <% if (i ==
-								current) { %>
-								<li class="page-item active">
-									<a class="page-link"><%=i%></a>
-								</li>
-								<% } else { %>
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="/admin/schedules?page=<%=i%>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
-										><%=i%>
-									</a>
-								</li>
-								<% } %> <% if (i == Number(current) + 4 && i <
-								pages ) { %>
-								<li class="page-item disabled">
-									<a class="page-link">...</a>
-								</li>
-								<% } %> <% } %> <% if (current == pages) { %>
-								<li class="page-item disabled">
-									<a class="page-link">Cuối</a>
-								</li>
-								<% } else { %>
-								<li class="page-item">
-									<a
-										class="page-link"
-										href="/admin/schedules?page=<%= pages %>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
-									>
-										Cuối
-									</a>
-								</li>
-								<% } %>
-							</ul>
-							<% } %>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0 text-center">
+          <thead class="thead-dark">
+            <tr>
+              <th>Tên</th>
+              <th>Ngày sinh</th>
+              <th>Giới tính</th>
+              <th>Email</th>
+              <th>Số điện thoại</th>
+              <th>Chuyên khoa</th>
+              <th>Chức danh</th>
+              <th>Chỉnh sửa</th>
+              <th>Lịch khám</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users.length != 0) { %> <% users.forEach(function(user) { %>
+            <tr>
+              <th scope="row"><%= user.name %></th>
+              <td><%= user.birthday %></td>
+              <td><%= user.getGenderName() %></td>
+              <td>
+                <a href="mailto:<%= user.email %>"><%= user.email %> </a>
+              </td>
+              <td><%= user.phone_number %></td>
+              <td><%= user.doctor.speciality.name %></td>
+              <td><%= user.doctor.getRankName() %></td>
+              <td>
+                <a href="/admin/doctors/<%= user.doctor.id %>/update">
+                  <button class="btn btn-icon waves-effect btn-warning">
+                    <i class="far fa-edit"></i>
+                  </button>
+                </a>
+              </td>
+              <td>
+                <a href="/admin/doctors/<%= user.doctor.id %>/schedules">
+                  <button class="btn btn-icon waves-effect btn-purple">
+                    <i class="far fa-calendar-check"></i>
+                  </button>
+                </a>
+              </td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="7" class="text-center">
+                <h4>Không có dữ liệu</h4>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <!-- pagination -->
+        <div class="row pt-2">
+          <div class="col-12">
+            <nav aria-label="...">
+              <% if (pages > 0) { %>
+              <ul class="pagination text-center">
+                <% if (current == 1) { %>
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Đầu</a>
+                </li>
+                <% } else { %>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="/admin/schedules?page=1&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+                    tabindex="-1"
+                  >
+                    Đầu
+                  </a>
+                </li>
+                <% } %> <% let i = (Number(current) > 5 ? Number(current) - 4 :
+                1) %> <% if (i != 1) { %>
+                <li class="page-item disabled">
+                  <a class="page-link">...</a>
+                </li>
+                <% } %> <% for (; i <= pages && i <= Number(current) + 4; i++) {
+                %> <% if (i == current) { %>
+                <li class="page-item active">
+                  <a class="page-link"><%=i%></a>
+                </li>
+                <% } else { %>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="/admin/schedules?page=<%=i%>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+                    ><%=i%>
+                  </a>
+                </li>
+                <% } %> <% if (i == Number(current) + 4 && i < pages ) { %>
+                <li class="page-item disabled">
+                  <a class="page-link">...</a>
+                </li>
+                <% } %> <% } %> <% if (current == pages) { %>
+                <li class="page-item disabled">
+                  <a class="page-link">Cuối</a>
+                </li>
+                <% } else { %>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="/admin/schedules?page=<%= pages %>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+                  >
+                    Cuối
+                  </a>
+                </li>
+                <% } %>
+              </ul>
+              <% } %>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <%- contentFor('js') %>
 <script>
-	$(document).ready(function () {
-		$('.select-filter').change(function () {
-			$('#form-filter').submit();
-		});
-	});
+  $(document).ready(function () {
+    $(".select-filter").change(function () {
+      $("#form-filter").submit();
+    });
+  });
 </script>

@@ -31,7 +31,9 @@
 
                     <div class="heading-intro-time">
                         <b> Ca khám: </b> <%= schedule.shift.start_time.slice(0, -3) %> - <%= schedule.shift.end_time.slice(0, -3) %> 
+                        
                         <span> | <b> Ngày khám: </b> </span>
+                        
                         <%= new Date(schedule.date).toLocaleDateString('en-GB') %>
                     </div>
 
@@ -65,21 +67,27 @@
                         </div>
                         <div class="form-group row my-1">
                             <div class="col-sm-10">
-                                <input type="text" name="name" class="form-control py-2" placeholder="Nhập họ và tên...">
+                                <input id="form-input-name" type="text" name="name" class="form-control py-2" placeholder="Nhập họ và tên...">
                             </div>
                         </div>
-        
+                        <div id="invalid-name-describe" class = "mb-1">
+
+                        </div>
+    
                         Ngày sinh (<span style="color: red">*</span>)
+                        
                         <div class="form-group row my-1">
                             <div class="col-sm-4">
-                                <input class="form-control py-2" name="birthday" type="date">
+                                <input id="form-input-birthdate" class="form-control py-2" name="birthday" type="date">
                             </div>
                         </div>
+                        <div id="invalid-birthdate-describe" class = "mb-1"></div>
+                        
         
                         Giới tính (<span style="color: red">*</span>)
                         <div class="input-group display_flex">
                             <label>
-                                <input class="" type="radio" name="gender" value="1" dl-luu="book_for" dl-name="datcho" dl-value="minh">
+                                <input class="" type="radio" name="gender" value="1" dl-luu="book_for" dl-name="datcho" dl-value="minh" checked>
                                 Nam
                             </label>
         
@@ -92,23 +100,27 @@
                         Số điện thoại (<span style="color: red">*</span>)
                         <div class="form-group row my-1">
                             <div class="col-sm-10">
-                                <input type="number" class="form-control py-2" name="phone_number" placeholder="Nhập số điện thoại...">
+                                <input id="form-input-phonenumber" type="number" class="form-control py-2" name="phone_number" placeholder="Nhập số điện thoại...">
                             </div>
                         </div>
+                        <div id="invalid-phonenumber-describe" class = "mb-1"></div>
         
                         Email (<span style="color: red">*</span>)
                         <div class="form-group row my-1">
                             <div class="col-sm-10">
-                                <input type="email" class="form-control py-2" name="email" placeholder="Nhập email...">
+                                <input id="form-input-email" type="email" class="form-control py-2" name="email" placeholder="Nhập email...">
                             </div>
                         </div>
+                        <div id="invalid-email-describe" class = "mb-1"></div>
+
                         Lý do khám (<span style="color: red">*</span>)
                         <div class="form-group row my-1">
                             <div class="col-sm-10">
-                                <textarea class="form-control" rows="5" name="description" placeholder="Nhập lý do khám..."
+                                <textarea id="form-texarea-description" class="form-control" rows="5" name="description" placeholder="Nhập lý do khám..."
                                 style="font-size: medium"></textarea>
                             </div>
                         </div>
+                        <div id="invalid-description-describe" class = "mb-1"></div>
         
                         <div class="input-ground">
                             <div class="input-wrapper">
@@ -140,7 +152,7 @@
         
                     </form>
                     <div class="input-group">
-                        <button class="submit-btn" data-toggle="modal" data-target="#confirmModal">Xác nhận đặt khám</button>
+                        <button id="booking-submit-btn" class="submit-btn" data-toggle="modal" data-target="#confirmModal">Xác nhận đặt khám</button>
                     </div>
                 </div>
             </div>
@@ -153,45 +165,174 @@
 
 <%- contentFor('js') %>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
+//get input field
+// Get the input fields and the submit button
+    const inputName = document.getElementById('form-input-name');
+    const inputBirthdate = document.getElementById('form-input-birthdate');
+    const inputPhonenumber = document.getElementById('form-input-phonenumber');
+    const inputEmail = document.getElementById('form-input-email');
+    const formtexareaDescription = document.getElementById('form-texarea-description');
+    const bookingSubmitBtn = document.getElementById('booking-submit-btn');
+
+    // Get the error message divs
+    const invalidNameDescribe = document.getElementById('invalid-name-describe');
+    const invalidBirthdateDescribe = document.getElementById('invalid-birthdate-describe');
+    const invalidPhonenumberDescribe = document.getElementById('invalid-phonenumber-describe');
+    const invalidEmailDescribe = document.getElementById('invalid-email-describe');
+    const invalidDescriptionDescribe = document.getElementById('invalid-description-describe');
+
+    let isValid = false;
+
+    // Add event listeners to the input fields
+    const validInputName = () => {
+        if (inputName.value === '') {
+            inputName.classList.add('invalid-input');
+            invalidNameDescribe.textContent = 'Vui lòng nhập họ và tên';
+            invalidNameDescribe.classList.add('invalid-describe');
+            isValid = true;
+        }
+    }
+    inputName.addEventListener('blur', validInputName);
+
+    const validInputBirthdate = () => {
+        if (inputBirthdate.value === '') {
+            inputBirthdate.classList.add('invalid-input');
+            invalidBirthdateDescribe.textContent = 'Vui lòng nhập ngày sinh';
+            invalidBirthdateDescribe.classList.add('invalid-describe');
+            isValid = true;
+        }
+    }
+    inputBirthdate.addEventListener('blur', validInputBirthdate);
+    const validInputPhonenumber = () => {
+        if (inputPhonenumber.value === '') {
+            inputPhonenumber.classList.add('invalid-input');
+            invalidPhonenumberDescribe.textContent = 'Vui lòng nhập số điện thoại';
+            invalidPhonenumberDescribe.classList.add('invalid-describe');
+            isValid = true;
+        }
+        if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
+            inputPhonenumber.classList.add('invalid-input');
+            invalidPhonenumberDescribe.textContent = 'Số điện thoại không hợp lệ';
+            invalidPhonenumberDescribe.classList.add('invalid-describe');
+            isValid = false;
+        }
+    }
+    inputPhonenumber.addEventListener('blur', validInputPhonenumber);
+
+    
+    validInputEmail = () => {
+        if (inputEmail.value === '') {
+            inputEmail.classList.add('invalid-input');
+            invalidEmailDescribe.textContent = 'Vui lòng nhập email';
+            invalidEmailDescribe.classList.add('invalid-describe');
+            isValid = false;
+        }
+    }
+    inputEmail.addEventListener('blur', validInputEmail);
+
+
+    const validFormtexareaDescription = () => {
+        if (formtexareaDescription.value === '') {
+            formtexareaDescription.classList.add('invalid-input');
+            invalidDescriptionDescribe.textContent = 'Vui lòng nhập lý do khám';
+            invalidDescriptionDescribe.classList.add('invalid-describe');
+            isValid = false;
+        }
+    }
+    formtexareaDescription.addEventListener('blur', validFormtexareaDescription);
+
+    bookingSubmitBtn.addEventListener('click', (event) => {
+        validInputName();
+        validInputEmail();
+        validInputPhonenumber();
+        validInputBirthdate();
+        validFormtexareaDescription();
+        if (isValid) {
+            event.preventDefault();
+        }
+    });
+
     $(document).ready(function () {
-        $('.submit-btn').click(function () {
-            Swal.fire({
-                title: 'Xác nhận đặt khám ?',
-                text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Xác nhận',
-                cancelButtonText: 'Huỷ'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/api/booking",
-                            data: $('#booking-form').serialize(),
-                            dataType: "JSON",
-                        }).done(function (response) {
-                            Swal.fire(
-                                'Thành công',
-                                'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám',
-                                'success'
-                            ).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "/";
-                                }
-                            });
-                        }).fail(function (err) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Đã xảy ra lỗi',
-                                text: 'Không thể đặt đơn khám',
-                            })
-                        });
-                    }
-                })
+    $('.submit-btn').click(function () {
+        // Check the input fields for valid information
+        let errorMessage = '';
+        const inputName = document.getElementById('form-input-name');
+        const inputBirthdate = document.getElementById('form-input-birthdate');
+        const inputPhonenumber = document.getElementById('form-input-phonenumber');
+        const inputEmail = document.getElementById('form-input-email');
+        const inputDescription = document.getElementById('form-texarea-description');
+
+
+
+        if (inputName.value === '') {
+        errorMessage += 'Họ và tên, ';
+        }
+
+        if (inputBirthdate.value === '') {
+        errorMessage += 'Ngày sinh, ';
+        }
+
+        if (inputPhonenumber.value === '' ) {
+        errorMessage += 'Số điện thoại, ';
+        }
+
+        if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
+        errorMessage += 'Số điện thoại (không hợp lệ), ';
+        }
+        
+
+        if (inputEmail.value === '') {
+        errorMessage += 'Email, ';
+        }
+
+        if (inputDescription.value === '') {
+        errorMessage += 'Lý do khám, ';
+        }
+
+        // If there is an error, show the error message
+        if (errorMessage !== '') {
+            return;
+        }
+
+        Swal.fire({
+        title: 'Xác nhận đặt khám ?',
+        text: "Bạn có chắc chắn muốn đặt đơn khám này ?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Huỷ',
+        }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+            type: 'POST',
+            url: '/api/booking',
+            data: $('#booking-form').serialize(),
+            dataType: 'JSON',
+            })
+            .done(function (response) {
+                Swal.fire('Thành công', 'Email xác nhận đã được gửi đến email của bạn, vui lòng kiểm tra email để xác nhận đặt khám', 'success').then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/';
+                }
+                });
+            })
+            .fail(function (err) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Đã xảy ra lỗi',
+                text: 'Không thể đặt đơn khám',
+                });
+            });
+        }
         });
     });
+    });
+
 </script>
+
+
 
