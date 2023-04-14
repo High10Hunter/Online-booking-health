@@ -263,10 +263,10 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 	}
 };
 
-const getFreeDoctorInShift = async (
-	currentPage = 1,
+const getFreeDoctorsByDateAndShift = async (
+	date,
 	shift_id,
-	speciality_id
+	currentPage = 1
 ) => {
 	try {
 		const limit = 5;
@@ -277,94 +277,167 @@ const getFreeDoctorInShift = async (
 		const startIndex = (currentPage - 1) * limit;
 		const endIndex = startIndex + limit;
 
-		if (speciality_id) {
-			let rows = await User.findAll({
-				where: {
-					status: true,
-					role: 3,
-					'$doctor.speciality_id$': speciality_id,
-				},
-				required: true,
-				include: [
-					{
-						model: Doctor,
-						as: 'doctor',
-						attributes: ['id', 'rank', 'price', 'description'],
-						required: true,
-						subQuery: false,
-						include: [
-							{
-								model: Schedule,
-								as: 'schedules',
-								required: true,
-								subQuery: false,
-								where: {
-									date: {
-										// equal to today
-										[Op.eq]: moment().format('YYYY-MM-DD'),
-									},
-									shift_id,
-								},
-								attributes: ['date'],
-								order: [['date', 'ASC']],
-							},
+		let rows = [];
+		if (date && shift_id) {
+			// check if the date is current date or not
+			const currentDate = moment().format('YYYY-MM-DD');
+			if (date < currentDate) throw new Error('Date is invalid');
+
+			if (date == currentDate) {
+				rows = await Doctor.findAll({
+					where: {
+						[Op.not]: [
+							sequelize.literal(
+								`exists (
+										select 
+											* 
+										from "appointments" 
+										where 
+											"schedules->appointments"."schedule_id" 
+											in (
+												select 
+													"id" 
+												from "schedules" 
+												where "doctor_id" = "Doctor"."id" 
+												and "shift_id" = ${shift_id}
+												and "date" = '${date}' 
+												)
+											)`
+							),
 						],
+						'$schedules.shift_id$': shift_id,
+						'$schedules.date$': date,
+						// current time plus 1 hour is greater than the start time of the shift
+						[Op.eq]: sequelize.literal(
+							`"schedules->shift"."start_time" >= '${moment()
+								.add(1, 'hours')
+								.format('HH:mm:ss')}'`
+						),
 					},
-				],
-				attributes: {
-					exclude: [
-						'username',
-						'password',
-						'refresh_token',
-						'role',
-						'status',
-					],
-				},
-				order: [
-					[
-						{
-							model: Doctor,
-							as: 'doctor',
-						},
+					attributes: ['id', 'rank', 'price', 'description'],
+					include: [
 						{
 							model: Schedule,
 							as: 'schedules',
+							required: true,
+							subQuery: false,
+							include: [
+								{
+									model: Appointment,
+									as: 'appointments',
+									required: false,
+									subQuery: false,
+									attributes: ['schedule_id'],
+								},
+								{
+									model: Shift,
+									as: 'shift',
+									attributes: ['start_time', 'end_time'],
+									required: true,
+									subQuery: false,
+								},
+							],
+							attributes: ['id', 'date'],
 						},
-						'date',
-						'ASC',
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name', 'avatar'],
+							required: true,
+							subQuery: false,
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: true,
+							subQuery: false,
+						},
 					],
-				],
-			});
-
-			const count = rows.length;
-
-			if (count === 0) {
-				return { rows: [], currentPage: 1, endPage: 1 };
-			}
-
-			const endPage = Math.ceil(count / limit);
-			if (currentPage > endPage) throw new Error('Page is invalid');
-
-			// loop through the rows to get distinct date
-			rows.forEach(row => {
-				const schedules = row.doctor.schedules;
-				const checkDistinctDate = [];
-				const distinctDateArray = [];
-				schedules.forEach(schedule => {
-					if (!checkDistinctDate.includes(schedule.date)) {
-						checkDistinctDate.push(schedule.date);
-						distinctDateArray.push(schedule);
-					}
 				});
-				row.doctor.schedules = distinctDateArray;
-			});
-
-			rows = rows.slice(startIndex, endIndex);
-			return { rows, currentPage, endPage };
+			} else {
+				rows = await Doctor.findAll({
+					where: {
+						[Op.not]: [
+							sequelize.literal(
+								`exists (
+										select 
+											* 
+										from "appointments" 
+										where 
+											"schedules->appointments"."schedule_id" 
+											in (
+												select 
+													"id" 
+												from "schedules" 
+												where "doctor_id" = "Doctor"."id" 
+												and "shift_id" = ${shift_id}
+												and "date" = '${date}' 
+												)
+											)`
+							),
+						],
+						'$schedules.shift_id$': shift_id,
+						'$schedules.date$': date,
+					},
+					attributes: ['id', 'rank', 'price', 'description'],
+					include: [
+						{
+							model: Schedule,
+							as: 'schedules',
+							required: true,
+							subQuery: false,
+							include: [
+								{
+									model: Appointment,
+									as: 'appointments',
+									required: false,
+									subQuery: false,
+									attributes: ['schedule_id'],
+								},
+								{
+									model: Shift,
+									as: 'shift',
+									attributes: ['start_time', 'end_time'],
+									required: true,
+									subQuery: false,
+								},
+							],
+							attributes: ['id', 'date'],
+						},
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name', 'avatar'],
+							required: true,
+							subQuery: false,
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: true,
+							subQuery: false,
+						},
+					],
+				});
+			}
 		}
+
+		const count = rows.length;
+
+		if (count === 0) {
+			return { rows: [], currentPage: 1, endPage: 1 };
+		}
+
+		const endPage = Math.ceil(count / limit);
+		if (currentPage > endPage) throw new Error('Page is invalid');
+
+		rows = rows.slice(startIndex, endIndex);
+		return { rows, currentPage, endPage };
 	} catch (error) {
-		console.log(error);
-		throw new NotFoundError('Cannot get doctors');
+		console.log(error.message);
+		throw new NotFoundError(error.message || 'Cannot get doctors');
 	}
 };
 
@@ -542,5 +615,5 @@ export default {
 	getDoctorById,
 	getAllSpeciality,
 	getShiftsOfDoctor,
-	getFreeDoctorInShift,
+	getFreeDoctorsByDateAndShift,
 };

@@ -1,4 +1,6 @@
 import Doctor from '../../services/client/DoctorServices';
+import Shift from '../../services/client/ShiftServices';
+import { getDatesRange } from '../../utils';
 
 const homepage = async (req, res) => {
 	const specialities = await Doctor.getAllSpeciality();
@@ -42,6 +44,33 @@ const index = async (req, res) => {
 	}
 };
 
+const displayFreeDoctor = async (req, res) => {
+	try {
+		const { date, shift_id } = req.query;
+
+		const { rows, currentPage, endPage } =
+			await Doctor.getFreeDoctorsByDateAndShift(date, shift_id);
+
+		const specialities = await Doctor.getAllSpeciality();
+		const shifts = await Shift.getAllShifts();
+		const dates = await getDatesRange();
+
+		return res.render('./client/free_doctor_list', {
+			layout: './layouts/client_layouts/master',
+			doctors: rows,
+			pages: endPage,
+			current: currentPage,
+			specialities,
+			selectedDate: date,
+			selectedShift: shift_id,
+			shifts,
+			dates,
+		});
+	} catch (error) {
+		return res.redirect('/free-doctors');
+	}
+};
+
 const show = async (req, res) => {
 	try {
 		const { date, doctor_id } = req.query;
@@ -72,6 +101,7 @@ const show = async (req, res) => {
 
 export default {
 	homepage,
+	displayFreeDoctor,
 	index,
 	show,
 };

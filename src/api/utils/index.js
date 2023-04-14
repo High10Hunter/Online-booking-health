@@ -6,6 +6,7 @@ const {
 } = require('./cronJob');
 const { configureMulter } = require('./uploadMedia');
 const { sendMail } = require('./sendMail');
+const { getDatesRange } = require('./getDatesRange');
 
 module.exports = {
 	hashPassword,
@@ -15,4 +16,5 @@ module.exports = {
 	deleteUnconfirmedAppointmentCronJob,
 	configureMulter,
 	sendMail,
+	getDatesRange,
 };

@@ -1,0 +1,295 @@
+<div class="doctor-list-specialty">
+	<div
+		style="
+			background-image: url('/client/assets/images/120331-co-xuong-khop.jpg');
+		"
+		class="specialty-img"
+	>
+		<div class="specialty-heading">
+			<div class="wrapper">
+				<div class="specialty-title">
+					<h1 style="margin-bottom: 0">Tìm bác sĩ rảnh</h1>
+				</div>
+				<form id="free-doctors-form" method="GET">
+					Chọn
+					<select
+						name="date"
+						class="free-doctors-filter"
+						class="mr-1"
+					>
+                        <option value="" selected disabled>Ngày khám</option>
+						<% if (dates.length != 0) { %> <%
+						dates.forEach(function(date) { %>
+						<option value="<%= date %>" <%= date == selectedDate ? 'selected' : '' %>>
+							<%= new Date(date).toLocaleDateString('en-GB') %>
+						</option>
+						<% }); %> <% } %>
+					</select>
+					Chọn 
+					<select name="shift_id" class="free-doctors-filter">
+                        <option value="" selected disabled>Ca khám</option>
+						<% if (shifts.length != 0) { %> <%
+						shifts.forEach(function(shift) { %>
+						<option value="<%= shift.id %>" <%= selectedShift == shift.id ? 'selected' : '' %>>
+							<%= shift.start_time.slice(0, -3) %> - <%=
+							shift.end_time.slice(0, -3) %>
+						</option>
+						<% }) %> <% } %>
+					</select>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="wrapper">
+		<div class="row">
+			<div class="list-doctor">
+				<% if (doctors.length != 0) { %> <%
+				doctors.forEach(function(doctor) { %>
+				<div
+					class="a-doctor"
+					data-name="Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan"
+					data-d`ichvu="Khám"
+				>
+					<div class="a-doctor-infor">
+						<div class="a-doctor-img">
+							<a
+								href="/doctor_profile?doctor_id=<%= doctor.id %>&date=<%= doctor.schedules[0].date %>"
+							>
+								<% if (doctor.user.avatar) { %>
+								<img
+									data-src=""
+									src="<%= doctor.user.avatar %>"
+									class="luoi"
+									width="80"
+									height="80"
+									alt="Ảnh của bác sĩ"
+								/>
+								<% } else { %>
+								<img
+									data-src=""
+									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= doctor.user.name %>"
+									class="luoi"
+									width="80"
+									height="80"
+									alt="Ảnh của bác sĩ"
+								/>
+								<% } %>
+								<div>Chi tiết</div>
+							</a>
+						</div>
+
+						<div class="a-doctor-describe">
+							<h2 class="a-doctor-name">
+								<a
+									href="/doctor_profile?doctor_id=<%= doctor.id %>&date=<%= doctor.schedules[0].date %>"
+								>
+									<%= doctor.getRankName() %> <%=
+									doctor.user.name %>
+								</a>
+							</h2>
+
+							<strong>
+								Chuyên khoa: <%= doctor.speciality.name %>
+							</strong>
+
+							<p class="a-doctor-summari">
+								<%= doctor.description %>
+							</p>
+
+							<div class="a-doctor-location">
+								<img
+									src="/client/assets/images/location.png"
+									alt=""
+								/>
+								Đà Nẵng
+							</div>
+						</div>
+					</div>
+
+					<div class="a-doctor-shedule">
+						<p class="a-doctor-select-time"></p>
+
+						<div
+							data-thu=""
+							data-chonngay=".lich-c217-d9"
+							class="a-doctor-day display-block mot-bs-thu3 lich-c217-d9 lich-c217-d9-p44 hien"
+						>
+							<h3 class="a-doctor-shedule-title">
+								<img
+									src="/client/assets/images/svg/schedule-icon.svg"
+									alt=""
+								/>
+								Lịch Khám
+							</h3>
+
+							<div class="today-shedule">
+								<div class="a-doctor-avaiable-shedule">
+									<% if (doctor.schedules.length > 0) { %> <%
+									doctor.schedules.forEach(function(schedule)
+									{ %>
+									<a
+										href="/booking/<%= schedule.id %>"
+										class="available-clinic-hour"
+									>
+										<%= schedule.shift.start_time.slice(0,
+										-3) %> - <%=
+										schedule.shift.end_time.slice(0, -3) %>
+									</a>
+									<% }) %> <% } else { %>
+									<i>Không có lịch khám</i>
+									<% } %>
+								</div>
+
+								<div
+									class="a-doctor-shedule-guide"
+									data-name=""
+								>
+									Chọn
+									<img
+										src="/client/assets/images/svg/choose-icon.svg"
+										alt=""
+									/>
+									khung giờ để đặt lịch (Phí đặt lịch
+									0<sup>đ</sup>)
+								</div>
+							</div>
+
+							<div class="schedule-infor">
+								<div
+									class="schedule-price"
+									data-bs="217"
+									data-nk="44"
+								>
+									<h3>Giá Khám:</h3>
+									<span class="schedule-price-inshort">
+										<%= new Intl.NumberFormat('vi-VN', {
+										style: 'currency', currency: 'VND'
+										}).format(doctor.price); %>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="xeplai clearfix"></div>
+				</div>
+				<% }) %> <% } else { %>
+				<div class="alert alert-warning" role="alert">
+					Không tìm thấy bác sĩ nào
+				</div>
+				<% } %>
+			</div>
+		</div>
+		<!-- pagination -->
+		<div class="row pt-2">
+			<div class="col-12">
+				<nav aria-label="...">
+					<% if (pages > 0) { %>
+					<ul class="pagination text-center">
+						<% if (current == 1) { %>
+						<li class="page-item disabled">
+							<a class="page-link" href="#" tabindex="-1">Đầu</a>
+						</li>
+						<% } else { %>
+						<li class="page-item">
+							<a
+								class="page-link"
+								href="/free-doctors?page=1"
+								tabindex="-1"
+							>
+								Đầu
+							</a>
+						</li>
+						<% } %> <% let i = (Number(current) > 5 ?
+						Number(current) - 4 : 1) %> <% if (i != 1) { %>
+						<li class="page-item disabled">
+							<a class="page-link">...</a>
+						</li>
+						<% } %> <% for (; i <= pages && i <= Number(current) +
+						4; i++) { %> <% if (i == current) { %>
+						<li class="page-item active">
+							<a class="page-link"><%=i%></a>
+						</li>
+						<% } else { %>
+						<li class="page-item">
+							<a
+								class="page-link"
+								href="/free-doctors?page=<%=i%>"
+								><%=i%>
+							</a>
+						</li>
+						<% } %> <% if (i == Number(current) + 4 && i < pages ) {
+						%>
+						<li class="page-item disabled">
+							<a class="page-link">...</a>
+						</li>
+						<% } %> <% } %> <% if (current == pages) { %>
+						<li class="page-item disabled">
+							<a class="page-link">Cuối</a>
+						</li>
+						<% } else { %>
+						<li class="page-item">
+							<a
+								class="page-link"
+								href="/free-doctors?page=<%= pages %>"
+							>
+								Cuối
+							</a>
+						</li>
+						<% } %>
+					</ul>
+					<% } %>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- contentFor('css') %> 
+<%- include('style') %> 
+<style>
+	.disabled-shift {
+		color: aliceblue;
+		background: rgb(182, 61, 61);
+	}
+</style>
+<%- contentFor('js') %> <%-
+include('script') %>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+<script>
+	function disableSelect() {
+		let selectedDate = $('select[name="date"]').val();
+		selectedDate = moment(selectedDate).format('YYYY-MM-DD');
+
+		let now = moment().format('YYYY-MM-DD');
+		if (selectedDate == now) 
+		{
+			// add 1 hour to current time
+			let currentTime = moment().add(1, 'hours').format('HH:mm:ss');
+
+			$('select[name="shift_id"] option').each(function () {
+				let shift = $(this).text().trim();
+				shift = shift.split('-');
+				let start_time = moment(shift[0].trim(), 'HH:mm').format('HH:mm:ss');
+				if (currentTime >= start_time) {
+					$(this).attr('disabled', true);
+					$(this).addClass('disabled-shift');
+				}
+			});
+		}
+	}
+
+	$(document).ready(function () {
+		disableSelect();
+
+		$('.free-doctors-filter').change(function () {
+			$('#free-doctors-form').submit();
+		});
+	});
+</script>
