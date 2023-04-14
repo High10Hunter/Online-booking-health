@@ -9,6 +9,7 @@ import {
 	Speciality,
 	sequelize,
 } from '../../models';
+import moment from 'moment';
 
 const getAppointmentsByScheduleId = async schedule_id => {
 	try {
@@ -108,6 +109,20 @@ const getFreeSchedulesById = async id => {
 				},
 			],
 		});
+
+		if (!schedule) {
+			throw new Error('Cannot get schedule');
+		}
+
+		const currentDate = moment().format('YYYY-MM-DD');
+		const scheduleDate = moment(schedule.date).format('YYYY-MM-DD');
+		if (currentDate === scheduleDate) {
+			const currentTime = moment().add(1, 'hour').format('HH:mm:ss');
+			if (currentTime >= schedule.shift.start_time) {
+				throw new Error('Cannot get schedule');
+			}
+		}
+
 		return schedule;
 	} catch (error) {
 		throw new Error(error.message || 'Cannot get schedule');
@@ -117,6 +132,31 @@ const getFreeSchedulesById = async id => {
 const createAppointment = async data => {
 	try {
 		const { schedule_id, customer_id } = data;
+
+		const scheduleInfo = await Schedule.findByPk(schedule_id, {
+			attributes: ['id', 'date'],
+			include: [
+				{
+					model: Shift,
+					as: 'shift',
+					attributes: ['start_time', 'end_time'],
+					subQuery: false,
+				},
+			],
+		});
+
+		if (!scheduleInfo) {
+			throw new Error('Schedule not found');
+		}
+
+		const currentDate = moment().format('YYYY-MM-DD');
+		const scheduleDate = moment(scheduleInfo.date).format('YYYY-MM-DD');
+		if (currentDate === scheduleDate) {
+			const currentTime = moment().add(1, 'hour').format('HH:mm:ss');
+			if (currentTime >= scheduleInfo.shift.start_time) {
+				throw new Error('Cannot create appointment');
+			}
+		}
 
 		const bookedSchedule = await Appointment.findOne({
 			where: {

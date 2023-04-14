@@ -11,6 +11,7 @@ import Doctor from '../../services/client/DoctorServices';
 const index = async (req, res, next) => {
 	try {
 		const { schedule_id } = req.params;
+		const { date } = req.query;
 
 		const schedule = await Appointment.getFreeSchedulesById(schedule_id);
 		if (!schedule) {
@@ -124,7 +125,6 @@ const confirm = async (req, res) => {
 
 const cancel = async (req, res) => {
 	const { token } = req.params;
-
 	try {
 		const decoded = await verifyAppointmentToken(token);
 		await Appointment.cancelAppointment(
@@ -136,7 +136,6 @@ const cancel = async (req, res) => {
 			layout: './client/cancel_appointment',
 			title: 'Hủy lịch khám',
 		});
-		
 	} catch (error) {
 		res.render('./client/error_appointment', {
 			layout: './client/error_appointment',
