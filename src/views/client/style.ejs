@@ -154,7 +154,7 @@
 	.content-segment-extend {
 		position: absolute;
 		right: 0;
-		top: 20px;
+		top: 32px;
 	}
 
 	.content-segment-extend-btn {
@@ -214,6 +214,216 @@
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
+
+	.specialtiy-slider {
+		/* display: grid !important; */
+		/* grid-template-columns: repeat(4, 1fr) !important; */
+		/* grid-gap: 20px !important; */
+
+		/* align-items: center; */
+		width: calc(100% + 12px);
+		/* border: 1px solid red; */
+	}
+
+	.specialtiy-slide {
+		/* height: 300px; */
+	}
+
+	.specialtiy-image {
+		/* height: 500px; */
+		margin-bottom: 4px;
+		margin-right: 12px;
+		overflow: hidden;
+	}
+
+	.specialtiy-image img {
+		/* width: 100%;
+		height: 100%; */
+
+		height: 156px;
+		width:  278px;
+		object-fit: cover;
+		/* border-radius: 12px; */
+	}
+
+	/* .slick-initialized .slick-slide {
+		margin: 0 10px;
+	} */
+
+	.specialtiy-slide-title {
+		color: #111;
+		padding: 5px 0;
+		font-size: 13px;
+	}
+
+
+
+	.slick-prev, .slick-next {
+		
+		position: absolute;
+		top: 30%;
+		transform: translate(-50%);
+		background-color: #fff !important ;
+		border: 2px solid #d7d7d7 !important;
+		color: #a2a9a8 !important;
+		z-index: 1000 !important;
+		padding: 10px 20px;
+
+                /* right: -10px !important;
+                z-index: 1000 !important;
+                
+                height: 48px !important;
+                width: 44px !important;
+                background-color: #fff !important ;
+                border: 2px solid #d7d7d7 !important;
+                 */
+        opacity: 0.8;
+                
+    }
+
+	.slick-prev {
+		left: 0;
+	}
+
+	.slick-next {
+		right: -54px;
+	}
+
+	.slick-next:hover, 
+	.slick-prev:hover {
+		background: #fefeff !important ;
+        opacity: 1;
+	}
+
+	.outstanding-doctor-group-member {
+		margin-top: 20px;		
+		display: flex;
+		background-color: #fafafa;
+		width: 100%;
+	}
+	.outstanding-doctor-intro {
+		width: 50%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.outstanding-doctor-intro {
+		padding: 12px 15px 20px 24px;
+	}
+
+	.outstanding-doctor-title {
+		font-size: 24px;
+		font-weight: 700;
+		color: #292940;
+		margin-bottom: 5px;
+		text-transform: uppercase;
+	}
+
+	.col-md-6:nth-child(2) {
+    	order: 2;
+	}
+
+	.outstanding-doctor-group-member:nth-child(2) {
+		order: 2;
+	}
+
+
+	.outstanding-doctor-title span {
+		font-size: 16px;
+		font-weight: 500;
+		color: #286ba6;
+		margin-bottom: 5px;
+		width: 100%;
+		display: block;
+		margin-bottom: 20px;
+		text-transform: none;
+	}
+
+	.outstanding-doctor-description {
+
+	}
+
+	
+	.outstanding-doctor-group-member .icon-plus {
+		display: inline-block;
+		
+		
+	}
+	
+	.icon-plus  p {
+		margin-bottom: 0;
+    	opacity: .6;
+	}
+
+	.icon-plus span {
+		display: none;
+		margin-bottom: 0;
+    	opacity: .6;
+	}
+	
+	.outstanding-doctor-group-member .view-more{
+		margin-top: 20px;
+	}
+	
+
+
+
+	.outstanding-doctor-image {
+		width: 50%;
+		height: 100%;
+		/* display: flex;
+		flex-direction: column; */
+
+		/* background-color: white !important; */
+
+		overflow-x: hidden;
+	}
+
+	.outstanding-doctor-image img {
+		overflow-x: hidden;
+    	background-color: #fff;
+	}
+
+	.doctor-image {
+		/* height: 100%;
+		display: flex;
+		overflow: hidden;
+		position: relative; */
+	}
+
+	.doctor-image img {
+		/* min-height: 100%;
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		z-index: 1;
+		height: auto;
+		margin: auto;
+		max-width: unset;
+		left: 50%;
+		right: 0;
+		transform: translateX(-50%); */
+	}
+
+	/* .outstanding-doctor-group-slide > .row:nth-child(even) .outstanding-doctor-intro {
+		background-color: #288ad6;
+	}
+
+	
+	.outstanding-doctor-group-slide > .row:nth-child(even) 	 {
+		background-color: red;
+	} */
+
+	.outstanding-doctor-group-slide .row:nth-child(even) .outstanding-doctor-intro {
+		order: 2;
+	}
+
+	/* .outstanding-doctor-group-slide .row:nth-child(even) .outstanding-doctor-image {
+		order: 1;
+	} */
+    /* Your styles here */
+
 
 	.img-size-16x9 {
 		padding-top: 56.25%;
@@ -945,4 +1155,6 @@
 		padding-top: 5px;
 		/* display: none; */
 	}
+
+
 </style>
