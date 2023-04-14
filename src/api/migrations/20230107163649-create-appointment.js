@@ -1,4 +1,9 @@
 'use strict';
+
+const {
+	default: AppointmentStatusEnum,
+} = require('../enums/AppoimentStatusEnum');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, DataTypes) {
@@ -38,10 +43,11 @@ module.exports = {
 			status: {
 				type: DataTypes.SMALLINT,
 				allowNull: false,
+				defaultValue: AppointmentStatusEnum.NOT_CONFIRMED,
 			},
 			user_id: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true,
 				references: {
 					model: 'users',
 					key: 'id',

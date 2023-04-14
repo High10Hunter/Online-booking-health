@@ -1,31 +1,18 @@
 import { Router } from 'express';
+import DoctorController from '../controllers/client/DoctorController';
+import AppointmentController from '../controllers/client/AppointmentController';
 
 const router = Router();
 
 const clientRoutes = app => {
-	router.get('/', (req, res) => {
-		res.render('./client/index', {
-			layout: './layouts/client_layouts/master',
-		});
-	});
-
-	router.get('/booking', (req, res) => {
-		res.render('./client/booking', {
-			layout: './layouts/client_layouts/master',
-		});
-	});
-
-	router.get('/doctor-list', (req, res) => {
-		res.render('./client/doctor_list', {
-			layout: './layouts/client_layouts/master',
-		});
-	});
-
-	router.get('/doctor-profile', (req, res) => {
-		res.render('./client/doctor_profile', {
-			layout: './layouts/client_layouts/master',
-		});
-	});
+	router.get('/', DoctorController.homepage);
+	router.get('/free-doctors', DoctorController.displayFreeDoctor);
+	router.get('/doctors', DoctorController.index);
+	router.get('/doctor_profile', DoctorController.show);
+	router.get('/booking/:schedule_id', AppointmentController.index);
+	router.post('/api/booking', AppointmentController.store);
+	router.get('/confirm-appointment/:token', AppointmentController.confirm);
+	router.get('/cancel-appointment/:token', AppointmentController.cancel);
 
 	app.use('/', router);
 };

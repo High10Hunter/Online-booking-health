@@ -8,13 +8,35 @@
 		<div class="specialty-heading">
 			<div class="wrapper">
 				<div class="specialty-title">
-					<h1 style="margin-bottom: 0">
-						<% if (typeof selectedSpeciality != 'undefined' &&
-						typeof selectedSpecialityName != 'undefined') { %> <%=
-						selectedSpecialityName %> <% } else { %> Các bác sĩ của
-						phòng khám <% } %>
-					</h1>
+					<h1 style="margin-bottom: 0">Tìm bác sĩ rảnh</h1>
 				</div>
+				<form id="free-doctors-form" method="GET">
+					Chọn
+					<select
+						name="date"
+						class="free-doctors-filter"
+						class="mr-1"
+					>
+                        <option value="" selected disabled>Ngày khám</option>
+						<% if (dates.length != 0) { %> <%
+						dates.forEach(function(date) { %>
+						<option value="<%= date %>" <%= date == selectedDate ? 'selected' : '' %>>
+							<%= new Date(date).toLocaleDateString('en-GB') %>
+						</option>
+						<% }); %> <% } %>
+					</select>
+					Chọn 
+					<select name="shift_id" class="free-doctors-filter">
+                        <option value="" selected disabled>Ca khám</option>
+						<% if (shifts.length != 0) { %> <%
+						shifts.forEach(function(shift) { %>
+						<option value="<%= shift.id %>" <%= selectedShift == shift.id ? 'selected' : '' %>>
+							<%= shift.start_time.slice(0, -3) %> - <%=
+							shift.end_time.slice(0, -3) %>
+						</option>
+						<% }) %> <% } %>
+					</select>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -22,8 +44,8 @@
 	<div class="wrapper">
 		<div class="row">
 			<div class="list-doctor">
-				<% if (users.length != 0) { %> <% users.forEach(function(user) {
-				%>
+				<% if (doctors.length != 0) { %> <%
+				doctors.forEach(function(doctor) { %>
 				<div
 					class="a-doctor"
 					data-name="Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan"
@@ -32,12 +54,12 @@
 					<div class="a-doctor-infor">
 						<div class="a-doctor-img">
 							<a
-								href="/doctor_profile?doctor_id=<%= user.doctor.id %>&date=<%= user.doctor.schedules[0].date %>"
+								href="/doctor_profile?doctor_id=<%= doctor.id %>&date=<%= doctor.schedules[0].date %>"
 							>
-								<% if (user.avatar) { %>
+								<% if (doctor.user.avatar) { %>
 								<img
 									data-src=""
-									src="<%= user.avatar %>"
+									src="<%= doctor.user.avatar %>"
 									class="luoi"
 									width="80"
 									height="80"
@@ -46,7 +68,7 @@
 								<% } else { %>
 								<img
 									data-src=""
-									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= user.name %>"
+									src="https://api.dicebear.com/6.x/initials/svg?seed=<%= doctor.user.name %>"
 									class="luoi"
 									width="80"
 									height="80"
@@ -60,23 +82,22 @@
 						<div class="a-doctor-describe">
 							<h2 class="a-doctor-name">
 								<a
-									href="/doctor_profile?doctor_id=<%=user.doctor.id %>&date=<%= user.doctor.schedules[0].date %>"
+									href="/doctor_profile?doctor_id=<%= doctor.id %>&date=<%= doctor.schedules[0].date %>"
 								>
-									<%= user.doctor.getRankName() %> <%=
-									user.name %>
+									<%= doctor.getRankName() %> <%=
+									doctor.user.name %>
 								</a>
 							</h2>
 
 							<strong>
-								Chuyên khoa: <%= user.doctor.speciality.name %>
+								Chuyên khoa: <%= doctor.speciality.name %>
 							</strong>
 
 							<p class="a-doctor-summari">
-								<%= user.doctor.description %>
+								<%= doctor.description %>
 							</p>
 
 							<div class="a-doctor-location">
-								<!-- <span class="bt-g bt-g-diadiem glyphicon glyphicon-map-marker"></span>  -->
 								<img
 									src="/client/assets/images/location.png"
 									alt=""
@@ -104,17 +125,16 @@
 
 							<div class="today-shedule">
 								<div class="a-doctor-avaiable-shedule">
-									<% if (user.doctor.schedules.length > 0) {
-									%> <%
-									user.doctor.schedules.forEach(function(schedule)
+									<% if (doctor.schedules.length > 0) { %> <%
+									doctor.schedules.forEach(function(schedule)
 									{ %>
 									<a
-										href="/doctor_profile?doctor_id=<%= user.doctor.id %>&date=<%= schedule.date %>"
+										href="/booking/<%= schedule.id %>"
 										class="available-clinic-hour"
 									>
-										<%= new
-										Date(schedule.date).toLocaleDateString('en-GB')
-										%>
+										<%= schedule.shift.start_time.slice(0,
+										-3) %> - <%=
+										schedule.shift.end_time.slice(0, -3) %>
 									</a>
 									<% }) %> <% } else { %>
 									<i>Không có lịch khám</i>
@@ -145,7 +165,7 @@
 									<span class="schedule-price-inshort">
 										<%= new Intl.NumberFormat('vi-VN', {
 										style: 'currency', currency: 'VND'
-										}).format(user.doctor.price); %>
+										}).format(doctor.price); %>
 									</span>
 								</div>
 							</div>
@@ -175,7 +195,7 @@
 						<li class="page-item">
 							<a
 								class="page-link"
-								href="/doctors?page=1&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+								href="/free-doctors?page=1"
 								tabindex="-1"
 							>
 								Đầu
@@ -195,7 +215,7 @@
 						<li class="page-item">
 							<a
 								class="page-link"
-								href="/doctors?page=<%=i%>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+								href="/free-doctors?page=<%=i%>"
 								><%=i%>
 							</a>
 						</li>
@@ -212,7 +232,7 @@
 						<li class="page-item">
 							<a
 								class="page-link"
-								href="/doctors?page=<%= pages %>&speciality_id=<%=selectedSpeciality%>&q=<%=search%>"
+								href="/free-doctors?page=<%= pages %>"
 							>
 								Cuối
 							</a>
@@ -226,5 +246,50 @@
 	</div>
 </div>
 
-<%- contentFor('css') %> <%- include('style') %> <%- contentFor('js') %> <%-
+<%- contentFor('css') %> 
+<%- include('style') %> 
+<style>
+	.disabled-shift {
+		color: aliceblue;
+		background: rgb(182, 61, 61);
+	}
+</style>
+<%- contentFor('js') %> <%-
 include('script') %>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+<script>
+	function disableSelect() {
+		let selectedDate = $('select[name="date"]').val();
+		selectedDate = moment(selectedDate).format('YYYY-MM-DD');
+
+		let now = moment().format('YYYY-MM-DD');
+		if (selectedDate == now) 
+		{
+			// add 1 hour to current time
+			let currentTime = moment().add(1, 'hours').format('HH:mm:ss');
+
+			$('select[name="shift_id"] option').each(function () {
+				let shift = $(this).text().trim();
+				shift = shift.split('-');
+				let start_time = moment(shift[0].trim(), 'HH:mm').format('HH:mm:ss');
+				if (currentTime >= start_time) {
+					$(this).attr('disabled', true);
+					$(this).addClass('disabled-shift');
+				}
+			});
+		}
+	}
+
+	$(document).ready(function () {
+		disableSelect();
+
+		$('.free-doctors-filter').change(function () {
+			$('#free-doctors-form').submit();
+		});
+	});
+</script>

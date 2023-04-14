@@ -234,7 +234,7 @@
 				},
 			},
 
-			events: '/admin/api/getScheduleOfDoctor/<%= doctor_id %>',
+			events: '/admin/api/doctors/<%= doctor_id %>/schedules',
 
 			selectAllow: function (selectInfo) {
 				var today = moment();
@@ -404,7 +404,7 @@
 			let doctor_id = '<%= doctor_id %>';
 
 			$.ajax({
-				url: '/admin/api/schedule/create',
+				url: '/admin/api/schedules/create',
 				type: 'POST',
 				data: {
 					start_time,
@@ -429,7 +429,7 @@
 			let date = $('#delete-schedule-modal').attr('data-date');
 
 			$.ajax({
-				url: `/admin/api/schedule/delete/${id}`,
+				url: `/admin/api/schedules/delete/${id}`,
 				data: {
 					date,
 				},

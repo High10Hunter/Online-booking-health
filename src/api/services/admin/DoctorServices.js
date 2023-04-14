@@ -94,6 +94,8 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 				order: [['createdAt', 'DESC']],
 			});
 
+			console.log(rows);
+
 			if (count === 0) {
 				return { rows: [], currentPage: 1, endPage: 1 };
 			}
@@ -116,10 +118,10 @@ const getDoctorById = async id => {
 				{
 					model: User,
 					as: 'user',
-					attributes: ['name'],
+					attributes: ['name', 'phone_number', 'email'],
 				},
 			],
-			attributes: ['rank'],
+			attributes: ['id', 'speciality_id', 'rank', 'price', 'description'],
 		});
 
 		if (!doctor) throw new Error('Doctor not found');
@@ -166,9 +168,28 @@ const createDoctor = async data => {
 	}
 };
 
+const updateDoctor = async (id, data) => {
+	try {
+		const doctor = await Doctor.findByPk(id);
+		doctor.set({
+			...data,
+		});
+		await doctor.save();
+		return doctor;
+	} catch (error) {
+		const { errors } = error;
+		if (!errors) {
+			throw new Error(error.message || 'Cannot update doctor');
+		} else {
+			throw new Error(errors[0].message || 'Cannot update doctor');
+		}
+	}
+};
+
 export default {
 	getAllDoctor,
 	getDoctorById,
 	getAllSpeciality,
 	createDoctor,
+	updateDoctor,
 };

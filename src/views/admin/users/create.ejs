@@ -11,173 +11,198 @@
 						method="POST"
 						enctype="multipart/form-data"
 					>
-						<div class="form-group row">
-							<div class="col-6">
-								<label for="name">Họ tên:</label>
-								<span class="error" id="name-error"></span>
-								<input
-									type="text"
-									id="name"
-									name="name"
-									placeholder="Họ và tên"
-								/>
-							</div>
-							<div class="col-6">
-								<label for="gender">Giới tính:</label>
-								<span class="error" id="gender-error"></span>
-								<br />
-								<input
-									type="radio"
-									id="male"
-									name="gender"
-									value="male"
-								/>
-								<label class="radioText" for="male">Nam</label>
-								<input
-									type="radio"
-									id="female"
-									name="gender"
-									value="female"
-								/>
-								<label class="radioText" for="female">Nữ</label>
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-4">
-								<label for="phone">Số điện thoại:</label>
-								<span class="error" id="phone-error"></span>
-								<input
-									type="number"
-									id="phone"
-									name="phone_number"
-									placeholder="Số điện thoại"
-								/>
-							</div>
-							<div class="col-4">
-								<label for="email">Email:</label>
-								<span class="error" id="email-error"></span>
-								<input
-									type="text"
-									id="email"
-									name="email"
-									placeholder="email@gmail.com"
-								/>
-							</div>
-							<div class="col-4">
-								<label for="avatar">Ảnh:</label>
-								<input
-									type="file"
-									name="avatar"
-									onchange="previewImage(event)"
-								/>
-								<img
-									id="preview"
-									src="#"
-									alt="Image Preview"
-									style="display: none"
-									width="300px"
-									height="300px"
-								/>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<div class="col-6">
-								<label for="dob">Ngày sinh:</label>
-								<span class="error" id="dob-error"></span>
-								<input type="date" id="dob" name="birthday" />
-							</div>
-							<div class="col-6">
-								<label for="role">Vai trò:</label>
-								<span class="error" id="role-error"></span>
-								<select id="role" name="role">
-									<option value="">-- Chọn Vai trò --</option>
-									<option value="1">Quản trị viên</option>
-									<option value="2">Y tá</option>
-									<option value="3">Bác sĩ</option>
-								</select>
-							</div>
-						</div>
-
-						<div id="additional-fields" style="display: none">
-							<div class="form-group row">
-								<div class="col-4">
-									<label for="speciality_id"
-										>Chuyên khoa:</label
-									>
-									<span
-										class="error"
-										id="speciality-id-error"
-									></span>
-									<select
-										name="speciality_id"
-										id="speciality_id"
-									>
-										<option value="">
-											-- Chọn chuyên khoa --
-										</option>
-										<% if (specialities.length != 0) { %> <%
-										specialities.forEach((speciality) => {
-										%>
-										<option value="<%= speciality.id %>">
-											<%= speciality.name %>
-										</option>
-										<% }) %> <% } %>
-									</select>
+						<div class="form-group left-side">
+							<div class="form-group row col-12">
+								<div class="col-6">
+									<label for="name">Họ tên:</label>
+									<span class="error" id="name-error"></span>
+									<input
+										type="text"
+										class="col-sm-12"
+										id="name"
+										name="name"
+										placeholder="  Họ và tên"
+									/>
 								</div>
-								<div class="col-4">
-									<label for="rank">Chức danh:</label>
-									<span class="error" id="rank-error"></span>
-									<select name="rank" id="rank">
-										<option value="">
-											-- Chọn chức danh --
-										</option>
-										<option value="1">PGS-TS</option>
-										<option value="2">Tiến sĩ</option>
-										<option value="3">Bác sĩ CKII</option>
-										<option value="4">Bác sĩ CKI</option>
-									</select>
+								<div class="col-6">
+									<label for="gender">Giới tính:</label>
+									<span class="error" id="gender-error"></span>
+									<br />
+									<div class="radioBox">
+										<input
+										type="radio"
+										class="col-sm-12"
+										id="male"
+										name="gender"
+										value="male"
+									/>
+									<label class="radioText" for="male">Nam</label>
+									</div>
+									<div class="radioBox">
+										<input
+										type="radio"
+										class="col-sm-12"
+										id="female"
+										name="gender"
+										value="female"
+									/>
+									<label class="radioText" for="female">Nữ</label>
+									</div>
 								</div>
-								<div class="col-4">
-									<label for="price">Giá khám:</label>
-									<span class="error" id="price-error"></span>
+							</div>
+							<div class="form-group row col-12">
+								<div class="col-6">
+									<label for="phone">Số điện thoại:</label>
+									<span class="error" id="phone-error"></span>
 									<input
 										type="number"
-										id="price"
-										name="price"
-										placeholder="Giá khám"
+										class="col-sm-12"
+										id="phone"
+										name="phone_number"
+										placeholder="  Số điện thoại"
 									/>
-									VNĐ
+								</div>
+								<div class="col-6">
+									<label for="email">Email:</label>
+									<span class="error" id="email-error"></span>
+									<input
+										type="text"
+										class="col-sm-12"
+										id="email"
+										name="email"
+										placeholder="  email@gmail.com"
+									/>
+								</div>
+								
+							</div>
+	
+							<div class="form-group row col-12">
+								<div class="col-6">
+									<label for="birthday">Ngày sinh:</label>
+									<span class="error" id="birthday-error"></span>
+									<input type="date" class="col-sm-12" id="birthday" name="birthday" />
+								</div>
+								<div class="col-6">
+									<label for="role">Vai trò:</label>
+									<span class="error" id="role-error"></span>
+									<select class="col-sm-12" id="role" name="role">
+										<option value="">-- Chọn Vai trò --</option>
+										<option value="1">Quản trị viên</option>
+										<option value="2">Y tá</option>
+										<option value="3">Bác sĩ</option>
+									</select>
 								</div>
 							</div>
-							<div class="form-group row">
-								<div class="col-12">
-									<label for="description">Mô tả:</label>
-									<span
-										class="error"
-										id="description-error"
-									></span>
-									<textarea
+	
+							<div id="additional-fields"  style="display: none">
+								<div class="form-group row col-12">
+									<div class="col-4">
+										<label for="speciality"
+											>Chuyên khoa:</label
+										>
+										<span
+											class="error"
+											id="speciality-error"
+										></span>
+										<select
+											class="col-sm-12"
+											name="speciality"
+											id="speciality"
+										>
+											<option value="">
+												-- Chọn chuyên khoa --
+											</option>
+											<% if (specialities.length != 0) { %> <%
+											specialities.forEach((speciality) => {
+											%>
+											<option value="<%= speciality.id %>">
+												<%= speciality.name %>
+											</option>
+											<% }) %> <% } %>
+										</select>
+									</div>
+									<div class="col-4">
+										<label for="rank">Chức danh:</label>
+										<span class="error" id="rank-error"></span>
+										<select name="rank" class="col-sm-12" id="rank">
+											<option value="">
+												-- Chọn chức danh --
+											</option>
+											<option value="1">PGS-TS</option>
+											<option value="2">Tiến sĩ</option>
+											<option value="3">Bác sĩ CKII</option>
+											<option value="4">Bác sĩ CKI</option>
+										</select>
+									</div>
+									<div class="col-4">
+										<label for="price">Giá khám:</label>
+										<span class="error" id="price-error"></span>
+										<div class="form-group row col-12">
+											<input
+											type="number"
+											class="col-sm-10"
+											id="price"
+											name="price"
+											placeholder="  Giá khám"
+										/>
+										<h6 class="col-2">VNĐ</h6>
+										</div>
+
+									</div>
+								</div>
+								<div class="form-group row col-12">
+									<div class="col-12">
+										<label for="description">Mô tả:</label>
+										<span
+											class="error"
+											id="description-error"
+										></span>
+										<textarea
 										name="description"
+										class="col-sm-12"
 										id="description"
 										rows="4"
 										style="width: 100%"
 										placeholder="Mô tả"
-									></textarea>
+										></textarea>
+
+									</div>
 								</div>
 							</div>
+	
+							<div
+								class="form-group row"
+								style="
+									display: flex;
+									justify-content: center;
+									align-items: center;
+								"
+							>
+								<button type="reset" class="btn btn-danger">Reset</button>
+								<button type="submit" class="btn btn-success">Tạo người dùng</button>
+							</div>
 						</div>
+						
 
-						<div
-							class="form-group row"
-							style="
-								display: flex;
-								justify-content: center;
-								align-items: center;
-							"
-						>
-							<button type="reset">Reset</button>
-							<button type="submit">Tạo người dùng</button>
+						<div class="form-group right-side">
+							<div class="col-12 img-form">
+								<label for="avatar">Ảnh:</label>
+								<br/>
+								<input
+									type="file"
+									name="avatar"
+									onchange="previewImage(event)"
+									style="margin-top:10px; max-width:95%;"
+								/>
+								<img
+									id="preview"
+									src="/admin/assets/images/anonymous-pic.jpg"
+									alt="Image Preview"
+									style="margin-top:10px; max-width:100%;"
+									class="col-12"
+								/>
+								<br/>
+							</div>
 						</div>
 					</form>
 				</div>
@@ -188,27 +213,79 @@
 
 <%- contentFor('css') %>
 <style>
-	h1 {
-		font-family: SFProDisplay-Bold, Helvetica, Arial, sans-serif;
-		text-align: center;
-		margin-bottom: 30px;
+	.card-box{
+		width:80vw;
+		height: 80vh;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		position: relative;
+		top: 5px;
+		overflow:auto;
 	}
+
+	#add-user-form {
+		background: #fff;
+		margin: 0 auto;
+		position: relative;
+		box-shadow: 2px 5px 20px
+		rgba(119, 119, 119, .5);
+	}
+	.form-group{
+		display:inline-block;
+	}
+	h1 {
+		font-family: "Montserrat", sans-serif;
+		margin-top: 40px;
+		margin-bottom: 35px;
+		text-align: left;
+	}
+
+	.right-side{
+		float: right;
+		position: absolute;
+		width: 20%;
+		height: 100%;
+		background: #71b6f9;
+		box-shadow: 3px 3px 10px
+		rgb(119, 119, 119, .5);
+		border-left: 1px solid #ccc;
+		padding-top: 35px;
+	}
+
+	.left-side{
+		width: 78%;
+		margin-left: 2%;
+		margin-top: 15px;
+		padding-top: 5px;
+	}
+
 
 	label {
 		display: inline-block;
+		font-family: "Roboto", sans-serif;
+		text-transform: uppercase;
 		margin-bottom: 10px;
 		font-weight: bold;
+		font-size: 1em;
+		margin-left: 2px;
 	}
 
 	input[type='text'],
 	input[type='email'],
 	input[type='date'],
-	select {
-		width: calc(100% - 1em);
-		padding: 5px;
+	input[type='number'],
+	textarea,
+	select{
+		padding: 7px 5px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		margin-bottom: 10px;
+		background-color: #eee;
+	}
+
+	select {
+		padding: 9px 0;
 	}
 
 	input[type='radio'] {
@@ -216,42 +293,42 @@
 		height: 20px;
 		margin-right: 5px;
 		position: relative;
-		bottom: 10px;
 		left: 1em;
+		bottom: -5px;
 	}
 
 	.radioText {
-		margin-right: 40px;
+		margin-left: 24px;
 		font-weight: normal;
 		font-size: 16px;
-		position: relative;
-		bottom: 14px;
-		left: 24px;
+	}
+
+	.radioBox{
+		width: 110px;
+		display: inline-block;
+		margin-right: 10px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		box-sizing: border-box;
+		background-color: #eee;
 	}
 
 	span.error {
 		color: red;
-		display: block;
+		display: inline-block;
 		font-size: 12px;
 	}
 
 	button[type='submit'],
 	button[type='reset'] {
-		display: block;
-		padding: 10px;
+		text-transform: uppercase;
+		padding: 7px 15px;
 		margin-left: 10px;
-		background-color: #4caf50;
-		color: white;
-		border: none;
 		border-radius: 5px;
 		cursor: pointer;
-		width: 10em;
-	}
-	button[type='reset'] {
-		background-color: #f44336;
-		color: white;
-		margin-right: 10px;
-		width: 4em;
+		box-shadow: 0px 2px 4px 0px
+		rgb(0,0,0,.2);
+		margin-top: 15px;
 	}
 
 	#additional-fields {
@@ -264,7 +341,7 @@
 	const form = document.getElementById('add-user-form');
 	const name = document.getElementById('name');
 	const gender = document.getElementsByName('gender');
-	const dob = document.getElementById('dob');
+	const birthday = document.getElementById('birthday');
 	const phone = document.getElementById('phone');
 	const email = document.getElementById('email');
 	const role = document.getElementById('role');
@@ -318,12 +395,12 @@
 			document.getElementById('gender-error').innerHTML = '';
 		}
 
-		if (dob.value === '') {
+		if (birthday.value === '') {
 			valid = false;
-			document.getElementById('dob-error').innerHTML =
+			document.getElementById('birthday-error').innerHTML =
 				'Vui lòng nhập ngày sinh';
 		} else {
-			document.getElementById('dob-error').innerHTML = '';
+			document.getElementById('birthday-error').innerHTML = '';
 		}
 
 		if (phone.value === '' || phone.value.length < 10) {
@@ -355,18 +432,18 @@
 		}
 
 		if (role.value === '3') {
-			if (document.getElementById('speciality_id').value === '') {
+			if (document.getElementById('speciality').value === '') {
 				valid = false;
-				document.getElementById('speciality-id-error').innerHTML =
+				document.getElementById('speciality-error').innerHTML =
 					'Vui lòng chọn chuyên khoa';
 			} else {
-				document.getElementById('speciality-id-error').innerHTML = '';
+				document.getElementById('speciality-error').innerHTML = '';
 			}
 
 			if (document.getElementById('rank').value === '') {
 				valid = false;
 				document.getElementById('rank-error').innerHTML =
-					'Vui lòng chức danh';
+					'Vui lòng chọn chức danh';
 			} else {
 				document.getElementById('rank-error').innerHTML = '';
 			}

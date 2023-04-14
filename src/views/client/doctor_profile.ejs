@@ -1,265 +1,225 @@
 <div class="doctor-profile">
-    <div class="wrapper">
-        <div class="a-doctor-infor">
-            <div class="a-doctor-img">
-                <img data-src="" 
-                src="/client/assets/images/155419nguyen-thi-kim-loan.jpg"
-                class="luoi" width="80" height="80" alt="Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan">
-            </div>
-    
-            <div class="a-doctor-describe">
-                <h2 class="a-doctor-name">
-                    Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan
-                </h2>
-    
-                <p class="a-doctor-summari">
-                    Nguyên Trưởng khoa Cơ xương khớp, Bệnh viện E Hà Nội<br>
-                    Được phong tặng Danh hiệu Thầy thuốc Ưu tú <br>
-                    Bác sĩ khám cho người bệnh từ 16 tuổi trở lên 
-                </p>
-    
-                <!-- <div class="a-doctor-location">
-                    
-                    <img src="/client/assets/images/location.png" alt="">
-                    Đà Nẵng
-                </div> -->
-            </div>
-        </div>
+	<div class="wrapper">
+		<div class="a-doctor-infor">
+			<div class="a-doctor-img">
+				<% if (doctor.user.avatar) { %>
+				<img
+					data-src=""
+					src="<%= doctor.user.avatar %>"
+					class="luoi"
+					width="80"
+					height="80"
+				/>
+				<% } else { %>
+				<img
+					data-src=""
+					src="https://api.dicebear.com/6.x/initials/svg?seed=<%= doctor.user.name %>"
+					class="luoi"
+					width="80"
+					height="80"
+				/>
+				<% } %>
+			</div>
 
-        <div class="a-doctor-shedule">
-            <p class="a-doctor-select-time">
-                <select>
-                    <option value=".lich-c217-d9">Thứ 3 - 4/4</option>
-                    <option value=".lich-c217-d11">Thứ 5 - 6/4</option>
-                    <option value=".lich-c217-d13">Thứ 7 - 8/4</option>
-                </select>
-            </p>
+			<div class="a-doctor-describe">
+				<h2 class="a-doctor-name">
+					<%= doctor.getRankName() %> <%= doctor.user.name %>
+				</h2>
+				<b> Chuyên khoa: </b> <%= doctor.speciality.name %>
+			</div>
+		</div>
 
-            <div data-thu="" data-chonngay=".lich-c217-d9" class="a-doctor-day display-block mot-bs-thu3 lich-c217-d9 lich-c217-d9-p44 hien">
-                <h3 class= "a-doctor-shedule-title">
-                    <img src="/client/assets/images/svg/schedule-icon.svg" alt="">
-                    Lịch Khám
-                </h3>
+		<div class="a-doctor-shedule">
+			<form id="doctor-schedule-form" method="GET" class="form-inline">
+				<input
+					type="hidden"
+					name="doctor_id"
+					value="<%= doctor.id %>"
+				/>
+				<% if (selectedDate) { %>
+				<p class="a-doctor-select-time">
+					<select class="date-select" name="date">
+						<% if (doctor.schedules.length != 0) { %> <%
+						doctor.schedules.forEach(function (schedule) { %> <% if
+						(selectedDate == schedule.date) { %>
+						<option value="<%= schedule.date %>" selected>
+							<%= new
+							Date(schedule.date).toLocaleDateString('en-GB') %>
+						</option>
+						<% } else { %>
+						<option value="<%= schedule.date %>">
+							<%= new
+							Date(schedule.date).toLocaleDateString('en-GB') %>
+						</option>
+						<% } %> <% }) %> <% } %>
+					</select>
+				</p>
+				<% } %>
+			</form>
 
-               <div class="display_flex">
-                    <div class="today-shedule">
-                        <div class="a-doctor-avaiable-shedule">
-                            <a
-                              href="/booking"
-                              data-id="10308954"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="08:00 - 08:30"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >08:00 - 08:30
-                            </a>
-          
-                            <a
-                              href="/booking"
-                              data-id="10308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="08:30 - 09:00"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >08:30 - 09:00
-                            </a>
-          
-                            <a
-                              href="/booking"
-                              data-id="20308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="09:00 - 09:30"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >09:00 - 09:30
-                            </a>
-          
-                            <a
-                              href="/booking"
-                              data-id="30308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="09:30 - 10:00"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >09:30 - 10:00
-                            </a>
-          
-                            <a
-                              href="/booking"
-                              data-id="40308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="10:00 - 10:30"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >10:00 - 10:30
-                            </a>
-          
-                            <a
-                              href="/booking"
-                              data-id="50308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="10:30 - 11:00"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >10:30 - 11:00
-                            </a>
-          
-                            <a
-                              href=/booking                    data-id="60308955"
-                              data-partner="49"
-                              data-wday="9"
-                              data-name="11:00 - 11:30"
-                              rel="nofollow"
-                              class="available-clinic-hour"
-                              >11:00 - 11:30
-                            </a>
-                        </div>
-                        
-                        <div class="a-doctor-shedule-guide" data-name="">
-                                Chọn 
-                                <!-- <span
-                                class="bt-g bt-g-chitay-tren glyphicon glyphicon-hand-up">
-                                </span>  -->
-                                <img src="/client/assets/images/svg/choose-icon.svg" alt="">
-                                và đặt (Phí đặt lịch
-                            0<sup>đ</sup>)
-                        </div>
-                    </div>
+			<div
+				data-thu=""
+				data-chonngay=".lich-c217-d9"
+				class="a-doctor-day display-block mot-bs-thu3 lich-c217-d9 lich-c217-d9-p44 hien"
+			>
+				<h3 class="a-doctor-shedule-title">
+					<img
+						src="/client/assets/images/svg/schedule-icon.svg"
+						alt=""
+					/>
+					Lịch Khám
+				</h3>
 
-                    <div class="schedule-infor">
-                        <div class="schedule-location">
-                            <h3>Địa chỉ Khám</h3>
-                            <div class="schedule-clinic-name">Phòng khám y tế QTN</div>
-                            <div class="schedule-clinic-address">123 Nguyễn Lương Bằng, Hòa Khánh, Đà Nẵng</div>
-                        </div>
-                        <div class="schedule-price" data-bs="217" data-nk="44">
-                            <h3>Giá Khám:</h3>
-                            <span class="schedule-price-inshort "> 150.000<sup>đ</sup>.</span> 
-                        </div>
-                    </div>
-               </div>
+				<div class="display_flex">
+					<div class="today-shedule">
+						<div class="a-doctor-avaiable-shedule">
+							<% if (shifts.length > 0) { %> <%
+							shifts.forEach(function (each) { %>
+							<a
+								href="#"
+								rel="nofollow"
+								class="shift-hour available-clinic-hour"
+								data-id="<%= each.id %>"
+								data-start-time="<%= each.shift.start_time %>"
+							>
+								<%= each.shift.start_time.slice(0, -3) %> - <%=
+								each.shift.end_time.slice(0, -3) %>
+							</a>
+							<% }) %> <% } else { %>
+							<div class="no-schedule">Không có lịch khám</div>
+							<% } %>
+						</div>
+						<div class="a-doctor-shedule-guide">
+							Chọn
+							<img
+								src="/client/assets/images/svg/choose-icon.svg"
+								alt=""
+							/>
+							và đặt (Phí đặt lịch 0<sup>đ</sup>)
+						</div>
+						<div>
+							(<span style="color: red"> Lưu ý: </span>
+							<i
+								>Lịch khám chỉ có thể đặt trước tối thiểu 1
+								giờ</i
+							>
+							)
+						</div>
+					</div>
 
-                <div class="xeplai"></div>
-            </div>
-        </div>
-    </div>
+					<div class="schedule-infor">
+						<div class="schedule-location">
+							<h3>Địa chỉ Khám</h3>
+							<div class="schedule-clinic-name">
+								Phòng khám y tế QTN
+							</div>
+							<div class="schedule-clinic-address">
+								123 Nguyễn Lương Bằng, Hòa Khánh, Đà Nẵng
+							</div>
+						</div>
+						<div class="schedule-price" data-bs="217" data-nk="44">
+							<h3>Giá Khám:</h3>
+							<span class="schedule-price-inshort">
+								<%= new Intl.NumberFormat('vi-VN', { style:
+								'currency', currency: 'VND'
+								}).format(doctor.price); %>
+							</span>
+						</div>
+					</div>
+				</div>
 
-    <div class="doctor-detailed-profile">
-        <div class="wrapper">
-            <div class="doctor-content" id="">
-                <h2>Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan</h2>
-                <ul>
-                  <li>Nguyên Trưởng khoa Cơ Xương Khớp và Nội tổng hợp Bệnh viện E Hà Nội</li>
-                  <li>Được phong tặng Danh hiệu thầy thuốc Ưu tú</li>
-                  <li>Từng là thực tập sinh tại Ucraina</li>
-                  <li>Bác sĩ khám cho người bệnh từ 16 tuổi trở lên</li>
-                </ul>
-                <h3>Quá trình đào tạo</h3>
-                <ul>
-                  <li>Tốt nghiệp Đại học Y Hà Nội (1970)</li>
-                  <li>Tốt nghiệp Bác sĩ Chuyên khoa II, Học viện Quân Y (1997)</li>
-                </ul>
-                <h3>Quá trình công tác</h3>
-                <ul>
-                  <li>Làm việc tại khoa cơ xương khớp và Nội tổng hợp Bệnh viện E Hà Nội</li>
-                  <li>Nguyên Trưởng khoa cơ xương khớp và Nội tổng hợp Bệnh viện E Hà Nội</li>
-                </ul>
-                <h3>Giải thưởng</h3>
-                <ul>
-                  <li>Danh hiệu thầy thuốc Ưu tú</li>
-                  <li>Chiến sĩ thi đua ngành y tế</li>
-                </ul>
-                <h2 style="
-                margin-bottom: 5px;
-                ">
-                    Khám và điều trị
-                </h2>
-                <p><strong>Bệnh về Khớp</strong></p>
-                <ul>
-                  <li>Gout, Viêm cột sống dính khớp, thoái hóa khớp, viêm khoanh khớp vai</li>
-                  <li>Đau khớp vai, đau vai gáy, Lupus ban đỏ, đau thắt lưng, đau xương khớp</li>
-                  <li>Thoát vị đĩa đệm, viêm khớp</li>
-                </ul>
-                <p><strong>Bệnh về Xương</strong></p>
-                <ul>
-                  <li>Loãng xương, đau nhức xương</li>
-                  <li>Viêm xương, gai xương, vôi hóa cột sống</li>
-                  <li>Chấn thương thể thao</li>
-                </ul>
-                <p><strong>Bệnh về Cơ</strong></p>
-                <ul>
-                  <li>Chứng đau mỏi cơ</li>
-                  <li>Yếu cơ, Loạn dưỡng cơ</li>
-                  <li>Viêm cơ, Teo cơ</li>
-                </ul>
-                <p><strong>Các triệu chứng - biểu hiện sau:</strong></p>
-                <ul>
-                  <li>Thoái hóa khớp (khớp gối, cột sống thắt lưng, cột sống cổ)</li>
-                  <li>Loãng xương</li>
-                  <li>Đau vai gáy, Đau thắt lưng, Đau gối, Đau háng, Đau cột sống cổ, Đau hông</li>
-                  <li>Đau cổ chân, Đau khủy tay, Đau bàn tay, cổ tay, Đau các ngón tay</li>
-                  <li>Đau khớp thái dương hàm</li>
-                  <li>Đau lưng, Đau vai, Đau các ngón chân, Đau cổ chân, bàn chân</li>
-                  <li>Đau thần kinh tọa</li>
-                  <li>Thoát vị đĩa đệm cột sống cổ, cột sống thắt lưng</li>
-                  <li>Đau cánh tay</li>
-                  <li>Hội chứng vai tay, Hội chứng cổ vai cánh tay</li>
-                  <li>Đau thần kinh liên sườn, Đau ngực, Đau sụn ức sườn,Viêm sụn ức sườn, Đau bả vai</li>
-                  <li>Bệnh Gout</li>
-                  <li>Viêm khớp dạng thấp, Viêm đa khớp, Viêm gân</li>
-                  <li>Đau nhiều khớp</li>
-                  <li>Hoại tử vô khuẩn chỏm xương đùi, Hoại tử vô mạch</li>
-                  <li>Đau xương bánh chè</li>
-                  <li>Luput ban đỏ hệ thống, Lulus ban đỏ hệ thống</li>
-                  <li>Xơ cứng bì toàn thân</li>
-                  <li>Viêm đa cơ, Viêm da cơ, tổn thương da</li>
-                  <li>Viêm khớp vùng chậu</li>
-                  <li>Viêm khớp thiếu niên (đi khập khiễng)</li>
-                  <li>Viêm khớp nhiễm khuẩn</li>
-                  <li>Viêm màng hoạt dịch (khớp gối, háng, cổ chân, khớp khủy)</li>
-                  <li>Viêm cột sống dính khớp</li>
-                  <li>Loạn dưỡng cơ tiến triển</li>
-                </ul>
-              </div>
-        </div>
-    </div>
-    
-    <div class="review-from-client">
-        <div class="wrapper">
-            <div class="review-title">
-                Phản hồi của bệnh nhân sau khi đi khám
-            </div>
+				<div class="xeplai"></div>
+			</div>
+		</div>
+	</div>
 
-            <div class="feedback-list">
-                <div class="feedback-item">
-                    <div class="feedback-name"><strong>Nguyễn Kim Sơn</strong>&nbsp;
-                        <a class="feedback-info"><i class="bt-g bt-g-dongy-tron"></i>
-                        Đã khám ngày 16/07/2020 </a>
-                    </div>
-                
-                    <div class="feedback-content"> Tốt </div>
-                </div>
-            
-                <div class="feedback-item"><div class="feedback-name"><strong>Một bệnh nhân</strong>&nbsp;
-                    <a class="feedback-info"><i class="bt-g bt-g-dongy-tron"></i>
-                    Đã khám ngày 30/08/2018 </a></div><div class="feedback-content"> Bác sĩ đã xem kỹ và sử dụng một phần kết quả xét nghiệm trước đây tôi đã làm (dù làm ở bệnh viện khác),chỉ yêu cầu tôi làm xét nghiệm cần thiết, giúp giảm chi phí khám bệnh.
-                    Bác sĩ có giải thích về bệnh đủ để tôi hiểu và cảm thấy yên tâm.
-                    Bây giờ tôi sẽ uống thuốc theo phác đồ để xem kết quả như nào. </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+	<div class="doctor-detailed-profile">
+		<div class="wrapper">
+			<div class="doctor-content" id=""><%= doctor.description %></div>
+		</div>
+	</div>
+
+	<div class="review-from-client">
+		<div class="wrapper">
+			<div class="review-title">
+				Phản hồi của bệnh nhân sau khi đi khám
+			</div>
+
+			<div class="feedback-list">
+				<div class="feedback-item">
+					<div class="feedback-name">
+						<strong>Nguyễn Kim Sơn</strong>&nbsp;
+						<a class="feedback-info"
+							><i class="bt-g bt-g-dongy-tron"></i> Đã khám ngày
+							16/07/2020
+						</a>
+					</div>
+
+					<div class="feedback-content">Tốt</div>
+				</div>
+
+				<div class="feedback-item">
+					<div class="feedback-name">
+						<strong>Một bệnh nhân</strong>&nbsp;
+						<a class="feedback-info"
+							><i class="bt-g bt-g-dongy-tron"></i> Đã khám ngày
+							30/08/2018
+						</a>
+					</div>
+					<div class="feedback-content">
+						Bác sĩ đã xem kỹ và sử dụng một phần kết quả xét nghiệm
+						trước đây tôi đã làm (dù làm ở bệnh viện khác),chỉ yêu
+						cầu tôi làm xét nghiệm cần thiết, giúp giảm chi phí khám
+						bệnh. Bác sĩ có giải thích về bệnh đủ để tôi hiểu và cảm
+						thấy yên tâm. Bây giờ tôi sẽ uống thuốc theo phác đồ để
+						xem kết quả như nào.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<%- contentFor('css') %> 
-<%- include('style') %>
+<%- contentFor('css') %> <%- include('style') %> <%- contentFor('js') %>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+<script>
+	function disableShifts(date) {
+		$('.shift-hour').each(function () {
+			let start_time = $(this).data('start-time');
+			start_time = date + ' ' + start_time;
+			// convert start time to date
+			start_time = moment(start_time).toDate();
+			let current_time = moment().toDate();
+			// add 1 hour to current_time
+			current_time.setHours(current_time.getHours() + 1);
 
-<%- contentFor('js') %> 
-<%- include('script') %>
+			if (current_time >= start_time) {
+				$(this).attr('href', '#');
+				$(this).removeClass('available-clinic-hour');
+				$(this).removeAttr('data-id');
+				$(this).addClass('disabled-clinic-hour');
+			}
+		});
+	}
+
+	$(document).ready(function () {
+		let date = $('.date-select').val();
+		// disable shifts that have passed
+		disableShifts(date);
+
+		$('.date-select').change(function () {
+			$('#doctor-schedule-form').submit();
+		});
+
+		$('.available-clinic-hour').click(function () {
+			let schedule_id = $(this).data('id');
+			// assign schedule_id to href in <a>
+			$(this).attr('href', '/booking/' + schedule_id);
+		});
+	});
+</script>

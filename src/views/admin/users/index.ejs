@@ -406,7 +406,7 @@
 		function resetPassword() {
 			var userId = $('#ModalPassword').data('id');
 			$.ajax({
-				method: 'PUT',
+				method: 'POST',
 				url: '/admin/users/' + userId + '/reset-password',
 				success: function (response) {
 					$('#ModalPassword').hide();
@@ -429,7 +429,7 @@
 
 		function updateUserStatus(userId, currentBtn) {
 			$.ajax({
-				method: 'PUT',
+				method: 'POST',
 				url: '/admin/users/' + userId + '/update-status',
 				data: { status: status },
 				success: function (response) {
@@ -480,7 +480,7 @@
 		//get percent of users by role
 		$.ajax({
 			type: 'POST',
-			url: '/admin/users/userPercentage',
+			url: '/admin/users/users-percentage',
 			dataType: 'json',
 			success: function (response) {
 				const { data } = response;

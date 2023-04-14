@@ -7,61 +7,73 @@
 		<div class="second-container second-container-client">
 			<div class="logo-box">
 				<div class="site-logo site-logo-client">
-					<a href="#">
+					<a href="/">
 						<img class="nav-client-img" src="/client/assets/images/logo.png" alt="Logo" />
 					</a>
 				</div>
 			</div>
 			<!-- .logo-box -->
 
-			<div class="active search">
-				<form method="get" class="searchform">
-					<div>
-						<button
-							type="submit"
-							class="searchsubmit btn"
-							value=""
-						>
-							<div>
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.97183 10.8732C3.97183 7.0617 7.0617 3.97183 10.8732 3.97183C14.6848 3.97183 17.7746 7.0617 17.7746 10.8732C17.7746 14.6848 14.6848 17.7746 10.8732 17.7746C7.0617 17.7746 3.97183 14.6848 3.97183 10.8732ZM10.8732 2C5.97268 2 2 5.97268 2 10.8732C2 15.7738 5.97268 19.7465 10.8732 19.7465C12.9683 19.7465 14.8938 19.0204 16.4118 17.8061L20.3169 21.7112C20.702 22.0963 21.3262 22.0963 21.7112 21.7112C22.0963 21.3262 22.0963 20.702 21.7112 20.3169L17.8061 16.4118C19.0204 14.8938 19.7465 12.9683 19.7465 10.8732C19.7465 5.97268 15.7738 2 10.8732 2Z" fill="#8C8C8C"></path></svg>
-							</div>
-					
-						</button>
-
-						<input
-							type="text"
-							value=""
-							name="s"
-							class="search-input-client"
-							placeholder="Tìm kiếm..."
+			<form method="get" action="/doctors" class="searchform">
+			<div class="form-group row active search">
+					<div class="input-group">
+						<input type="text" class="form-control" name="q" placeholder="Tìm kiếm bác sĩ..."
+						style="
+								width: 50%;
+								border: 1px solid rgb(217, 217, 217);
+								border-radius: 6px;
+								padding: 16px 16px 20px 48px;
+								margin: 0;
+								font-weight: 400;
+								font-variant: none;
+							">
+						<div class="input-group-append">
+							<button type="submit" class="btn btn-dark waves-effect waves-light" 
 							style="
-							width: 100%;
-							border: 1px solid rgb(217, 217, 217);
-							border-radius: 6px;
-							padding: 12px 16px 12px 48px;
-							margin: 0;
-							font-weight: 400;
-							font-variant: none;
-							"
-						/>
-						
+								border-radius: 6px;
+								">Tìm kiếm</button>
+						</div>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 
 		<ul id="menu-mainmenu" class="menu">
 			<li class="current-menu-item parent" onclick="openNewWindow()">
-				<a href="#">
-					Chuyên khoa
-					<span>Tìm bác sĩ theo chuyên khoa</span>
+				<div class="btn-group my-2">
+					<button type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"
+					style="
+						font-weight: 400;
+						font-variant: none;
+						color: black;
+						"
+					>
+						<strong>
+							Chọn chuyên khoa
+						</strong>
+					</button>
+					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+						<a href="/doctors?page=1" class="dropdown-item">Tất cả</a>
+						<% if (typeof specialities !== 'undefined') { %>
+							<% specialities.forEach(function(speciality) { %>
+								<a href="/doctors?page=1&speciality_id=<%= speciality.id %>" class="dropdown-item"><%= speciality.name %></a>
+							<% }) %>
+						<% } %>
+					</div>
+				</div>
+			</li>
+			
+			<li>
+				<a href="/doctors">
+					Bác sĩ
+					<span>Tìm bác sĩ giỏi</span>
 				</a>
 			</li>
 			
 			<li>
-				<a href="#">
-					Bác sĩ
-					<span>Tìm bác sĩ giỏi</span>
+				<a href="/free-doctors">
+					Khung giờ rảnh
+					<span>Tìm bác sĩ rảnh</span>
 				</a>
 			</li>
 		</ul>
