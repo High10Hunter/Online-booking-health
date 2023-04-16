@@ -16,24 +16,44 @@
 
 			<form method="get" action="/doctors" class="searchform">
 			<div class="form-group row active search">
+					<div class="" style="position: relative;">
+						<i class="fas fa-search" 
+						style="
+							position: absolute;
+							top: 20px;
+							left: 18px;
+							font-size: 20px;
+							z-index: 18;
+							color: rgb(217, 217, 217);
+						"></i>
+					</div>
+
 					<div class="input-group">
 						<input type="text" class="form-control" name="q" placeholder="Tìm kiếm bác sĩ..."
 						style="
-								width: 50%;
-								border: 1px solid rgb(217, 217, 217);
-								border-radius: 6px;
-								padding: 16px 16px 20px 48px;
-								margin: 0;
-								font-weight: 400;
-								font-variant: none;
+							width: 50%;
+							border: 1px solid rgb(217, 217, 217);
+							border-radius: 6px;
+							padding: 20px 26px 20px 40px;
+							margin: 0;
+							font-weight: 400;
+							font-variant: none;
+							margin-right: 10px;
 							">
+
 						<div class="input-group-append">
 							<button type="submit" class="btn btn-dark waves-effect waves-light" 
 							style="
-								border-radius: 6px;
+								background-color: #2c87f2;
+								border-radius: 8px;
+								padding: auto;
+								padding: 8px 12px 4px 12px;
 								">Tìm kiếm</button>
 						</div>
+						
 					</div>
+
+					
 				</div>
 			</form>
 		</div>
