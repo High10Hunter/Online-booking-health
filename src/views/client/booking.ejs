@@ -188,7 +188,12 @@
     const invalidEmailDescribe = document.getElementById('invalid-email-describe');
     const invalidDescriptionDescribe = document.getElementById('invalid-description-describe');
 
-    let isValid = false;
+    let isInputNameValid = false;
+    let isInputBirthdateValid = false;
+    let isInputPhonenumberValid = false;
+    let isInputEmailValid = false;
+    let isFormtexareaDescriptionValid = false;
+
 
     // Add event listeners to the input fields
     const validInputName = () => {
@@ -196,7 +201,19 @@
             inputName.classList.add('invalid-input');
             invalidNameDescribe.textContent = 'Vui lòng nhập họ và tên';
             invalidNameDescribe.classList.add('invalid-describe');
-            isValid = true;
+            isInputNameValid = false;
+        }
+        else if(inputName.value.length < 5) {
+            inputName.classList.add('invalid-input');
+            invalidNameDescribe.textContent = 'Họ và tên phải có ít nhất 5 ký tự';
+            invalidNameDescribe.classList.add('invalid-describe');
+            isInputNameValid = false;
+        }
+        else {
+            inputName.classList.remove('invalid-input');
+            invalidNameDescribe.textContent = '';
+            invalidNameDescribe.classList.remove('invalid-describe');
+            isInputNameValid = true;
         }
     }
     inputName.addEventListener('blur', validInputName);
@@ -206,44 +223,82 @@
             inputBirthdate.classList.add('invalid-input');
             invalidBirthdateDescribe.textContent = 'Vui lòng nhập ngày sinh';
             invalidBirthdateDescribe.classList.add('invalid-describe');
-            isValid = true;
+            isInputBirthdateValid = false;
+        }
+        else {
+            inputBirthdate.classList.remove('invalid-input');
+            invalidBirthdateDescribe.textContent = '';
+            invalidBirthdateDescribe.classList.remove('invalid-describe');
+            isInputBirthdateValid = true;
         }
     }
     inputBirthdate.addEventListener('blur', validInputBirthdate);
+
     const validInputPhonenumber = () => {
         if (inputPhonenumber.value === '') {
             inputPhonenumber.classList.add('invalid-input');
             invalidPhonenumberDescribe.textContent = 'Vui lòng nhập số điện thoại';
             invalidPhonenumberDescribe.classList.add('invalid-describe');
-            isValid = true;
+            isInputPhonenumberValid = false;
         }
-        if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
+        else if (inputPhonenumber.value.length < 10 || inputPhonenumber.value.length > 11) {
             inputPhonenumber.classList.add('invalid-input');
             invalidPhonenumberDescribe.textContent = 'Số điện thoại không hợp lệ';
             invalidPhonenumberDescribe.classList.add('invalid-describe');
-            isValid = false;
+            isInputPhonenumberValid = false;
+        }
+        else {
+            inputPhonenumber.classList.remove('invalid-input');
+            invalidPhonenumberDescribe.textContent = '';
+            invalidPhonenumberDescribe.classList.remove('invalid-describe');
+            isInputPhonenumberValid = true;
         }
     }
     inputPhonenumber.addEventListener('blur', validInputPhonenumber);
 
     
-    validInputEmail = () => {
+    const validInputEmail = () => {
+        console.log('email = ' + inputEmail.value);
+
         if (inputEmail.value === '') {
             inputEmail.classList.add('invalid-input');
             invalidEmailDescribe.textContent = 'Vui lòng nhập email';
             invalidEmailDescribe.classList.add('invalid-describe');
-            isValid = false;
+            isInputEmailValid = false;
+        }
+        else if (inputEmail.value.length < 5) {
+            inputEmail.classList.add('invalid-input');
+            invalidEmailDescribe.textContent = 'Email không hợp lệ';
+            invalidEmailDescribe.classList.add('invalid-describe');
+            isInputEmailValid = false;
+        }
+        else {
+            inputEmail.classList.remove('invalid-input');
+            invalidEmailDescribe.textContent = '';
+            invalidEmailDescribe.classList.remove('invalid-describe');
+            isInputEmailValid = true;
         }
     }
     inputEmail.addEventListener('blur', validInputEmail);
 
 
     const validFormtexareaDescription = () => {
+        console.log('formtexareaDescription.value = ' + formtexareaDescription.value);
         if (formtexareaDescription.value === '') {
+            
             formtexareaDescription.classList.add('invalid-input');
+            
             invalidDescriptionDescribe.textContent = 'Vui lòng nhập lý do khám';
+            
             invalidDescriptionDescribe.classList.add('invalid-describe');
+            
             isValid = false;
+        }
+        else {
+            formtexareaDescription.classList.remove('invalid-input');
+            invalidDescriptionDescribe.textContent = '';
+            invalidDescriptionDescribe.classList.remove('invalid-describe');
+            isFormtexareaDescriptionValid = true;
         }
     }
     formtexareaDescription.addEventListener('blur', validFormtexareaDescription);
@@ -254,8 +309,9 @@
         validInputPhonenumber();
         validInputBirthdate();
         validFormtexareaDescription();
-        if (isValid) {
-            event.preventDefault();
+        if (!isInputNameValid || !isInputEmailValid || !isInputPhonenumberValid 
+            || !isInputBirthdateValid || !isFormtexareaDescriptionValid) {
+            // event.preventDefault();
         }
     });
 
