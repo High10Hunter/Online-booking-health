@@ -1,1 +1,114 @@
-<h1>Doctor index</h1>
+<div>
+	<h3>
+		<%= doctor.rank_name %> <%= doctor.name %> - Chuyên khoa: <%=
+		doctor.speciality_name %>
+	</h3>
+</div>
+<div id="calendar"></div>
+
+<%- contentFor('css') %>
+<style>
+	.fc-event:hover {
+		cursor: pointer;
+	}
+</style>
+
+<%- contentFor('js') %>
+<!-- fullcalendar libs -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/locales-all.js"></script>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+
+<script>
+	$(document).ready(function () {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			locale: 'vi',
+			timeZone: 'Asia/Ho_Chi_Minh',
+			firstDay: 1, //start from monday
+			buttonText: {
+				today: 'Hôm nay',
+				week: 'Tuần',
+				day: 'Ngày',
+			},
+
+			height: 600,
+			expandRows: true,
+			selectable: true,
+			initialView: 'timeGridWeek',
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'timeGridWeek,timeGridDay',
+			},
+			eventTimeFormat: {
+				// like '14:30'
+				hour: '2-digit',
+				minute: '2-digit',
+				meridiem: false,
+			},
+			hiddenDays: [0],
+			nowIndicator: true,
+			handleWindowResize: true,
+			stickyHeaderDates: true,
+
+			businessHours: [
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '7:00',
+					endTime: '11:30',
+				},
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '13:00',
+					endTime: '17:30',
+				},
+			],
+
+			views: {
+				timeGrid: {
+					dayMaxEventRows: 3,
+					eventMaxStack: 2,
+					eventMinHeight: 50,
+				},
+			},
+
+			events: '/doctor/api/schedules',
+
+			eventDataTransform: function (event) {
+				event.doctor = '<%= doctor.rank_name %> <%= doctor.name %>';
+				return event;
+			},
+
+			eventDidMount: function (info) {
+				$(info.el).popover({
+					title: 'Chi tiết ca khám',
+					placement: 'top',
+					trigger: 'hover',
+					html: true,
+					content: `<ul class="form-group">
+			                       <li>
+			                           Bắt đầu: ${info.event.extendedProps.startTime}
+			                       </li>
+								<li>
+									Kết thúc: ${info.event.extendedProps.endTime}
+								</li>
+								<li>
+									Người khám: ${info.event.extendedProps.doctor}
+								</li>
+			                   </ul>
+			                   `,
+					container: 'body',
+				});
+			},
+		});
+		calendar.render();
+	});
+</script>
