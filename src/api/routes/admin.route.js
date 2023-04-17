@@ -58,8 +58,20 @@ const adminRoutes = app => {
 		UserController.store
 	);
 
-	router.patch('/users/update/:id', UserController.update);
-	router.delete('/users/destroy/:id', UserController.destroy);
+	router.patch(
+		'/users/update/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.update
+	);
+
+	router.delete(
+		'/users/destroy/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.destroy
+	);
+
 	router.post(
 		'/users/resetPassword',
 		verifyAccessToken,
@@ -72,35 +84,6 @@ const adminRoutes = app => {
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.getPercentageOfEachRole
-	);
-
-	//* manage doctor's schedule routes
-	router.get(
-		'/schedules',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		DoctorController.index
-	);
-
-	router.get(
-		'/schedule/:id',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.index
-	);
-
-	router.get(
-		'/api/getScheduleOfDoctor/:id',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.getScheduleOfDoctor
-	);
-
-	router.post(
-		'/api/schedule/create',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.create
 	);
 
 	//* manage doctor's schedule routes
@@ -147,7 +130,12 @@ const adminRoutes = app => {
 		DoctorController.getDoctor
 	);
 
-	router.post('/doctors/:id/update', DoctorController.update);
+	router.post(
+		'/doctors/:id/update',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.update
+	);
 
 	app.use('/admin', router);
 };
