@@ -60,7 +60,7 @@
 
 		<ul id="menu-mainmenu" class="menu">
 			<li class="current-menu-item parent" onclick="openNewWindow()">
-				<div class="btn-group my-2">
+				<div class="btn-group my-2" style="position: relative;">
 					<button type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"
 					style="
 						font-weight: 400;
@@ -72,7 +72,15 @@
 							Chọn chuyên khoa
 						</strong>
 					</button>
-					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+					<div class="dropdown-menu" x-placement="bottom-start" 
+						style="
+							position: absolute;
+							will-change: transform;
+							width: 160px;
+							top: 0px;
+							left: 0px;
+							transform: translate3d(0px, -5px, 0px);
+						">
 						<% if (typeof specialities !== 'undefined') { %>
 							<% specialities.forEach(function(speciality) { %>
 								<a href="/doctors?page=1&speciality_id=<%= speciality.id %>" class="dropdown-item"><%= speciality.name %></a>
