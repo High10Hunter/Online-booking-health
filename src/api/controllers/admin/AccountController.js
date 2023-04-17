@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import User from '../../services/admin/UserServices';
+import { configureMulter } from '../../utils';
 
 const index = async (req, res) => {
 	try {
@@ -17,28 +18,46 @@ const index = async (req, res) => {
 };
 
 const update = async (req, res) => {
-	try {
-		const {new_password, confirm_password} = req.body;
+	const multerInstance = configureMulter('src/public/media/avatars');
 
-		if (new_password !== confirm_password) {
+	multerInstance.single('avatar')(req, res, async err => {
+		if (err) {
 			return res.status(StatusCodes.BAD_REQUEST).json({
-				message: 'Password does not match',
+				message: err.message || 'Cannot update user account',
 				data: [],
 			});
 		}
 
-		const user = await User.updateUser(req.payload.id, req.body);
+		if (req.file) {
+			req.body.avatar = req.file.path;
+		} else {
+			req.body.avatar = '';
+		}
+		
+		try {
+			const {new_password, confirm_password} = req.body;
+	
+			if (new_password !== confirm_password) {
+				return res.status(StatusCodes.BAD_REQUEST).json({
+					message: 'Password does not match',
+					data: [],
+				});
+			}
+	
+			const user = await User.updateUser(req.payload.id, req.body);
+	
+			return res.status(StatusCodes.OK).json({
+				message: 'Update user successfully',
+				data: user,
+			});
+		} catch (error) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				message: error.message || 'Cannot update user',
+				data: [],
+			});
+		}
+	})
 
-		return res.status(StatusCodes.OK).json({
-			message: 'Update user successfully',
-			data: user,
-		});
-	} catch (error) {
-		return res.status(StatusCodes.BAD_REQUEST).json({
-			message: error.message || 'Cannot update user',
-			data: [],
-		});
-	}
 };
 
 export default {

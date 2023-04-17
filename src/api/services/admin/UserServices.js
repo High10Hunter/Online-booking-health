@@ -162,11 +162,14 @@ const updateUser = async (id, data) => {
 	try {
 		const user = await User.findByPk(id);
 
-		const {old_password, new_password} = data;
+		const { old_password, new_password, avatar } = data;
 
 		if (old_password) {
-			const isPasswordValid = await validPassword(old_password, user.password);
-			
+			const isPasswordValid = await validPassword(
+				old_password,
+				user.password
+			);
+
 			if (!isPasswordValid) {
 				throw new Error('Old password is invalid');
 			}
@@ -177,8 +180,13 @@ const updateUser = async (id, data) => {
 			data.password = hashedPassword;
 		}
 
+		// given avatar = src/public/media/avatar-1619780000000.jpg
+		// => avatar = /media/avatar-1619780000000.jpg
+		const avatarInput = avatar.split('public')[1];
+
 		user.set({
 			...data,
+			avatar: avatarInput,
 		});
 
 		await user.save();

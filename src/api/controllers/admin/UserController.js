@@ -64,7 +64,7 @@ const create = async (req, res) => {
 };
 
 const store = async (req, res) => {
-	const multerInstance = configureMulter('src/public/media/');
+	const multerInstance = configureMulter('src/public/media/avatars');
 
 	multerInstance.single('avatar')(req, res, async err => {
 		if (err) {
