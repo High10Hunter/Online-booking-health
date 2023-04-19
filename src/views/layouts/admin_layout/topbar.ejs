@@ -208,11 +208,20 @@
 				aria-haspopup="false"
 				aria-expanded="false"
 			>
+				<% if (authUser.avatar) { %>
 				<img
-					src="/admin/assets/images/users/user-1.jpg"
+					src="<%= authUser.avatar %>"
 					alt="user-image"
 					class="rounded-circle"
 				/>
+				<% } else { %>
+				<img
+					src="https://api.dicebear.com/6.x/initials/svg?seed=<%= authUser.name %>"
+					alt="user-image"
+					class="rounded-circle"
+				/>
+				<% } %>
+
 				<span class="pro-user-name ml-1">
 					<%= authUser.name %>
 					<i class="mdi mdi-chevron-down"></i>
