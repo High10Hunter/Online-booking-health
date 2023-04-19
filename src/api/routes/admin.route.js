@@ -48,8 +48,19 @@ const adminRoutes = app => {
 
 	// router.get('/users', UserController.index);
 
-	router.post('/users/:id/update-status', UserController.updateUserStatus);
-	router.post('/users/:id/reset-password', UserController.resetPassword);
+	router.post(
+		'/users/:id/update-status',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.updateUserStatus
+	);
+
+	router.post(
+		'/users/:id/reset-password',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.resetPassword
+	);
 
 	router.post(
 		'/users/create',
@@ -73,14 +84,7 @@ const adminRoutes = app => {
 	);
 
 	router.post(
-		'/users/resetPassword',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		UserController.resetPassword
-	);
-
-	router.post(
-		'/users/userPercentage',
+		'/users/users-percentage',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.getPercentageOfEachRole
