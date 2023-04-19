@@ -6,6 +6,7 @@ import AccountController from '../controllers/admin/AccountController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
+import HomepageController from '../controllers/admin/HomepageController';
 
 const router = Router();
 
@@ -25,11 +26,7 @@ const adminRoutes = app => {
 		'/',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
-		(req, res) => {
-			res.render('admin/index', {
-				title: 'Admin',
-			});
-		}
+		HomepageController.index
 	);
 
 	router.get(
@@ -45,8 +42,6 @@ const adminRoutes = app => {
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.create
 	);
-
-	// router.get('/users', UserController.index);
 
 	router.post(
 		'/users/:id/update-status',
@@ -110,6 +105,13 @@ const adminRoutes = app => {
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		ScheduleController.getScheduleOfDoctor
+	);
+
+	router.get(
+		'/api/schedules/now',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.getTodaySchedule
 	);
 
 	router.post(

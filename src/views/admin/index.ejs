@@ -1,12 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-	</head>
-	<body>
-		<h1>Admin index</h1>
-	</body>
-</html>
+<h2 class="text-center mb-2">Tổng quan</h2>
+
+<div class="row">
+	<div class="col-xl-4 col-md-6">
+		<div class="card-box">
+			<h4 class="header-title mt-0 mb-4">Đơn khám trong ngày</h4>
+			<div class="widget-chart-1">
+				<div class="widget-detail-1 text-center">
+					<h2 class="font-weight-normal pt-2 mb-1 text-danger">
+						<%= todayAppointments %>
+					</h2>
+					<p class="text-muted mb-1">Đơn đặt</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xl-4 col-md-6">
+		<div class="card-box">
+			<h4 class="header-title mt-0 mb-4">Đơn khám tháng trước</h4>
+			<div class="widget-chart-1">
+				<div class="widget-detail-1 text-center">
+					<h2 class="font-weight-normal pt-2 mb-1 text-primary">
+						<%= lastMonthAppointments %>
+					</h2>
+					<p class="text-muted mb-1">Đơn đặt</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+
+	<div class="col-xl-4 col-md-6">
+		<div class="card-box">
+			<h4 class="header-title mt-0 mb-3">Doanh thu trong tháng</h4>
+
+			<div class="widget-box-2">
+				<div class="widget-detail-2 text-right">
+					<% if (differencePercent > 0) { %>
+					<span class="badge badge-success badge-pill float-left mt-3"
+						><%= differencePercent %>
+						<i class="mdi mdi-trending-up"></i>
+					</span>
+					<% } else { %>
+					<span class="badge badge-danger badge-pill float-left mt-3">
+						<%= differencePercent * -1 %>
+						<i class="mdi mdi-trending-down"></i>
+					</span>
+					<% } %>
+					<h2
+						class="font-weight-normal mb-2 text-center text-success"
+					>
+						<%= new Intl.NumberFormat('vi-VN', { style: 'currency',
+						currency: 'VND' }).format(totalRevenueThisMonth) %>
+					</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+
+<div id="calendar"></div>
+
+<%- contentFor('css') %>
+<style>
+	.fc-event:hover {
+		cursor: pointer;
+	}
+</style>
+
+<%- contentFor('js') %>
+<!-- fullcalendar libs -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/locales-all.js"></script>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+
+<script>
+	$(document).ready(function () {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			locale: 'vi',
+			timeZone: 'Asia/Ho_Chi_Minh',
+			firstDay: 1, //start from monday
+			buttonText: {
+				today: 'Hôm nay',
+				week: 'Tuần',
+				day: 'Ngày',
+			},
+
+			height: 600,
+			expandRows: true,
+			selectable: true,
+			initialView: 'timeGridDay',
+			eventTimeFormat: {
+				// like '14:30'
+				hour: '2-digit',
+				minute: '2-digit',
+				meridiem: false,
+			},
+			hiddenDays: [0],
+			nowIndicator: true,
+			handleWindowResize: true,
+			stickyHeaderDates: true,
+
+			businessHours: [
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '7:00',
+					endTime: '11:30',
+				},
+				{
+					daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Saturday
+
+					startTime: '13:00',
+					endTime: '17:30',
+				},
+			],
+
+			views: {
+				timeGrid: {
+					dayMaxEventRows: 3,
+					eventMaxStack: 2,
+					eventMinHeight: 50,
+				},
+			},
+
+			events: '/admin/api/schedules/now',
+
+			eventDidMount: function (info) {
+				$(info.el).popover({
+					title: 'Chi tiết ca khám',
+					placement: 'top',
+					trigger: 'hover',
+					html: true,
+					content: `<ul class="form-group">
+			                       <li>
+			                           Bắt đầu: ${info.event.extendedProps.startTime}
+			                       </li>
+								<li>
+									Kết thúc: ${info.event.extendedProps.endTime}
+								</li>
+								<li>
+									Người khám: ${info.event.extendedProps.doctor}
+								</li>
+			                   </ul>
+			                   `,
+					container: 'body',
+				});
+			},
+		});
+		calendar.render();
+	});
+</script>
