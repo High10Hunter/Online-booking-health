@@ -6,6 +6,7 @@ import AccountController from '../controllers/admin/AccountController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
+import HomepageController from '../controllers/admin/HomepageController';
 
 const router = Router();
 
@@ -25,11 +26,7 @@ const adminRoutes = app => {
 		'/',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
-		(req, res) => {
-			res.render('admin/index', {
-				title: 'Admin',
-			});
-		}
+		HomepageController.index
 	);
 
 	router.get(
@@ -46,10 +43,19 @@ const adminRoutes = app => {
 		UserController.create
 	);
 
-	// router.get('/users', UserController.index);
+	router.post(
+		'/users/:id/update-status',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.updateUserStatus
+	);
 
-	router.post('/users/:id/update-status', UserController.updateUserStatus);
-	router.post('/users/:id/reset-password', UserController.resetPassword);
+	router.post(
+		'/users/:id/reset-password',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.resetPassword
+	);
 
 	router.post(
 		'/users/create',
@@ -58,49 +64,25 @@ const adminRoutes = app => {
 		UserController.store
 	);
 
-	router.patch('/users/update/:id', UserController.update);
-	router.delete('/users/destroy/:id', UserController.destroy);
-	router.post(
-		'/users/resetPassword',
+	router.patch(
+		'/users/update/:id',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
-		UserController.resetPassword
+		UserController.update
+	);
+
+	router.delete(
+		'/users/destroy/:id',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		UserController.destroy
 	);
 
 	router.post(
-		'/users/userPercentage',
+		'/users/users-percentage',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.ADMIN),
 		UserController.getPercentageOfEachRole
-	);
-
-	//* manage doctor's schedule routes
-	router.get(
-		'/schedules',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		DoctorController.index
-	);
-
-	router.get(
-		'/schedule/:id',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.index
-	);
-
-	router.get(
-		'/api/getScheduleOfDoctor/:id',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.getScheduleOfDoctor
-	);
-
-	router.post(
-		'/api/schedule/create',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.ADMIN),
-		ScheduleController.create
 	);
 
 	//* manage doctor's schedule routes
@@ -125,6 +107,13 @@ const adminRoutes = app => {
 		ScheduleController.getScheduleOfDoctor
 	);
 
+	router.get(
+		'/api/schedules/now',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		ScheduleController.getTodaySchedule
+	);
+
 	router.post(
 		'/api/schedules/create',
 		verifyAccessToken,
@@ -147,7 +136,12 @@ const adminRoutes = app => {
 		DoctorController.getDoctor
 	);
 
-	router.post('/doctors/:id/update', DoctorController.update);
+	router.post(
+		'/doctors/:id/update',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.ADMIN),
+		DoctorController.update
+	);
 
 	app.use('/admin', router);
 };
