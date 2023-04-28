@@ -78,33 +78,18 @@ const getAllAppointment = async (q = '', currentPage = 1, status) => {
 				{
 					model: User,
 					as: 'user',
-					attributes: ['id', 'name'],
+					attributes: ['id', 'name', 'avatar'],
 					required: false,
 					subQuery: false,
 				},
 			],
 			attributes: {
 				exclude: ['customer_id', 'schedule_id', 'user_id', 'updatedAt'],
-				// ['$customer.name$']: 'customer_name',
-				// ['$customer.phone_number$']: 'customer_phone_number',
-				// ['$customer.email$']: 'customer_email',
-				// ['$schedule.date$']: 'date',
-				// ['$schedule.shift.start_time$']: 'start_time',
-				// ['$schedule.shift.end_time$']: 'end_time',
-				// ['$schedule.doctor.name$']: 'doctor_name',
-				// ['$schedule.doctor.rank$']: 'doctor_rank',
-				// ['$schedule.doctor.speciality.name$']: 'speciality_name',
-				// ['$user.name$']: 'user_name',
-				// ['description', 'status', 'id', 'createdAt', 'updatedAt']
-
-
-
 			},
-
 
 			order: [['createdAt', 'DESC']],
 		});
-		//console.log('rows', rows);
+
 		if (count === 0) {
 			return { rows: [], currentPage: 1, endPage: 1 };
 		}
@@ -121,7 +106,7 @@ const getAllAppointment = async (q = '', currentPage = 1, status) => {
 const updateStatusAppointment = async (id, data) => {
 	try {
 		const appointment = await Appointment.findByPk(id);
-		const {status} = data;
+		const { status } = data;
 		console.log('status', status);
 		appointment.set({
 			status: status,
@@ -131,13 +116,16 @@ const updateStatusAppointment = async (id, data) => {
 	} catch (error) {
 		const { errors } = error;
 		if (!errors) {
-			throw new Error(error.message || 'Cannot update status appointment');
+			throw new Error(
+				error.message || 'Cannot update status appointment'
+			);
 		} else {
-			throw new Error(errors[0].message || 'Cannot update status appointment');
+			throw new Error(
+				errors[0].message || 'Cannot update status appointment'
+			);
 		}
 	}
 };
-
 
 const getAppointmentById = async appointmentId => {
 	try {
@@ -149,7 +137,13 @@ const getAppointmentById = async appointmentId => {
 				{
 					model: Customer,
 					as: 'customer',
-					attributes: ['name', 'birthday', 'gender', 'phone_number', 'email'],
+					attributes: [
+						'name',
+						'birthday',
+						'gender',
+						'phone_number',
+						'email',
+					],
 					required: false,
 					subQuery: false,
 				},
@@ -177,7 +171,7 @@ const getAppointmentById = async appointmentId => {
 								{
 									model: User,
 									as: 'user',
-									attributes: ['name'],
+									attributes: ['name', 'avatar'],
 									required: false,
 									subQuery: false,
 								},
@@ -231,7 +225,6 @@ const updateAppointment = async (id, data, userId) => {
 		}
 	}
 };
-
 
 export default {
 	getAllAppointment,
