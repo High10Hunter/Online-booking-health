@@ -15,13 +15,12 @@
                 <!-- Display bad status customers	 -->
                 <div class="form-group">
                     <div class="mb-2 ml-2">
-                        <a href="/nurse/customers?page=1&badStatus=true" class="btn btn-danger">
+                        <a href="/nurse/customers?status=bad&q=<%= search %>" class="btn btn-danger">
                             <i class="dripicons-warning text-light"></i>
                         </a>
                         Danh sách cảnh báo
                     </div>
                 </div>
-        
                 <div class="form-group">
                     <div class="col-md-1 mb-1 ml-0 pl-0 mb-1 ml-auto form-group">
                         <div class="form-group app-search-box">
@@ -29,24 +28,24 @@
                                 <% if (typeof search == "undefined") { %>
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    class="form-control search-input"
                                     name="q"
                                     placeholder="Nhập tên để tìm kiếm..."
                                 />
                                 <% } else { %>
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    class="form-control search-input"
                                     name="q"
                                     value="<%= search %>"
                                     placeholder="Nhập tên để tìm kiếm..."
                                 />
                                 <% } %>
-                                <div class="input-group-append bg-primary">
-                                    <button class="btn" type="submit">
-                                    <i class="fe-search"></i>
-                                    </button>
-                                </div>
+								<div class="input-group-append bg-primary">
+									<button id="search-btn" class="btn">
+										<i class="fe-search"></i>
+									</button>
+								</div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +114,7 @@
                     <li class="page-item">
                     <a
                         class="page-link"
-                        href="/nurse/customers?page=1&badStatus=<%= badStatus %>&q=<%= search %>"
+                        href="/nurse/customers?page=1&status=<%= badStatus %>&q=<%= search %>"
                         tabindex="-1"
                     >
                         Đầu
@@ -135,7 +134,7 @@
                     <li class="page-item">
                     <a
                         class="page-link"
-                        href="/nurse/customers?page=<%= i %>&badStatus=<%= badStatus %>&q=<%=search%>"
+                        href="/nurse/customers?page=<%= i %>&status=<%= badStatus %>&q=<%=search%>"
                         ><%=i%>
                     </a>
                     </li>
@@ -151,7 +150,7 @@
                     <li class="page-item">
                     <a
                         class="page-link"
-                        href="/nurse/customers?page=<%= pages %>&badStatus=<%=badStatus%>&q=<%=search%>"
+                        href="/nurse/customers?page=<%= pages %>&status=<%=badStatus%>&q=<%=search%>"
                     >
                         Cuối
                     </a>
@@ -283,8 +282,8 @@
                                     <div class="form-group row col-12 history">
                                         <div class="col-12 text-dark"  style="font-weight: bold; margin-bottom: 10px;">LỊCH SỬ ĐẶT LỊCH KHÁM</div>
                                         <div class="col-12">
-                                            <table class="table table-bordered table-hover" id="history">
-                                                <thead>
+                                            <table class="table table-striped table-hover" id="history">
+                                                <thead class="thead-light">
                                                     <tr>
                                                         <th>STT</th>
                                                         <th>Ngày đặt</th>
@@ -512,6 +511,16 @@
             $('#form-filter').submit();
         });
 
+        $('#search-btn').on('click', function(e) {
+            e.preventDefault();
+            let inputSearch = $('.search-input').val();
+            if(typeof inputSearch === 'undefined') {
+                inputSearch = '';
+            }
+            let href = "/nurse/customers?status=<%= badStatus %>&q=" + inputSearch;
+            window.location.href = href;
+        });
+
         $('.update-customer-btn').click(function (e)  {
             e.preventDefault();
             
@@ -546,28 +555,28 @@
                         switch(appointment.status) {
                             case 1:
                                 statusText = "Chưa xác nhận";
-                                statusClass = "text-secondary";
+                                statusClass = "table-secondary";
                                 break;
                             case 2:
                                 statusText = "Chờ xử lý";
-                                statusClass = "text-warning";
+                                statusClass = "table-warning";
                                 break;
                             case 3:
                                 statusText = "Xác nhận";
-                                statusClass = "text-primary";
+                                statusClass = "table-primary";
                                 break;
                             case 4:
                                 statusText = "Từ chối";
-                                statusClass = "text-danger";
+                                statusClass = "table-danger";
                                 break;
                             default:
                                 statusText = "Hoàn thành";
-                                statusClass = "text-success";
+                                statusClass = "table-success";
                         }
-                        let row = '<tr><td>' + (index + 1) + '</td><td>' 
+                        let row = '<tr class="' + statusClass + '"><td>' + (index + 1) + '</td><td>' 
                             + appointment.createdAt + '</td><td>' 
                             + appointment.schedule.date + '</td><td>' 
-                            + appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time + '</td><td class="' + statusClass + '">'
+                            + appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time + '</td><td>'
                             + statusText + '</td></tr>';
                         tableBody.append(row);
                     });

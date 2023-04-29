@@ -1,4 +1,3 @@
-import { Op, literal, fn} from 'sequelize';
 import {
 	Appointment,
 	Customer,
@@ -10,10 +9,9 @@ import {
 } from '../../models';
 import { sequelize } from '../../models';
 import { NotFoundError } from '../../errors';
-import moment from 'moment';
 
 
-const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
+const getAllCustomers = async (q = '', currentPage = 1, status = '') => {
 	try {
 		const limit = 10;
 		if (currentPage <= 0 || limit <= 0)
@@ -22,7 +20,7 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 		const offset = (currentPage - 1) * limit;
 		let query = '';
 		let count = 0;
-		if(!badStatus){
+		if(status !== 'bad'){
 			query = `
 				SELECT
 					customers.id, 
@@ -43,7 +41,6 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 				LIMIT :limit
 			`;
 			count = await Customer.count();
-			console.log('count', count);
 		}
 		else
 		{
@@ -64,14 +61,14 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 				LEFT JOIN schedules ON appointments.schedule_id = schedules.id
 				WHERE customers.name ILIKE :name
 				GROUP BY customers.id
-				HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 2
+				HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 1
 				ORDER BY customers.id ASC
 				OFFSET :offset
 				LIMIT :limit
 			`;
 
 			const queryToCount = `
-				SELECT COUNT(*) FROM (
+				SELECT COUNT(*) AS count FROM (
 					SELECT
 						customers.id,
 						customers.name
@@ -80,11 +77,11 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 					LEFT JOIN schedules ON appointments.schedule_id = schedules.id
 					WHERE customers.name ILIKE :name
 					GROUP BY customers.id
-					HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 2
+					HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 1
 					ORDER BY customers.id ASC
 				) AS countBadStatus
 			`;
-			const badRows = await await sequelize.query(
+			const badRows = await sequelize.query(
 				queryToCount, 
 				{
 					replacements: {
@@ -93,8 +90,7 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 					type: sequelize.QueryTypes.SELECT,
 				}
 			);
-			count = badRows.length;
-			console.log('count', count);
+			count = parseInt(badRows[0].count);
 		}
 		const rows = await sequelize.query(
 			query, 
@@ -107,7 +103,6 @@ const getAllCustomers = async (q = '', currentPage = 1, badStatus = false) => {
 				type: sequelize.QueryTypes.SELECT,
 			}
 		);
-		console.log('rows', rows);
 
 		if (count === 0) {
 			return { rows: [], currentPage: 1, endPage: 1 };

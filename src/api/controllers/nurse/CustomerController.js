@@ -3,11 +3,11 @@ import Customer from '../../services/nurses/CustomerServices';
 
 const index = async (req, res) => {
 	try {
-		const { q, page, badStatus } = req.query;
+		const { q, page, status } = req.query;
 		const { rows, currentPage, endPage } = await Customer.getAllCustomers(
 			q,
 			page,
-			badStatus
+			status
 		);
 		
 		return res.render('./nurse/customers/index', {
@@ -15,20 +15,12 @@ const index = async (req, res) => {
 			pages: endPage,
 			current: currentPage,
 			search: q,
-			badStatus: badStatus,
+			badStatus: status,
 			layout: './layouts/nurse_layout/master',
 			title: 'Quản lý khách hàng',
 		});
-		// return res.status(StatusCodes.OK).json({
-		// 	message: 'get customers',
-		// 	data: rows,
-		// });
 	} catch (error) {
-		// return res.redirect('/nurse/customers?page=1');
-		return res.status(StatusCodes.BAD_REQUEST).json({
-			message: error.message || 'Cannot get customers',
-			data: [],
-		});
+		return res.redirect('/nurse/customers?page=1');
 	}
 };
 
@@ -36,15 +28,9 @@ const getCustomer = async (req, res) => {
 	try {
 		const customer = await Customer.getCustomerById(req.params.id);
 		const appointment = await Customer.getAppointmentOfCustomer(req.params.id);
-		// const date = appointment.schedule.date;
-		// let dayOfWeek = moment(date, 'YYYY-MM-DD').format('d');
-		// const daysOfWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu','Thứ bảy'];
-
 		const data = {
 			customer,
 			appointment,
-			// doctor_rank: appointment.schedule.doctor.getRankName(),
-			// appointment_day: daysOfWeek[dayOfWeek],
 		}
 		console.log(data);
 		return res.status(StatusCodes.OK).json({

@@ -216,85 +216,9 @@ const updateAppointment = async (id, data, userId) => {
 	}
 };
 
-const getAllCustomers = async (q = '', currentPage = 1, limit) => {
-	try {
-		if (currentPage < 0 || limit <= 0)
-			throw new Error('Page or limit is invalid');
-
-		const offset = (currentPage - 1) * limit;
-		const { count, rows } = await Customer.findAndCountAll({
-			offset: offset,
-			limit: limit,
-			where: {
-				name: {
-					[Op.iLike]: `%${q}%`,
-				},
-			},
-			attributes: ['id', 'name', 'birthday', 'gender', 'phone_number', 'email'],
-			include: [
-				{
-					model: Appointment,
-					as: 'appointment',
-					attributes: [
-						[sequelize.fn('COUNT', sequelize.literal('CASE WHEN status = 5 THEN 1 ELSE NULL END')), 'completed'],
-						[sequelize.fn('COUNT', sequelize.literal('CASE WHEN status = 4 THEN 1 ELSE NULL END')), 'rejected']
-					  ],
-					required: false,
-					subQuery: false,
-				},
-			],
-			order: [['createdAt', 'DESC']],
-		});
-		console.log('rows', rows);
-		if (count === 0) {
-			return { rows: [], currentPage: 1, endPage: 1 };
-		}
-
-		const endPage = Math.ceil(count / limit);
-		if (currentPage > endPage) throw new Error('Page is invalid');
-
-		return { rows, currentPage, endPage };
-	} catch (error) {
-		throw new NotFoundError('Cannot get customers');
-	}
-};
-
-const getCustomerById = async customerId => {
-	try {
-		const customer = await Customer.findByPk(customerId);
-
-		if (!customer) throw new NotFoundError('Customer not found');
-
-		return customer;
-	} catch (error) {
-		throw new NotFoundError('Cannot get customer');
-	}
-};
-
-const updateCustomer = async (id, data) => {
-	try {
-		const customer = await Customer.findByPk(id);
-		customer.set({
-			...data,
-		});
-		await customer.save();
-		return customer;
-	} catch (error) {
-		const { errors } = error;
-		if (!errors) {
-			throw new Error(error.message || 'Cannot update customer');
-		} else {
-			throw new Error(errors[0].message || 'Cannot update customer');
-		}
-	}
-};
-
 export default {
 	getAllAppointments,
 	updateStatusAppointment,
 	getAppointmentById,
 	updateAppointment,
-	getAllCustomers,
-	updateCustomer,
-	getCustomerById,
 };
