@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-12">
 	<div class="card-box">
-	  	<h4 class="mt-0 mb-2 header-title">Duyệt đơn đặt khám</h4>
+	  	<h3 class="mt-0 mb-2">Quản lý đơn đặt khám</h3>
 		<div class="row">
 			<div class="col-md-2 mb-1">
 				<a href="/nurse/appointments?page=1">	
@@ -23,7 +23,6 @@
 						class="custom-select select-filter mb-1"
 					  >
 						<option value="" selected>Tất cả</option>
-						<option value="1" <% if (selectedStatus == 1) { %> selected <% } %>>Chưa xác nhận</option>
 						<option value="2" <% if (selectedStatus == 2) { %> selected <% } %>>Chờ xử lý</option>
 						<option value="3" <% if (selectedStatus == 3) { %> selected <% } %>>Xác nhận</option>
 						<option value="4" <% if (selectedStatus == 4) { %> selected <% } %>>Từ chối</option>
@@ -72,12 +71,11 @@
 					<th>Tên bệnh nhân</th>
 					<th>Số điện thoại</th>
 					<th>Email</th>
-					<th>Lí do khám</th>
 					<th>Bác sĩ</th>
 					<th>Chi phí</th>
 					<th>Người thao tác</th>
 					<th>Trạng thái</th>
-					<th>Tùy chỉnh</th>
+					<th>Chi tiết</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -88,56 +86,26 @@
 						<td><%= appointment.customer.name %></td>
 						<td><%= appointment.customer.phone_number %></td>
 						<td><%= appointment.customer.email %></td>
-						<td><%= appointment.description %></td>
 						<td><%= appointment.schedule.doctor.user.name %></td>
 						<td><%= appointment.price %></td>
-						<td><%= appointment.user.name %></td>
-						<% if (appointment.status == 1 ) { %>
-						<td class="text-secondary">Chưa xác nhận</td>
-						<% } else if (appointment.status == 2 ) { %>
-						<td class="text-warning">Chờ xử lý</td>
+						<td>
+							<% if (appointment.user == null) { %>
+								<i class="mdi mdi-null" style="color:purple"></i>
+							<%  } else { %>
+								<%= appointment.user.name %>
+							<% } %>
+						</td>
+						<% if (appointment.status == 2 ) { %>
+						<td style="color: rgb(196, 196, 114)">Chờ xử lý</td>
 						<% } else if (appointment.status == 3 ) { %>
 						<td class="text-primary">Xác nhận</td>
 						<% } else if (appointment.status == 4 ) { %>
 						<td class="text-danger">Từ chối</td>
-						<% } else { %>
+						<% } else if (appointment.status == 5) { %>
 						<td class="text-success">Khám xong</td>
 						<% } %>
 						<td>
-							<div 
-								class="action action-1"
-								<% if (appointment.status == 2 ) { %>
-									style="display: block;"
-								<% } else { %>
-									style="display: none;"
-								<% } %>
-							> 
-								<button
-									class="btn btn-sm btn-success approve-appointment-btn"
-									data-toggle="modal"
-									data-target="#ModalApprove"
-									data-id="<%= appointment.id %>"
-								>
-									<i class="mdi mdi-checkbox-marked-circle-outline"></i>
-								</button>
-								<button
-									class="btn btn-sm btn-danger decline-appointment-btn"
-									data-toggle="modal"
-									data-target="#ModalDecline"
-									data-id="<%= appointment.id %>"
-								>
-									<i class="mdi mdi-comment-remove-outline"></i>
-								</button>
-							</div>
-
-							<div 
-								class="action action-2"
-								<% if (appointment.status > 2 ) { %>
-									style="display: block;"
-								<% } else { %>
-									style="display: none;"
-								<% } %>
-								>
+							<div class="action action-2">
 								<button
 									class="btn btn-sm btn-primary update-appointment-btn"
 									data-toggle="modal"
@@ -256,9 +224,8 @@
 								<div class="form-group">
 									<div class="form-group row schedule-form">
 										<div class="col-sm-4">
-											<img src="/admin/assets/images/users/user-1.jpg" 
-											alt="user-img" 
-											title="Mat Helme" 
+											<img src="" 
+											id="doctor-avatar"
 											class="rounded-circle img-thumbnail picture-form"
 											>
 											<div class="dropdown">
@@ -271,15 +238,15 @@
 										</div>
 										<div class="form-group col-sm-8">
 											<div class="row">
-												<label>Bác sĩ: </label>
+												<label>Bác sĩ: &nbsp;</label>
 												<p id="doctor"></p>
 											</div>
 											<div class="row">
-												<label>Xuất khám: </label>
+												<label>Xuất khám: &nbsp;</label>
 												<p id="shift"></p>
 											</div>
 											<div class="row">
-												<label>Ngày khám: </label>
+												<label>Ngày khám: &nbsp;</label>
 												<p id="day"></p>
 											</div>
 										</div>
@@ -347,7 +314,7 @@
 											<label>Số điện thoại:</label>
 											<span class="error" id="phone-error"></span>
 											<input
-												type="number"
+												type="text"
 												class="col-sm-12"
 												id="phone_numberCustomer"
 												name="phone_number"
@@ -414,18 +381,16 @@
 											<label>Trạng thái:</label>
 											<br/>
 											<select name="status" id="statusAppointment" class="col-sm-10" placeholder="Trạng thái">
+												<option value="2">
+													Chờ xử lý
+												</option>
 												<option value="3">
-													<!-- <span>
-														<i class="mdi mdi-checkbox-marked-circle-outline"></i>
-													</span> -->
 													Xác nhận
 												</option>
 												<option value="4">
-													<!-- <i class="mdi mdi-comment-remove-outline"></i> -->
 													Từ chối
 												</option>
 												<option value="5">
-													<!-- <i class="fas fa-check-double"></i> -->
 													Khám xong
 												</option>
 											</select>
@@ -454,93 +419,6 @@
 					Xác nhận
 				</button>
 				
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div
-	class="modal fade"
-	id="ModalApprove"
-	class="ModalStatus"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
-				<button
-					type="button"
-					class="close"
-					data-dismiss="modal"
-					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body text-center">
-				<p>Xác nhận duyệt đơn khám của khách hàng này ?</p>
-			</div>
-			<div class="modal-footer">
-				<button
-					type="button"
-					class="btn btn-secondary"
-					data-dismiss="modal"
-				>
-					Đóng
-				</button>
-				<button
-					type="button"
-					class="btn btn-primary confirm-approve-appointment-btn"
-				>
-					Xác nhận
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div
-	class="modal fade"
-	id="ModalDecline"
-	class="ModalStatus"
-	tabindex="-1"
-	role="dialog"
-	aria-labelledby="myModalLabel"
->
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">Thông báo</h4>
-				<button
-					type="button"
-					class="close"
-					data-dismiss="modal"
-					aria-label="Close"
-				>
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body text-center">
-				<p>Xác nhận từ chối đơn khám của khách hàng này ?</p>
-			</div>
-			<div class="modal-footer">
-				<button
-					type="button"
-					class="btn btn-secondary"
-					data-dismiss="modal"
-				>
-					Đóng
-				</button>
-				<button
-					type="button"
-					class="btn btn-primary confirm-decline-appointment-btn"
-				>
-					Xác nhận
-				</button>
 			</div>
 		</div>
 	</div>
@@ -723,9 +601,6 @@
 			});
 		}
 
-        
-
-        
 		function updateAppointment(appointmentId, currentBtn) {
 			const name = $('#nameCustomer').val();
 			const birthday = $('#birthdayCustomer').val();
@@ -738,12 +613,14 @@
 			const status = $('#statusAppointment').val();
 
 			let statusString = '';
-			if(status == 3){
+			if(status == 3) {
 				statusString = 'Xác nhận'; 
-			} else if(status == 4){
+			} else if(status == 4) {
 				statusString = 'Từ chối';
-			} else if(status == 5){
+			} else if(status == 5) {
 				statusString = 'Khám xong';
+			} else if (status == 2) {
+				statusString = 'Chờ xử lý';
 			}
 			
 			const user_name = $('#appointment-management').data('id');
@@ -763,7 +640,7 @@
 					}
 				}
 			};
-			console.log(data);
+			
 			$.ajax({
 				method: 'POST',
 				url: '/nurse/appointments/' + appointmentId + '/update-appointment',
@@ -780,9 +657,8 @@
 					currentRow.find('td:eq(0)').text(name);
 					currentRow.find('td:eq(1)').text(phone_number);
 					currentRow.find('td:eq(2)').text(email);
-					currentRow.find('td:eq(3)').text(description);
-					currentRow.find('td:eq(5)').text(price);
-					currentRow.find('td:eq(6)').text(user_name);
+					currentRow.find('td:eq(4)').text(price);
+					currentRow.find('td:eq(5)').text(user_name);
 					
 					currentRow.find('td:eq(-2)').text(statusString);
 					currentRow.find('td:eq(-2)').removeClass('text-primary');
@@ -794,6 +670,8 @@
 						currentRow.find('td:eq(-2)').addClass('text-danger');
 					} else if(status == 5){
 						currentRow.find('td:eq(-2)').addClass('text-success');
+					} else if (status == 2){
+						currentRow.find('td:eq(-2)').css('color', 'rgb(196, 196, 114)');
 					}
 
 					toastr['success'](
@@ -814,24 +692,6 @@
 			$('#form-filter').submit();
 		});
 
-        $('.approve-appointment-btn').click(function () {
-			let appointmentId = $(this).data('id');
-			let currentBtn = $(this);
-
-			$('.confirm-approve-appointment-btn').click(function () {
-				updateStatusAppointment(appointmentId, currentBtn, 3);
-			});
-		});
-
-        $('.decline-appointment-btn').click(function () {
-			let appointmentId = $(this).data('id');
-			let currentBtn = $(this);
-
-			$('.confirm-decline-appointment-btn').click(function () {
-				updateStatusAppointment(appointmentId, currentBtn, 4);
-			});
-		});
-
 		$('.update-appointment-btn').click(function (e)  {
 			e.preventDefault();
 			
@@ -846,8 +706,8 @@
 					
 					let phone = appointment.customer.phone_number;
 					$('#doctor').text(response.data.doctor_rank + ' ' + appointment.schedule.doctor.user.name);
-					$('#shift').text(appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time);
-					$('#day').text(response.data.appointment_day + ', ' + appointment.schedule.date);
+					$('#shift').text(appointment.schedule.shift.start_time.slice(0, -3) + ' - ' + appointment.schedule.shift.end_time.slice(0, -3));
+					$('#day').text(response.data.appointment_day + ', ' + new Date(appointment.schedule.date).toLocaleDateString('en-GB'));
 					$('#nameCustomer').val(appointment.customer.name);
 					$('#birthdayCustomer').val(appointment.customer.birthday);
 					if (appointment.customer.gender) {
@@ -861,6 +721,11 @@
 					$('#descriptionAppointment').val(appointment.description);
 					$('#priceAppointment').val(appointment.price);
 					$('#statusAppointment').val(appointment.status);
+					if (appointment.schedule.doctor.user.avatar) {
+						$('#doctor-avatar').attr('src', appointment.schedule.doctor.user.avatar);
+					} else {
+						$('#doctor-avatar').attr('src', 'https://api.dicebear.com/6.x/initials/svg?seed=' + appointment.schedule.doctor.user.name);
+					}
 				},
 				error: function (xhr, status, error) {
 					toastr['error'](

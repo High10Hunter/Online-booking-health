@@ -2,7 +2,6 @@ import { Router } from 'express';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
-import HomepageController from '../controllers/admin/HomepageController';
 
 import AppointmentController from '../controllers/nurse/AppointmentController';
 import CustomerController from '../controllers/nurse/CustomerController';
@@ -10,7 +9,12 @@ import CustomerController from '../controllers/nurse/CustomerController';
 const router = Router();
 
 const nurseRoutes = app => {
-	router.get('/', verifyAccessToken, verifyRoles(RolesEnum.NURSE), AppointmentController.homepage);
+	router.get(
+		'/',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.NURSE),
+		AppointmentController.homepage
+	);
 	router.get(
 		'/appointments',
 		verifyAccessToken,

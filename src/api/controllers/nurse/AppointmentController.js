@@ -1,10 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import Appointment from '../../services/nurses/AppointmentServices';
-import AppointmentServices from '../../services/admin/AppointmentServices';
 import moment from 'moment';
 
 const homepage = async (req, res) => {
-
 	return res.render('./nurse/index', {
 		layout: './layouts/nurse_layout/master',
 	});
@@ -36,9 +34,10 @@ const index = async (req, res) => {
 
 const updateStatus = async (req, res) => {
 	try {
-		console.log("check", req.params.id);
-		console.log("check data  ", req.body);
-		const appointment = await Appointment.updateStatusAppointment(req.params.id, req.body);
+		const appointment = await Appointment.updateStatusAppointment(
+			req.params.id,
+			req.body
+		);
 
 		return res.status(StatusCodes.OK).json({
 			message: 'Update status appointment successfully',
@@ -57,14 +56,22 @@ const getAppointment = async (req, res) => {
 		const appointment = await Appointment.getAppointmentById(req.params.id);
 		const date = appointment.schedule.date;
 		let dayOfWeek = moment(date, 'YYYY-MM-DD').format('d');
-		const daysOfWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu','Thứ bảy'];
+		const daysOfWeek = [
+			'Chủ nhật',
+			'Thứ hai',
+			'Thứ ba',
+			'Thứ tư',
+			'Thứ năm',
+			'Thứ sáu',
+			'Thứ bảy',
+		];
 
 		const data = {
 			appointment,
 			doctor_rank: appointment.schedule.doctor.getRankName(),
 			appointment_day: daysOfWeek[dayOfWeek],
-		}
-		//console.log(data);
+		};
+
 		return res.status(StatusCodes.OK).json({
 			message: 'Get appointment successfully',
 			data: data,
@@ -82,8 +89,11 @@ const update = async (req, res) => {
 		const appointmentId = req.params.id;
 		const { appointment } = req.body;
 		const user_id = req.payload.id;
-		console.log(appointmentId,appointment, user_id);
-		const updatedAppointment = await Appointment.updateAppointment(appointmentId, appointment, user_id);
+		const updatedAppointment = await Appointment.updateAppointment(
+			appointmentId,
+			appointment,
+			user_id
+		);
 		return res.status(StatusCodes.OK).json({
 			message: 'Update appointment successfully',
 			data: updatedAppointment,
@@ -101,5 +111,5 @@ export default {
 	index,
 	updateStatus,
 	getAppointment,
-    update,
+	update,
 };

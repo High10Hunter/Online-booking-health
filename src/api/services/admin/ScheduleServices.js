@@ -1,4 +1,4 @@
-import { Schedule, Shift, Doctor, User } from '../../models';
+import { Schedule, Shift, Doctor, User, Appointment } from '../../models';
 import { Op } from 'sequelize';
 import moment from 'moment';
 
@@ -205,9 +205,19 @@ const createScheduleEachWeek = async () => {
 
 const deleteSchedule = async (id, date) => {
 	try {
-		//check if date is in the past with YYYY-MM-DD format
+		// check if date is in the past with YYYY-MM-DD format
 		if (moment(date).isBefore(moment().format('YYYY-MM-DD'))) {
 			throw new Error('Date is in the past');
+		}
+
+		// check if the schedule id is in appointments
+		const appointment = await Appointment.findOne({
+			where: {
+				id: id,
+			},
+		});
+		if (appointment) {
+			throw new Error('Cannot delete schedule');
 		}
 
 		await Schedule.destroy({
