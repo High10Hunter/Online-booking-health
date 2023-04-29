@@ -473,7 +473,6 @@
                 phone_number: phone_number,
                 email: email
             };
-            console.log(customer);
             $.ajax({
                 method: 'POST',
                 url: '/nurse/customers/' + customerId + '/update',
@@ -533,8 +532,6 @@
                 success: function (response) {
                     const customer = response.data.customer;
                     const appointments = response.data.appointment;
-                    console.log(customer);
-                    console.log(appointments);
                     $('#nameCustomer').val(customer.name);
                     $('#birthdayCustomer').val(customer.birthday);
                     if (customer.gender) {
