@@ -61,7 +61,7 @@ const getAllCustomers = async (q = '', currentPage = 1, status = '') => {
 				LEFT JOIN schedules ON appointments.schedule_id = schedules.id
 				WHERE customers.name ILIKE :name
 				GROUP BY customers.id
-				HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 1
+				HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 3
 				ORDER BY customers.id ASC
 				OFFSET :offset
 				LIMIT :limit
@@ -77,7 +77,7 @@ const getAllCustomers = async (q = '', currentPage = 1, status = '') => {
 					LEFT JOIN schedules ON appointments.schedule_id = schedules.id
 					WHERE customers.name ILIKE :name
 					GROUP BY customers.id
-					HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 1
+					HAVING COUNT(CASE WHEN appointments.status = 4 AND schedules.date <= NOW() AND schedules.date >= NOW() - INTERVAL '30 days' THEN 1 END) >= 3
 					ORDER BY customers.id ASC
 				) AS countBadStatus
 			`;
@@ -113,7 +113,6 @@ const getAllCustomers = async (q = '', currentPage = 1, status = '') => {
 
 		return { rows, currentPage, endPage };
 	} catch (error) {
-		console.log(error);
 		throw new NotFoundError('Cannot get customers');
 	}
 };
@@ -123,7 +122,6 @@ const getCustomerById = async customerId => {
 		const customer = await Customer.findByPk(customerId);
 
 		if (!customer) throw new NotFoundError('Customer not found');
-		console.log('customer', customer);
 		return customer;
 	} catch (error) {
 		throw new NotFoundError('Cannot get customer');
@@ -180,7 +178,6 @@ const getAppointmentOfCustomer = async customerId => {
 			],
 			order: [['createdAt', 'DESC']],
 		});
-		console.log('rows', rows);
 		return rows;
 	} catch (error) {
 		throw new NotFoundError('Cannot get customers');
