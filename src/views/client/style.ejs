@@ -63,6 +63,26 @@
 		font-size: 12px;
 	}
 
+	/* .dropdown-menu-wrapper:hover {
+		background-color: red;
+		
+		color: #111;
+		
+		-webkit-transition: all 0.2s linear;
+
+		transition: all 0.2s linear;
+	} */
+
+	.fa-caret-down {
+		margin-left: 5px; /* Add some spacing between the text and the icon */
+		transition: transform 0.3s ease; /* Add transition for smooth animation */
+	}
+
+	/* Style for the rotated icon */
+	.fa-caret-up {
+		transform: rotate(180deg); /* Rotate the icon 180 degrees */
+	}
+
 	.banner-bg {
 		background-color: rgb(188, 222, 255);
 		background-size: cover;
@@ -1287,6 +1307,112 @@
 		width: 90%;	
 		line-height: 24px;
 	}
+
+	.content-up {
+		height: 30vh;
+		width: 100%;
+		/* border: 1px solid red; */
+
+		display: flex;
+		justify-content: center;
+	}
+
+	.content-down {
+		height: 50vh;
+		width: 100%;
+		/* border: 1px solid green; */
+
+		display: flex;
+		/* justify-content: center; */
+		align-items: center;
+		flex-direction: column;
+	}
+
+	.color-blue {
+		color: #4695f3;
+	}
+
+	
+
+	.content-down p {
+		font-size: 16px;
+	}
+
+	.content-down h1, .content-down p {
+		margin: 8px 0 0 0;
+	}
+
+	.confirm-appointment {
+		/* min-height:100%; */
+		/* background:#2dd685 no-repeat 50% 100%; */
+		width:100%;
+		height: 100%;
+		overflow:hidden;
+
+		/* background: linear-gradient(#2dd685 40%, #ffffff 60%); */
+	}
+
+	.confirm-appointment .content-up {
+		/* background-color: #2dd685; */
+	}
+
+	.content-up img {
+		/* width: 208px; */
+	}
+
+	.bg-red {
+		background-color: #cc0102;
+	}
+
+	.bg-green {
+		background-color: #00bd68;
+	}
+
+	.bg-orange {
+		background-color: #ff8c00;
+	}
+
+	.color-green {
+		box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+		color: green;
+	}
+
+	.color-red {
+		box-shadow: rgba(255, 0, 0, .2) 0 -25px 18px -14px inset,rgba(255, 0, 0, .15) 0 1px 2px,rgba(255, 0, 0, .15) 0 2px 4px,rgba(255, 0, 0, .15) 0 4px 8px,rgba(255, 0, 0, .15) 0 8px 16px,rgba(255, 0, 0, .15) 0 16px 32px;
+		color: red;
+	}
+
+	.color-orange {
+		box-shadow: rgba(255, 165, 0, .2) 0 -25px 18px -14px inset,rgba(255, 165, 0, .15) 0 1px 2px,rgba(255, 165, 0, .15) 0 2px 4px,rgba(255, 165, 0, .15) 0 4px 8px,rgba(255, 165, 0, .15) 0 8px 16px,rgba(255, 165, 0, .15) 0 16px 32px;
+		color: orange;
+	}
+
+	.appoinment-status-btn > button{
+			margin-top: 28px;
+			opacity: 0.8;
+			border-radius: 100px;
+			
+			cursor: pointer;
+			display: inline-block;
+			/* font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif; */
+			padding: 12px 28px;
+			text-align: center;
+			text-decoration: none;
+			transition: all 250ms;
+			font-size: 16px;
+			border: 0;
+			/*
+			user-select: none;
+			-webkit-user-select: none;
+			touch-action: manipulation; */
+	}
+
+	.appoinment-status-btn button:hover {
+		opacity: 1;
+		/* transform: scale(1.05) rotate(-1deg); */
+		transform: translateY(-2px);
+	}
+
 
 	
 </style>

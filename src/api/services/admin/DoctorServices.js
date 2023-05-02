@@ -7,7 +7,7 @@ const myCache = new NodeCache();
 
 const getAllDoctor = async (q = "", currentPage = 1, speciality_id) => {
   try {
-const limit = 10;
+    const limit = 10;
     if (currentPage < 0 || limit <= 0)
       throw new Error("Page or limit is invalid");
 
@@ -93,8 +93,6 @@ const limit = 10;
 
         order: [["createdAt", "DESC"]],
       });
-
-      console.log(rows);
 
       if (count === 0) {
         return { rows: [], currentPage: 1, endPage: 1 };
