@@ -1,4 +1,12 @@
-import { User, Doctor, Speciality, Schedule, Shift } from '../../models';
+import {
+	User,
+	Doctor,
+	Speciality,
+	Schedule,
+	Shift,
+	Appointment,
+	sequelize,
+} from '../../models';
 import { Op } from 'sequelize';
 import { NotFoundError } from '../../errors';
 import NodeCache from 'node-cache';
@@ -24,6 +32,12 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 					status: true,
 					role: 3,
 					'$doctor.speciality_id$': speciality_id,
+					// schedule is not booked
+					[Op.not]: [
+						sequelize.literal(
+							'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+						),
+					],
 				},
 				required: true,
 				include: [
@@ -54,6 +68,15 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 											.format('YYYY-MM-DD'),
 									},
 								},
+								include: [
+									{
+										model: Appointment,
+										as: 'appointments',
+										required: false,
+										subQuery: false,
+										attributes: ['schedule_id'],
+									},
+								],
 								attributes: ['date'],
 								order: [['date', 'ASC']],
 							},
@@ -125,6 +148,12 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 					},
 					status: true,
 					role: 3,
+					// schedule is not booked
+					[Op.not]: [
+						sequelize.literal(
+							'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+						),
+					],
 				},
 				required: true,
 				include: [
@@ -155,6 +184,15 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 											.format('YYYY-MM-DD'),
 									},
 								},
+								include: [
+									{
+										model: Appointment,
+										as: 'appointments',
+										required: false,
+										subQuery: false,
+										attributes: ['schedule_id'],
+									},
+								],
 								attributes: ['date'],
 								order: [['date', 'ASC']],
 							},
@@ -220,14 +258,199 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 			return { rows, currentPage, endPage };
 		}
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		throw new NotFoundError('Cannot get doctors');
+	}
+};
+
+const getFreeDoctorsByDateAndShift = async (
+	date,
+	shift_id,
+	currentPage = 1
+) => {
+	try {
+		const limit = 5;
+
+		if (currentPage < 0 || limit <= 0)
+			throw new Error('Page or limit is invalid');
+
+		const startIndex = (currentPage - 1) * limit;
+		const endIndex = startIndex + limit;
+
+		let rows = [];
+		if (date && shift_id) {
+			// check if the date is current date or not
+			const currentDate = moment().format('YYYY-MM-DD');
+			if (date < currentDate) throw new Error('Date is invalid');
+
+			if (date == currentDate) {
+				rows = await Doctor.findAll({
+					where: {
+						[Op.not]: [
+							sequelize.literal(
+								`exists (
+										select 
+											* 
+										from "appointments" 
+										where 
+											"schedules->appointments"."schedule_id" 
+											in (
+												select 
+													"id" 
+												from "schedules" 
+												where "doctor_id" = "Doctor"."id" 
+												and "shift_id" = ${shift_id}
+												and "date" = '${date}' 
+												)
+											)`
+							),
+						],
+						'$schedules.shift_id$': shift_id,
+						'$schedules.date$': date,
+						// current time plus 1 hour is greater than the start time of the shift
+						[Op.eq]: sequelize.literal(
+							`"schedules->shift"."start_time" >= '${moment()
+								.add(1, 'hours')
+								.format('HH:mm:ss')}'`
+						),
+					},
+					attributes: ['id', 'rank', 'price', 'description'],
+					include: [
+						{
+							model: Schedule,
+							as: 'schedules',
+							required: true,
+							subQuery: false,
+							include: [
+								{
+									model: Appointment,
+									as: 'appointments',
+									required: false,
+									subQuery: false,
+									attributes: ['schedule_id'],
+								},
+								{
+									model: Shift,
+									as: 'shift',
+									attributes: ['start_time', 'end_time'],
+									required: true,
+									subQuery: false,
+								},
+							],
+							attributes: ['id', 'date'],
+						},
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name', 'avatar'],
+							required: true,
+							subQuery: false,
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: true,
+							subQuery: false,
+						},
+					],
+				});
+			} else {
+				rows = await Doctor.findAll({
+					where: {
+						[Op.not]: [
+							sequelize.literal(
+								`exists (
+										select 
+											* 
+										from "appointments" 
+										where 
+											"schedules->appointments"."schedule_id" 
+											in (
+												select 
+													"id" 
+												from "schedules" 
+												where "doctor_id" = "Doctor"."id" 
+												and "shift_id" = ${shift_id}
+												and "date" = '${date}' 
+												)
+											)`
+							),
+						],
+						'$schedules.shift_id$': shift_id,
+						'$schedules.date$': date,
+					},
+					attributes: ['id', 'rank', 'price', 'description'],
+					include: [
+						{
+							model: Schedule,
+							as: 'schedules',
+							required: true,
+							subQuery: false,
+							include: [
+								{
+									model: Appointment,
+									as: 'appointments',
+									required: false,
+									subQuery: false,
+									attributes: ['schedule_id'],
+								},
+								{
+									model: Shift,
+									as: 'shift',
+									attributes: ['start_time', 'end_time'],
+									required: true,
+									subQuery: false,
+								},
+							],
+							attributes: ['id', 'date'],
+						},
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name', 'avatar'],
+							required: true,
+							subQuery: false,
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: true,
+							subQuery: false,
+						},
+					],
+				});
+			}
+		}
+
+		const count = rows.length;
+
+		if (count === 0) {
+			return { rows: [], currentPage: 1, endPage: 1 };
+		}
+
+		const endPage = Math.ceil(count / limit);
+		if (currentPage > endPage) throw new Error('Page is invalid');
+
+		rows = rows.slice(startIndex, endIndex);
+		return { rows, currentPage, endPage };
+	} catch (error) {
+		console.log(error.message);
+		throw new NotFoundError(error.message || 'Cannot get doctors');
 	}
 };
 
 const getDoctorById = async id => {
 	try {
 		const doctor = await Doctor.findByPk(id, {
+			where: {
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+					),
+				],
+			},
 			attributes: ['id', 'speciality_id', 'rank', 'price', 'description'],
 			include: [
 				{
@@ -264,6 +487,15 @@ const getDoctorById = async id => {
 								.format('YYYY-MM-DD'),
 						},
 					},
+					include: [
+						{
+							model: Appointment,
+							as: 'appointments',
+							required: false,
+							subQuery: false,
+							attributes: ['schedule_id'],
+						},
+					],
 					attributes: ['date'],
 					order: [['date', 'ASC']],
 				},
@@ -333,9 +565,21 @@ const getShiftsOfDoctor = async (date, doctor_id) => {
 			where: {
 				doctor_id: doctor_id,
 				date: date,
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "appointments"."schedule_id" = "Schedule"."id")'
+					),
+				],
 			},
 			attributes: ['id'],
 			include: [
+				{
+					model: Appointment,
+					as: 'appointments',
+					required: false,
+					subQuery: false,
+					attributes: ['schedule_id'],
+				},
 				{
 					model: Shift,
 					as: 'shift',
@@ -361,6 +605,7 @@ const getShiftsOfDoctor = async (date, doctor_id) => {
 
 		return schedules;
 	} catch (error) {
+		console.log(error.message);
 		throw new Error("Can't get shifts");
 	}
 };
@@ -370,4 +615,5 @@ export default {
 	getDoctorById,
 	getAllSpeciality,
 	getShiftsOfDoctor,
+	getFreeDoctorsByDateAndShift,
 };

@@ -47,11 +47,12 @@ const login = async (req, res, next) => {
 			});
 		}
 
-		const accessToken = await signAccessToken(
-			user.id,
-			user.name,
-			user.role
-		);
+		const accessToken = await signAccessToken({
+			id: user.id,
+			name: user.name,
+			role: user.role,
+			avatar: user.avatar,
+		});
 
 		//store access token in cookie
 		res.cookie('accessToken', accessToken, {

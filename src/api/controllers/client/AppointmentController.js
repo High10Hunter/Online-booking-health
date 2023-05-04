@@ -8,22 +8,27 @@ import {
 } from '../../services/jwt/JwtServices';
 import Doctor from '../../services/client/DoctorServices';
 
-const index = async (req, res) => {
-	const { schedule_id } = req.params;
+const index = async (req, res, next) => {
+	try {
+		const { schedule_id } = req.params;
+		const { date } = req.query;
 
-	const schedule = await Appointment.getBookedScheduleById(schedule_id);
-	if (!schedule) {
-		return res.redirect('/doctors');
+		const schedule = await Appointment.getFreeSchedulesById(schedule_id);
+		if (!schedule) {
+			return res.redirect('/doctors');
+		}
+
+		const specialities = await Doctor.getAllSpeciality();
+
+		res.render('./client/booking', {
+			layout: './layouts/client_layouts/master',
+			title: 'Đặt lịch khám',
+			schedule,
+			specialities,
+		});
+	} catch (error) {
+		next();
 	}
-
-	const specialities = await Doctor.getAllSpeciality();
-
-	res.render('./client/booking', {
-		layout: './layouts/client_layouts/master',
-		title: 'Đặt lịch khám',
-		schedule,
-		specialities,
-	});
 };
 
 const store = async (req, res) => {
@@ -54,7 +59,9 @@ const store = async (req, res) => {
 			price,
 		});
 
-		const schedule = await Appointment.getBookedScheduleById(schedule_id);
+		const schedule = await Appointment.getAppointmentsByScheduleId(
+			schedule_id
+		);
 
 		const token = await signAppointmentToken(
 			appointment.id,
@@ -118,7 +125,6 @@ const confirm = async (req, res) => {
 
 const cancel = async (req, res) => {
 	const { token } = req.params;
-
 	try {
 		const decoded = await verifyAppointmentToken(token);
 		await Appointment.cancelAppointment(
@@ -130,7 +136,6 @@ const cancel = async (req, res) => {
 			layout: './client/cancel_appointment',
 			title: 'Hủy lịch khám',
 		});
-		
 	} catch (error) {
 		res.render('./client/error_appointment', {
 			layout: './client/error_appointment',

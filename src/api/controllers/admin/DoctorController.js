@@ -31,13 +31,12 @@ const index = async (req, res) => {
 const getDoctor = async (req, res) => {
 	try {
 		const doctor = await Doctor.getDoctorById(req.params.id);
-
 		const specialities = await Doctor.getAllSpeciality();
 
 		return res.render('./admin/doctors/update', {
 			doctor: doctor,
 			specialities: specialities,
-			title: 'Cập nhật thông tin bác sĩ'
+			title: 'Cập nhật thông tin bác sĩ',
 		});
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
@@ -45,7 +44,7 @@ const getDoctor = async (req, res) => {
 			data: [],
 		});
 	}
-}
+};
 
 const update = async (req, res) => {
 	try {

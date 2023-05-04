@@ -7,13 +7,15 @@ import {
 	User,
 	Doctor,
 	Speciality,
+	sequelize,
 } from '../../models';
+import moment from 'moment';
 
-const getBookedScheduleById = async id => {
+const getAppointmentsByScheduleId = async schedule_id => {
 	try {
 		const schedule = await Schedule.findOne({
 			where: {
-				id: id,
+				id: schedule_id,
 			},
 			attributes: ['id', 'date'],
 			include: [
@@ -55,8 +57,118 @@ const getBookedScheduleById = async id => {
 	}
 };
 
+const getFreeSchedulesById = async id => {
+	try {
+		const schedule = await Schedule.findOne({
+			where: {
+				id: id,
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "appointments"."schedule_id" = "Schedule"."id")'
+					),
+				],
+			},
+			attributes: ['id', 'date'],
+			include: [
+				{
+					model: Appointment,
+					as: 'appointments',
+					required: false,
+					subQuery: false,
+					attributes: ['schedule_id'],
+				},
+				{
+					model: Shift,
+					as: 'shift',
+					attributes: ['start_time', 'end_time'],
+					required: false,
+					subQuery: false,
+				},
+				{
+					model: Doctor,
+					as: 'doctor',
+					attributes: ['rank', 'price'],
+					required: false,
+					subQuery: false,
+					include: [
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name', 'avatar'],
+							required: false,
+							subQuery: false,
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: false,
+							subQuery: false,
+						},
+					],
+				},
+			],
+		});
+
+		if (!schedule) {
+			throw new Error('Cannot get schedule');
+		}
+
+		const currentDate = moment().format('YYYY-MM-DD');
+		const scheduleDate = moment(schedule.date).format('YYYY-MM-DD');
+		if (currentDate === scheduleDate) {
+			const currentTime = moment().add(1, 'hour').format('HH:mm:ss');
+			if (currentTime >= schedule.shift.start_time) {
+				throw new Error('Cannot get schedule');
+			}
+		}
+
+		return schedule;
+	} catch (error) {
+		throw new Error(error.message || 'Cannot get schedule');
+	}
+};
+
 const createAppointment = async data => {
 	try {
+		const { schedule_id, customer_id } = data;
+
+		const scheduleInfo = await Schedule.findByPk(schedule_id, {
+			attributes: ['id', 'date'],
+			include: [
+				{
+					model: Shift,
+					as: 'shift',
+					attributes: ['start_time', 'end_time'],
+					subQuery: false,
+				},
+			],
+		});
+
+		if (!scheduleInfo) {
+			throw new Error('Schedule not found');
+		}
+
+		const currentDate = moment().format('YYYY-MM-DD');
+		const scheduleDate = moment(scheduleInfo.date).format('YYYY-MM-DD');
+		if (currentDate === scheduleDate) {
+			const currentTime = moment().add(1, 'hour').format('HH:mm:ss');
+			if (currentTime >= scheduleInfo.shift.start_time) {
+				throw new Error('Cannot create appointment');
+			}
+		}
+
+		const bookedSchedule = await Appointment.findOne({
+			where: {
+				schedule_id: schedule_id,
+				customer_id: customer_id,
+			},
+		});
+
+		if (bookedSchedule) {
+			throw new Error('You have already booked this schedule');
+		}
+
 		const appointment = await Appointment.create(data);
 		return appointment;
 	} catch (error) {
@@ -143,7 +255,8 @@ const deleteUnconfirmedAppointment = async () => {
 };
 
 export default {
-	getBookedScheduleById,
+	getAppointmentsByScheduleId,
+	getFreeSchedulesById,
 	createAppointment,
 	confirmAppointment,
 	cancelAppointment,

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
+import ScheduleController from '../controllers/doctor/ScheduleController';
 
 const router = Router();
 
@@ -10,11 +11,14 @@ const doctorRoutes = app => {
 		'/',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.DOCTOR),
-		(req, res) => {
-			res.render('doctor/index', {
-				title: 'Doctor',
-			});
-		}
+		ScheduleController.index
+	);
+
+	router.get(
+		'/api/schedules',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.DOCTOR),
+		ScheduleController.getSchedulesOfDoctor
 	);
 
 	app.use('/doctor', router);

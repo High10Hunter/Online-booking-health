@@ -78,8 +78,9 @@
 							<a
 								href="#"
 								rel="nofollow"
-								class="available-clinic-hour"
+								class="shift-hour available-clinic-hour"
 								data-id="<%= each.id %>"
+								data-start-time="<%= each.shift.start_time %>"
 							>
 								<%= each.shift.start_time.slice(0, -3) %> - <%=
 								each.shift.end_time.slice(0, -3) %>
@@ -95,6 +96,14 @@
 								alt=""
 							/>
 							và đặt (Phí đặt lịch 0<sup>đ</sup>)
+						</div>
+						<div>
+							(<span style="color: red"> Lưu ý: </span>
+							<i
+								>Lịch khám chỉ có thể đặt trước tối thiểu 1
+								giờ</i
+							>
+							)
 						</div>
 					</div>
 
@@ -172,10 +181,38 @@
 </div>
 
 <%- contentFor('css') %> <%- include('style') %> <%- contentFor('js') %>
+<!-- momentjs -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
 <script>
+	function disableShifts(date) {
+		$('.shift-hour').each(function () {
+			let start_time = $(this).data('start-time');
+			start_time = date + ' ' + start_time;
+			// convert start time to date
+			start_time = moment(start_time).toDate();
+			let current_time = moment().toDate();
+			// add 1 hour to current_time
+			current_time.setHours(current_time.getHours() + 1);
+
+			if (current_time >= start_time) {
+				$(this).attr('href', '#');
+				$(this).removeClass('available-clinic-hour');
+				$(this).removeAttr('data-id');
+				$(this).addClass('disabled-clinic-hour');
+			}
+		});
+	}
+
 	$(document).ready(function () {
+		let date = $('.date-select').val();
+		// disable shifts that have passed
+		disableShifts(date);
+
 		$('.date-select').change(function () {
-			// alert($(this).val());
 			$('#doctor-schedule-form').submit();
 		});
 

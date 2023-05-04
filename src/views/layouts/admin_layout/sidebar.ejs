@@ -9,12 +9,22 @@
 		>
 			<!-- User box -->
 			<div class="user-box text-center">
+				<% if (authUser.avatar) { %>
 				<img
-					src="/admin/assets/images/users/user-1.jpg"
+					src="<%= authUser.avatar %>"
 					alt="user-img"
 					title="Mat Helme"
 					class="rounded-circle img-thumbnail avatar-lg"
 				/>
+				<% } else { %>
+				<img
+					src="https://api.dicebear.com/6.x/initials/svg?seed=<%= authUser.name %>"
+					alt="user-img"
+					title="Mat Helme"
+					class="rounded-circle img-thumbnail avatar-lg"
+				/>
+				<% } %>
+
 				<div class="dropdown">
 					<a
 						href="#"
@@ -31,7 +41,14 @@
 			<div id="sidebar-menu" class="active">
 				<ul class="metismenu in" id="side-menu">
 					<li>
-						<a href="/admin/users?page=1&limit=10" class="active">
+						<a href="/admin">
+							<i class="mdi mdi-view-dashboard"></i>
+							<span> Dashboard </span>
+						</a>
+					</li>
+
+					<li>
+						<a href="/admin/users?page=1&limit=10">
 							<i class="dripicons-user"></i>
 							<span> Quản lý người dùng </span>
 						</a>
@@ -40,7 +57,7 @@
 					<li>
 						<a href="/admin/schedules?page=1">
 							<i class="mdi mdi-calendar-multiple-check"></i>
-							<span> Phân lịch khám </span>
+							<span> Quản lý bác sĩ </span>
 						</a>
 					</li>
 				</ul>

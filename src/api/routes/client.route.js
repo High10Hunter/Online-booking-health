@@ -6,6 +6,7 @@ const router = Router();
 
 const clientRoutes = app => {
 	router.get('/', DoctorController.homepage);
+	router.get('/free-doctors', DoctorController.displayFreeDoctor);
 	router.get('/doctors', DoctorController.index);
 	router.get('/doctor_profile', DoctorController.show);
 	router.get('/booking/:schedule_id', AppointmentController.index);

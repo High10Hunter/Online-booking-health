@@ -94,6 +94,7 @@
 								left: 10px;
 								transform: translate3d(0px, -5px, 0px);
 						">
+						<a href="/doctors?page=1" class="dropdown-item">Tất cả</a>
 						<% if (typeof specialities !== 'undefined') { %>
 							<% specialities.forEach(function(speciality) { %>
 								<a href="/doctors?page=1&speciality_id=<%= speciality.id %>" class="dropdown-item"><%= speciality.name %></a>
@@ -107,6 +108,13 @@
 				<a href="/doctors">
 					Bác sĩ
 					<span>Tìm bác sĩ giỏi</span>
+				</a>
+			</li>
+			
+			<li>
+				<a href="/free-doctors">
+					Khung giờ rảnh
+					<span>Tìm bác sĩ rảnh</span>
 				</a>
 			</li>
 		</ul>

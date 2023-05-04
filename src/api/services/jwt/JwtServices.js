@@ -4,12 +4,13 @@ import { User } from '../../models';
 import { Sequelize } from 'sequelize';
 
 // authentication
-const signAccessToken = (user_id, name, role) => {
+const signAccessToken = userData => {
 	return new Promise((resolve, reject) => {
 		const payload = {
-			id: user_id,
-			name,
-			role,
+			id: userData.id,
+			name: userData.name,
+			role: userData.role,
+			avatar: userData.avatar,
 		};
 		const secret = process.env.ACCESS_TOKEN_SECRET;
 		const options = {
@@ -138,11 +139,12 @@ const handleRefreshToken = async (req, res, next) => {
 					reject(createError.Forbidden('Invalid refresh token'));
 				}
 
-				const accessToken = await signAccessToken(
-					user.id,
-					user.name,
-					user.role
-				);
+				const accessToken = await signAccessToken({
+					id: user.id,
+					name: user.name,
+					role: user.role,
+					avatar: user.avatar,
+				});
 
 				const newRefreshToken = jwt.sign(
 					{

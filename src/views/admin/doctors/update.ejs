@@ -19,11 +19,19 @@
 						<div class="form-group left-side">
 							<div class="form-group picture-form">
 								<div class="user-box text-center">
-									<img src="/admin/assets/images/users/user-1.jpg" 
-									alt="user-img" 
-									title="Mat Helme" 
-									class="rounded-circle img-thumbnail avatar-lg"
-									>
+									<% if (doctor.user.avatar) { %> 
+										<img src="<%= doctor.user.avatar %>" 
+										alt="user-img" 
+										title="Mat Helme" 
+										class="rounded-circle img-thumbnail avatar-lg"
+										>
+									<% } else { %>
+										<img src="https://api.dicebear.com/6.x/initials/svg?seed=<%= doctor.user.name %>" 
+										alt="user-img" 
+										title="Mat Helme" 
+										class="rounded-circle img-thumbnail avatar-lg"
+										>
+									<% } %>
 									<div class="dropdown">
 										<a 
 										href="#" 
@@ -61,14 +69,14 @@
 									></span>
 
 									<select
-										name="speciality"
+										name="speciality_id"
 										id="speciality"
 										class="col-sm-12"
 									>
 										<% if (specialities.length != 0) { %> <%
 										specialities.forEach((speciality) => {
 										%>
-										<option value="<%= speciality.id %> <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>">
+										<option value="<%= speciality.id %>" <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>>
 											<%= speciality.name %>
 										</option>
 										<% }) %> <% } %>

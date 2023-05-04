@@ -1,4 +1,4 @@
-import { Schedule, Shift } from '../../models';
+import { Schedule, Shift, Doctor, User, Appointment } from '../../models';
 import { Op } from 'sequelize';
 import moment from 'moment';
 
@@ -44,6 +44,61 @@ const getScheduleOfDoctor = async doctorId => {
 		return schedules;
 	} catch (error) {
 		throw new Error("Can't get schedules");
+	}
+};
+
+const getScheduleOfDoctorByDate = async date => {
+	try {
+		const data = await Schedule.findAll({
+			where: {
+				date: date,
+			},
+			include: [
+				{
+					model: Shift,
+					as: 'shift',
+					attributes: ['start_time', 'end_time'],
+					required: false,
+					subQuery: false,
+				},
+				{
+					model: Doctor,
+					as: 'doctor',
+					attributes: ['id', 'rank'],
+					required: false,
+					subQuery: false,
+					include: [
+						{
+							model: User,
+							as: 'user',
+							attributes: ['name'],
+							required: false,
+							subQuery: false,
+						},
+					],
+				},
+			],
+			attributes: ['id', 'date'],
+		});
+
+		let schedules = [];
+		data.forEach(item => {
+			//ex: date: 2023-01-01, start_time: 08:00:00
+			// => 2023-01-01T08:00:00
+			schedules.push({
+				id: item.id,
+				start_time: item.date + 'T' + item.shift.start_time,
+				end_time: item.date + 'T' + item.shift.end_time,
+				doctor: {
+					name: item.doctor.user.name,
+					rank: item.doctor.getRankName(),
+				},
+			});
+		});
+
+		return schedules;
+	} catch (error) {
+		throw new Error(error.message || "Can't get schedules");
 	}
 };
 
@@ -150,9 +205,19 @@ const createScheduleEachWeek = async () => {
 
 const deleteSchedule = async (id, date) => {
 	try {
-		//check if date is in the past with YYYY-MM-DD format
+		// check if date is in the past with YYYY-MM-DD format
 		if (moment(date).isBefore(moment().format('YYYY-MM-DD'))) {
 			throw new Error('Date is in the past');
+		}
+
+		// check if the schedule id is in appointments
+		const appointment = await Appointment.findOne({
+			where: {
+				id: id,
+			},
+		});
+		if (appointment) {
+			throw new Error('Cannot delete schedule');
 		}
 
 		await Schedule.destroy({
@@ -168,6 +233,7 @@ const deleteSchedule = async (id, date) => {
 export default {
 	getScheduleById,
 	getScheduleOfDoctor,
+	getScheduleOfDoctorByDate,
 	createSchedule,
 	createScheduleEachWeek,
 	deleteSchedule,
