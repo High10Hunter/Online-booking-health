@@ -1,0 +1,599 @@
+<div class="row">
+<div class="col-12">
+    <div class="card-box">
+        <h4 class="mt-0 mb-2 header-title">Danh sách khách hàng</h4>
+        <div class="row">
+            <div class="col-md-2 mb-1">
+                <a href="/nurse/customers?page=1">	
+                    <i class="dripicons-clockwise"> Tải lại </i>
+                </a>
+            </div>
+        </div>
+
+        <form id="form-filter" method="GET" class="form-inline">
+            <div class="row" id="customer-management">
+                <!-- Display bad status customers	 -->
+                <div class="form-group">
+                    <div class="mb-2 ml-2">
+                        <a href="/nurse/customers?status=bad&q=<%= search %>" class="btn btn-danger">
+                            <i class="dripicons-warning text-light"></i>
+                        </a>
+                        Danh sách cảnh báo
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-1 mb-1 ml-0 pl-0 mb-1 ml-auto form-group">
+                        <div class="form-group app-search-box">
+                            <div class="input-group">
+                                <% if (typeof search == "undefined") { %>
+                                <input
+                                    type="text"
+                                    class="form-control search-input"
+                                    name="q"
+                                    placeholder="Nhập tên để tìm kiếm..."
+                                />
+                                <% } else { %>
+                                <input
+                                    type="text"
+                                    class="form-control search-input"
+                                    name="q"
+                                    value="<%= search %>"
+                                    placeholder="Nhập tên để tìm kiếm..."
+                                />
+                                <% } %>
+								<div class="input-group-append bg-primary">
+									<button id="search-btn" class="btn">
+										<i class="fe-search"></i>
+									</button>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table id="customer-table" class="table table-bordered table-hover mb-0 text-center">
+                <thead class="thead-dark">
+                    <tr>
+                    <th>Tên khách hàng</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Đã đặt</th>
+                    <th>Hoàn thành</th>
+                    <th>Từ chối</th>
+                    <th>Chỉnh sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (customers.length != 0) { %> 
+                        <% customers.forEach(function(customer) { %>
+                    <tr >
+                        <th scope="row"><%= customer.name %></td>
+                        <td><%= customer.birthday %></td>
+                        <td><% if (customer.gender) {%> Nam <%} else {%> Nữ <% } %></td>
+                        <td><%= customer.phone_number %></td>
+                        <td><%= customer.email %></td>
+                        <td class="text-primary"><%= customer.booked %></td>
+                        <td class="text-success"><%= customer.completed %></td>
+                        <td class="text-danger"><%= customer.declined %></td>
+                        <td>
+                            <button
+                                class="btn btn-sm btn-primary update-customer-btn"
+                                data-toggle="modal"
+                                data-target="#ModalCustomer"
+                                data-id="<%= customer.id %>"
+                            >
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <% }); %> <% } else { %>
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <h4>Không có dữ liệu</h4>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <!-- pagination -->
+            <div class="row pt-2">
+            <div class="col-12">
+                <nav aria-label="...">
+                <% if (pages > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (current == 1) { %>
+                    <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Đầu</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item">
+                    <a
+                        class="page-link"
+                        href="/nurse/customers?page=1&status=<%= badStatus %>&q=<%= search %>"
+                        tabindex="-1"
+                    >
+                        Đầu
+                    </a>
+                    </li>
+                    <% } %> <% let i = (Number(current) > 5 ? Number(current) - 4 :
+                    1) %> <% if (i != 1) { %>
+                    <li class="page-item disabled">
+                    <a class="page-link">...</a>
+                    </li>
+                    <% } %> <% for (; i <= pages && i <= Number(current) + 4; i++) {
+                    %> <% if (i == current) { %>
+                    <li class="page-item active">
+                    <a class="page-link"><%=i%></a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item">
+                    <a
+                        class="page-link"
+                        href="/nurse/customers?page=<%= i %>&status=<%= badStatus %>&q=<%=search%>"
+                        ><%=i%>
+                    </a>
+                    </li>
+                    <% } %> <% if (i == Number(current) + 4 && i < pages ) { %>
+                    <li class="page-item disabled">
+                    <a class="page-link">...</a>
+                    </li>
+                    <% } %> <% } %> <% if (current == pages) { %>
+                    <li class="page-item disabled">
+                    <a class="page-link">Cuối</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item">
+                    <a
+                        class="page-link"
+                        href="/nurse/customers?page=<%= pages %>&status=<%=badStatus%>&q=<%=search%>"
+                    >
+                        Cuối
+                    </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <% } %>
+                </nav>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div
+    class="modal fade"
+    id="ModalCustomer"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+    data-backdrop="static"
+>
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content"  style="width: 50vw; position: absolute; left: 50%; transform: translate(-50%);">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Thông tin khách hàng</h4>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="col-12">
+                            <form
+                                class="form-horizontal"
+                            >
+                                
+                                <div class="form-group">
+                                    <div class="form-group row col-sm-12">
+                                        <div class="col-sm-12">
+                                            <label>Tên khách hàng:</label>
+                                            <span class="error" id="name-error"></span>
+                                            <input
+                                                type="text"
+                                                class="col-sm-12"
+                                                id="nameCustomer"
+                                                name="name"
+                                                placeholder="Họ và tên"
+                                            />
+                                        </div>
+                                        <div class="col-6">
+                                            <label>Ngày sinh:</label>
+                                            <span class="error" id="birthday-error"></span>
+                                            <input type="date" class="col-sm-12" id="birthdayCustomer" name="birthday" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="gender">
+                                                Giới tính:
+                                            </label>
+                                            <span
+                                                class="error"
+                                                id="gender-error"
+                                            ></span>
+                                            <br />
+                                            <div class="radioBox">
+                                                <input
+                                                    type="radio"
+                                                    class="col-sm-12"
+                                                    id="male"
+                                                    name="genderCustomer"
+                                                    value="1"
+                                                    />
+                                                <label
+                                                    class="radioText"
+                                                    for="male"
+                                                    >Nam</label
+                                                >
+                                            </div>
+                                            <div class="radioBox">
+                                                <input
+                                                    type="radio"
+                                                    class="col-sm-12"
+                                                    id="female"
+                                                    name="genderCustomer"
+                                                    value="0"
+                                                    
+                                                />
+                                                <label
+                                                    class="radioText"
+                                                    for="female"
+                                                    >Nữ</label
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-12">
+                                        <div class="col-sm-6">
+                                            <label>Số điện thoại:</label>
+                                            <span class="error" id="phone-error"></span>
+                                            <input
+                                                type="text"
+                                                class="col-sm-12"
+                                                id="phone_numberCustomer"
+                                                name="phone_number"
+                                                placeholder="Số điện thoại"
+                                            />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Email:</label>
+                                            <span class="error" id="email-error"></span>
+                                            <input
+                                                type="text"
+                                                class="col-sm-12"
+                                                id="emailCustomer"
+                                                name="email"
+                                                placeholder="email@gmail.com"
+                                            />
+                                        </div>
+                                        
+                                    </div>
+            
+                                    <div class="form-group row col-12 history">
+                                        <div class="col-12 text-dark"  style="font-weight: bold; margin-bottom: 10px;">LỊCH SỬ ĐẶT LỊCH KHÁM</div>
+                                        <div class="col-12">
+                                            <table class="table table-striped table-hover" id="history">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Ngày đặt</th>
+                                                        <th>Ngày khám</th>
+                                                        <th>Giờ khám</th>
+                                                        <th>Trạng thái</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody >
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                >
+                    Đóng
+                </button>
+                <button
+                    type="button"
+                    id="confirm-update-customer-btn"
+                    class="btn btn-primary "
+                >
+                    Xác nhận
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('css') %>
+<link
+    href="../admin/assets/libs/toastr/toastr.min.css"
+    rel="stylesheet"
+    type="text/css"
+/>
+
+<style>
+    .form-group {
+        display: inline-block;
+    }
+
+
+    p {
+        font-family: 'Roboto', sans-serif;
+        color: #323a46;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    label {
+        display: inline-block;
+        font-family: 'Roboto', sans-serif;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 16px;
+        margin-left: 2px;
+    }
+
+    .rounded-circle.img-thumbnail.picture-form {
+        display: flex;
+        position: absolute; 
+        left: 50%; 
+        transform: translate(-50%);
+        width: 100px;
+        height: 100px;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='number'],
+    input[type='date'],
+    select{
+        border: 0;
+        padding: 7px 5px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    select {
+        padding: 9px 0;
+    }
+
+    input[type='radio'] {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        position: relative;
+        left: 1em;
+        bottom: -7px;
+    }
+
+    .radioText {
+        margin-left: 24px;
+        font-weight: normal;
+        font-size: 16px;
+        position: relative;
+        bottom: -3px;
+    }
+
+    .radioBox {
+        width: 110px;
+        display: inline-block;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    span.error {
+        color: red;
+        display: inline-block;
+        font-size: 12px;
+    }
+
+    .btn.btn-sm.update-info-btn {
+        text-transform: uppercase;
+        padding: 7px 15px;
+        margin-left: 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px 0px rgb(0, 0, 0, 0.2);
+        margin-top: 15px;
+    }
+
+    .btn.btn-sm.edit-btn {
+        background-color: #ccc;
+        color: #000000;
+        padding: 7px 15px;
+        margin-left: 10px;
+        border-radius: 50px;
+        border: 0;
+        cursor: pointer;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+        margin-top: 27px;
+    }
+</style>
+
+<%- contentFor('js') %>
+<script src="../admin/assets/libs/toastr/toastr.min.js"></script>
+<script src="../admin/assets/js/pages/toastr.init.js"></script>
+
+<script>
+    $(document).ready(function () {
+        toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: false,
+            positionClass: 'toast-bottom-left',
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: '300',
+            hideDuration: '1000',
+            timeOut: '5000',
+            extendedTimeOut: '1000',
+            showEasing: 'swing',
+            hideEasing: 'linear',
+            showMethod: 'fadeIn',
+            hideMethod: 'fadeOut',
+        };
+
+        function updateCustomer(customerId, currentBtn) {
+            const name = $('#nameCustomer').val();
+            const birthday = $('#birthdayCustomer').val();
+            const gender = $('#male').is(':checked') ? true : false;
+            const phone_number = $('#phone_numberCustomer').val();
+            const email = $('#emailCustomer').val();
+
+            const nameGender = (gender)? 'Nam' : 'Nữ';
+            const customer = {
+                name: name,
+                birthday: birthday,
+                gender: gender,
+                phone_number: phone_number,
+                email: email
+            };
+            $.ajax({
+                method: 'POST',
+                url: '/nurse/customers/' + customerId + '/update',
+                data: JSON.stringify(customer),
+                contentType: 'application/json',
+                success: function (response) {
+                    $('#ModalCustomer').hide();
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+
+                    
+                    
+                    let currentRow = currentBtn.closest('tr');
+                    currentRow.find('th[scope="row"]').text(name);
+                    currentRow.find('td:eq(0)').text(birthday);
+                    currentRow.find('td:eq(1)').text(nameGender);
+                    currentRow.find('td:eq(2)').text(phone_number);
+                    currentRow.find('td:eq(3)').text(email);
+
+                    toastr['success'](
+                        'Cập nhật thông tin khách hàng thành công',
+                        'Thành công'
+                    );
+                },
+                error: function (xhr, status, error) {
+                    toastr['error'](
+                        'Không thể cập nhật thông tin khách hàng này',
+                        'Thất bại'
+                    );
+                },
+            });
+        }
+
+        $('.select-filter').change(function () {
+            $('#form-filter').submit();
+        });
+
+        $('#search-btn').on('click', function(e) {
+            e.preventDefault();
+            let inputSearch = $('.search-input').val();
+            if(typeof inputSearch === 'undefined') {
+                inputSearch = '';
+            }
+            let href = "/nurse/customers?status=<%= badStatus %>&q=" + inputSearch;
+            window.location.href = href;
+        });
+
+        $('.update-customer-btn').click(function (e)  {
+            e.preventDefault();
+            
+            let customerId = $(this).data('id');
+            let currentBtn = $(this);
+            $.ajax({
+                method: 'GET',
+                url: '/nurse/customers/' + customerId,
+                dataType: 'json',
+                success: function (response) {
+                    const customer = response.data.customer;
+                    const appointments = response.data.appointment;
+                    $('#nameCustomer').val(customer.name);
+                    $('#birthdayCustomer').val(customer.birthday);
+                    if (customer.gender) {
+                        $('#male').prop('checked', true); 
+                    } else {
+                        $('#female').prop('checked', true); 
+                    }
+                    let phone = customer.phone_number;
+                    $('#phone_numberCustomer').val(phone);
+                    $('#emailCustomer').val(customer.email);
+
+
+                    let tableBody = $('#history').find('tbody');
+                    tableBody.empty();
+                    appointments.forEach(function(appointment, index) {
+                        let statusText = '';
+                        let statusClass = '';
+                        switch(appointment.status) {
+                            case 1:
+                                statusText = "Chưa xác nhận";
+                                statusClass = "table-secondary";
+                                break;
+                            case 2:
+                                statusText = "Chờ xử lý";
+                                statusClass = "table-warning";
+                                break;
+                            case 3:
+                                statusText = "Xác nhận";
+                                statusClass = "table-primary";
+                                break;
+                            case 4:
+                                statusText = "Từ chối";
+                                statusClass = "table-danger";
+                                break;
+                            default:
+                                statusText = "Hoàn thành";
+                                statusClass = "table-success";
+                        }
+                        let row = '<tr class="' + statusClass + '"><td>' + (index + 1) + '</td><td>' 
+                            + appointment.createdAt + '</td><td>' 
+                            + appointment.schedule.date + '</td><td>' 
+                            + appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time + '</td><td>'
+                            + statusText + '</td></tr>';
+                        tableBody.append(row);
+                    });
+                    // $('#doctor').text(response.data.doctor_rank + ' ' + appointment.schedule.doctor.user.name);
+                    // $('#shift').text(appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time);
+                    // $('#day').text(response.data.appointment_day + ', ' + appointment.schedule.date);
+                },
+                error: function (xhr, status, error) {
+                    toastr['error'](
+                        'Không thể xem thông tin đơn khám này',
+                        'Thất bại'
+                    );
+                },
+            });
+
+            $('#confirm-update-customer-btn').off('click').on('click', function () {
+                updateCustomer(customerId, currentBtn);
+            });
+
+            
+        });
+    });
+</script>

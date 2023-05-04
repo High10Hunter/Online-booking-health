@@ -10,7 +10,7 @@ import {
 } from '../../models';
 import { NotFoundError } from '../../errors';
 
-const getAllAppointment = async (q = '', currentPage = 1, status) => {
+const getAllAppointments = async (q = '', currentPage = 1, status) => {
 	try {
 		const limit = 10;
 		if (currentPage < 0 || limit <= 0)
@@ -86,7 +86,6 @@ const getAllAppointment = async (q = '', currentPage = 1, status) => {
 			attributes: {
 				exclude: ['customer_id', 'schedule_id', 'user_id', 'updatedAt'],
 			},
-
 			order: [['createdAt', 'DESC']],
 		});
 
@@ -226,7 +225,7 @@ const updateAppointment = async (id, data, userId) => {
 };
 
 export default {
-	getAllAppointment,
+	getAllAppointments,
 	updateStatusAppointment,
 	getAppointmentById,
 	updateAppointment,
