@@ -43,12 +43,13 @@ const nurseRoutes = app => {
 		AppointmentController.update
 	);
 
+	// manage customers routes
 	router.get(
 		'/customers',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.NURSE),
 		CustomerController.index
-	)
+	);
 
 	router.get(
 		'/customers/:id',
