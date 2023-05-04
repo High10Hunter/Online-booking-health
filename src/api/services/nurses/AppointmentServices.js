@@ -107,7 +107,6 @@ const updateStatusAppointment = async (id, data) => {
 	try {
 		const appointment = await Appointment.findByPk(id);
 		const { status } = data;
-		console.log('status', status);
 		appointment.set({
 			status: status,
 		});

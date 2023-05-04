@@ -8,8 +8,6 @@ const index = async (req, res) => {
 		const { id, name } = req.payload;
 		const doctor = await Doctor.getDoctorByUserId(id);
 
-		console.log(doctor.speciality.name);
-
 		res.render('doctor/index', {
 			layout: 'layouts/doctor_layout/master',
 			title: 'Xem lịch khám',
