@@ -1,3 +1,9 @@
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+/>
+
 <div class="banner-wrap">
 	<div
 		style="
@@ -50,64 +56,334 @@
 	<div class="content-segment-margin">
 		<div class="content-segment">
 			<div class="content-segment-header">
-				<h2 class="content-segment-title">Bác sĩ từ xa qua Video</h2>
+				<h2 class="content-segment-title">Các chuyên khoa</h2>
 			</div>
-
-			<div class="content-segment-body">
-				<button class="slick-prev"></button>
-
-				<div class="slick-list">
-					<div class="slick-track">
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Tư vấn, trị liệu Tâm lý từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-tamthan.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Sức khỏe tâm thần từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-dalieu.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Bác sĩ Da liễu từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-xuongkhop.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Bác sĩ Cơ-Xương-Khớp từ xa</h3>
-						</a>
+			<div class="specialtiy-slider">
+				<% if (specialities.length > 0) { %> <%
+				specialities.forEach((speciality) => { %>
+				<a
+					href="/doctors?page=1&speciality_id=<%= speciality.id %>"
+					class="specialtiy-slide"
+				>
+					<div class="specialtiy-image">
+						<img src="<%= speciality.image %>" />
 					</div>
-				</div>
+					<h3 class="specialtiy-slide-title">
+						<%= speciality.name %>
+					</h3>
+				</a>
 
-				<button class="slick-next"></button>
-			</div>
-
-			<div class="content-segment-extend">
-				<a class="content-segment-extend-btn" href="">Xem thêm</a>
+				<% }) %> <% } %>
 			</div>
 		</div>
 	</div>
 </div>
 
-<%- contentFor('css') %> <%- include('style') %>
+<div class="content-segment-wrap">
+	<div class="content-segment-margin">
+		<div class="content-segment">
+			<div class="content-segment-header">
+				<h2 class="content-segment-title">Bác sĩ của phòng khám</h2>
+			</div>
+
+			<div class="outstanding-doctor-group-slider">
+				<div class="outstanding-doctor-group-slide">
+					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 0; i <= 1;
+						i++) { %>
+						<div class="col-xs-12 col-md-6">
+							<div class="outstanding-doctor-group-member">
+								<div class="outstanding-doctor-intro">
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="#"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
+										</a>
+									</h4>
+									<div class="outstanding-doctor-description">
+										<p>
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
+										</p>
+										<p></p>
+									</div>
+									<div class="view-more">
+										<a
+											href="/doctors"
+											class="icon-plus"
+											aria-label=""
+										>
+											<p>Xem thêm &gt;&gt;</p>
+											<span>Chi tiết</span>
+										</a>
+									</div>
+								</div>
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="#"
+										class="doctor-image"
+										aria-label=""
+									>
+										<% if (users[i].avatar) { %>
+										<img
+											data-src="<%= users[i].avatar %>"
+											class="doctor-image lazy"
+											alt=""
+											src="<%= users[i].avatar %>"
+										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
+									</a>
+								</div>
+							</div>
+						</div>
+						<% } %> <% } %>
+					</div>
+
+					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 2; i <= 3;
+						i++) { %>
+						<div class="col-xs-12 col-md-6">
+							<div class="outstanding-doctor-group-member">
+								<div class="outstanding-doctor-intro">
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="#"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
+										</a>
+									</h4>
+									<div class="outstanding-doctor-description">
+										<p>
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
+										</p>
+										<p></p>
+									</div>
+									<div class="view-more">
+										<a
+											href="/doctors"
+											class="icon-plus"
+											aria-label=""
+										>
+											<p>Xem thêm &gt;&gt;</p>
+											<span>Chi tiết</span>
+										</a>
+									</div>
+								</div>
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="#"
+										class="doctor-image"
+										aria-label=""
+									>
+										<% if (users[i].avatar) { %>
+										<img
+											data-src="<%= users[i].avatar %>"
+											class="doctor-image lazy"
+											alt=""
+											src="<%= users[i].avatar %>"
+										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
+									</a>
+								</div>
+							</div>
+						</div>
+						<% } %> <% } %>
+					</div>
+				</div>
+
+				<div class="outstanding-doctor-group-slide">
+					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 4; i <= 5;
+						i++) { %>
+						<div class="col-xs-12 col-md-6">
+							<div class="outstanding-doctor-group-member">
+								<div class="outstanding-doctor-intro">
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="#"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
+										</a>
+									</h4>
+									<div class="outstanding-doctor-description">
+										<p>
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
+										</p>
+										<p></p>
+									</div>
+									<div class="view-more">
+										<a
+											href="/doctors"
+											class="icon-plus"
+											aria-label=""
+										>
+											<p>Xem thêm &gt;&gt;</p>
+											<span>Chi tiết</span>
+										</a>
+									</div>
+								</div>
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="#"
+										class="doctor-image"
+										aria-label=""
+									>
+										<% if (users[i].avatar) { %>
+										<img
+											data-src="<%= users[i].avatar %>"
+											class="doctor-image lazy"
+											alt=""
+											src="<%= users[i].avatar %>"
+										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
+									</a>
+								</div>
+							</div>
+						</div>
+						<% } %> <% } %>
+					</div>
+
+					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 6; i <= 7;
+						i++) { %>
+						<div class="col-xs-12 col-md-6">
+							<div class="outstanding-doctor-group-member">
+								<div class="outstanding-doctor-intro">
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="#"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
+										</a>
+									</h4>
+									<div class="outstanding-doctor-description">
+										<p>
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
+										</p>
+										<p></p>
+									</div>
+									<div class="view-more">
+										<a
+											href="/doctors"
+											class="icon-plus"
+											aria-label=""
+										>
+											<p>Xem thêm &gt;&gt;</p>
+											<span>Chi tiết</span>
+										</a>
+									</div>
+								</div>
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="#"
+										class="doctor-image"
+										aria-label=""
+									>
+										<% if (users[i].avatar) { %>
+										<img
+											data-src="<%= users[i].avatar %>"
+											class="doctor-image lazy"
+											alt=""
+											src="<%= users[i].avatar %>"
+										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
+									</a>
+								</div>
+							</div>
+						</div>
+						<% } %> <% } %>
+					</div>
+				</div>
+			</div>
+
+			<div class="content-segment-extend">
+				<a class="content-segment-extend-btn" href="/doctors"
+					>Xem thêm</a
+				>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- include('script.ejs') %> <%- contentFor('css') %> <%- include('style.ejs')
+%>

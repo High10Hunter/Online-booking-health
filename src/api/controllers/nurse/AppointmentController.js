@@ -11,9 +11,12 @@ const homepage = async (req, res) => {
 const index = async (req, res) => {
 	try {
 		const { q, page, status } = req.query;
-		const { rows, currentPage, endPage } =
-			await Appointment.getAllAppointment(q, page, status);
-
+		const { rows, currentPage, endPage } = await Appointment.getAllAppointments(
+			q,
+			page,
+			status
+		);
+		
 		return res.render('./nurse/appointments/index', {
 			appointments: rows,
 			user: req.payload,

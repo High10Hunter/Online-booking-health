@@ -263,6 +263,84 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 	}
 };
 
+const getDoctorsForHomePage = async () => {
+	try {
+		let rows = await User.findAll({
+			where: {
+				status: true,
+				role: 3,
+				// schedule is not booked
+				[Op.not]: [
+					sequelize.literal(
+						'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
+					),
+				],
+			},
+			required: true,
+			include: [
+				{
+					model: Doctor,
+					as: 'doctor',
+					attributes: ['id', 'speciality_id', 'rank', 'description'],
+					required: true,
+					subQuery: false,
+					include: [
+						{
+							model: Schedule,
+							as: 'schedules',
+							required: true,
+							subQuery: false,
+							where: {
+								// having the date is greater than today to the next 7 days
+								date: {
+									[Op.gte]: moment().format('YYYY-MM-DD'),
+									[Op.lte]: moment()
+										.add(7, 'days')
+										.format('YYYY-MM-DD'),
+								},
+							},
+							include: [
+								{
+									model: Appointment,
+									as: 'appointments',
+									required: false,
+									subQuery: false,
+									attributes: ['schedule_id'],
+								},
+							],
+							attributes: ['date'],
+						},
+						{
+							model: Speciality,
+							as: 'speciality',
+							attributes: ['name'],
+							required: true,
+							subQuery: false,
+						},
+					],
+				},
+			],
+			attributes: {
+				exclude: [
+					'username',
+					'password',
+					'refresh_token',
+					'role',
+					'status',
+					'phone_number',
+					'email',
+					'gender',
+				],
+			},
+		});
+
+		return rows;
+	} catch (error) {
+		console.log(error.message);
+		throw new NotFoundError('Cannot get doctors');
+	}
+};
+
 const getFreeDoctorsByDateAndShift = async (
 	date,
 	shift_id,
@@ -539,7 +617,7 @@ const getAllSpeciality = async () => {
 
 		if (specialitiesInCache == undefined) {
 			const specialities = await Speciality.findAll({
-				attributes: ['id', 'name'],
+				attributes: ['id', 'name', 'image'],
 			});
 
 			specialitiesInCache = [];
@@ -547,6 +625,7 @@ const getAllSpeciality = async () => {
 				specialitiesInCache.push({
 					id: speciality.id,
 					name: speciality.name,
+					image: speciality.image,
 				});
 			});
 
@@ -616,4 +695,5 @@ export default {
 	getAllSpeciality,
 	getShiftsOfDoctor,
 	getFreeDoctorsByDateAndShift,
+	getDoctorsForHomePage,
 };

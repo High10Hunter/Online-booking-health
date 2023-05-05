@@ -9,8 +9,9 @@ import {
 	User,
 } from '../../models';
 import { NotFoundError } from '../../errors';
+import AppointmentStatusEnum from '../../enums/AppoimentStatusEnum';
 
-const getAllAppointment = async (q = '', currentPage = 1, status) => {
+const getAllAppointments = async (q = '', currentPage = 1, status) => {
 	try {
 		const limit = 10;
 		if (currentPage < 0 || limit <= 0)
@@ -21,12 +22,17 @@ const getAllAppointment = async (q = '', currentPage = 1, status) => {
 			'$customer.name$': {
 				[Op.iLike]: `%${q}%`,
 			},
+			status: {
+				[Op.ne]: AppointmentStatusEnum.NOT_CONFIRMED,
+			},
 		};
 
 		if (status) {
 			where = {
 				...where,
-				status: status,
+				status: {
+					[Op.eq]: status,
+				},
 			};
 		}
 		const { count, rows } = await Appointment.findAndCountAll({
@@ -86,7 +92,6 @@ const getAllAppointment = async (q = '', currentPage = 1, status) => {
 			attributes: {
 				exclude: ['customer_id', 'schedule_id', 'user_id', 'updatedAt'],
 			},
-
 			order: [['createdAt', 'DESC']],
 		});
 
@@ -107,7 +112,6 @@ const updateStatusAppointment = async (id, data) => {
 	try {
 		const appointment = await Appointment.findByPk(id);
 		const { status } = data;
-		console.log('status', status);
 		appointment.set({
 			status: status,
 		});
@@ -227,7 +231,7 @@ const updateAppointment = async (id, data, userId) => {
 };
 
 export default {
-	getAllAppointment,
+	getAllAppointments,
 	updateStatusAppointment,
 	getAppointmentById,
 	updateAppointment,

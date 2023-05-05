@@ -1,1 +1,46 @@
-<script></script>
+<script>
+
+</script>
+
+<script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.11.0.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
+    ></script>   
+
+
+<script>
+	$('.specialtiy-slider').slick({
+		infinite: false,
+		slidesToShow: 4,
+		slidesToScroll: 4,
+        speed: 500,
+
+        prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+	});
+
+    $('.outstanding-doctor-group-slider').slick({
+		infinite: true,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+        speed: 500,
+
+        speed: 500,
+        fade: true,
+        cssEase: 'linear',
+
+        autoplay: true,
+        autoplaySpeed: 2000,
+
+        prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+	});
+</script>

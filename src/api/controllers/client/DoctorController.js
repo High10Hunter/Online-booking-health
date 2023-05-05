@@ -4,10 +4,12 @@ import { getDatesRange } from '../../utils';
 
 const homepage = async (req, res) => {
 	const specialities = await Doctor.getAllSpeciality();
+	const users = await Doctor.getDoctorsForHomePage();
 
 	return res.render('./client/index', {
 		layout: './layouts/client_layouts/master',
 		specialities,
+		users,
 	});
 };
 

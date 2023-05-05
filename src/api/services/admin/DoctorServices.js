@@ -94,8 +94,6 @@ const getAllDoctor = async (q = '', currentPage = 1, speciality_id) => {
 				order: [['createdAt', 'DESC']],
 			});
 
-			console.log(rows);
-
 			if (count === 0) {
 				return { rows: [], currentPage: 1, endPage: 1 };
 			}
@@ -118,7 +116,7 @@ const getDoctorById = async id => {
 				{
 					model: User,
 					as: 'user',
-					attributes: ['name', 'phone_number', 'email'],
+					attributes: ['name', 'phone_number', 'email', 'avatar'],
 				},
 			],
 			attributes: ['id', 'speciality_id', 'rank', 'price', 'description'],
