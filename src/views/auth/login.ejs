@@ -5,6 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><%= title %></title>
+		<link rel="shortcut icon" href="/client/assets/images/favicon.ico" />
 		<%- include('../layouts/admin_layout/style.ejs') %>
 	</head>
 	<body>
@@ -16,9 +17,9 @@
 							<a href="index.html">
 								<span
 									><img
-										src="/admin/assets/images/logo-dark.png"
+										src="/client/assets/images/logo.png"
 										alt=""
-										height="22"
+										height="100"
 								/></span>
 							</a>
 							<% if (typeof message !== "undefined"&& message) {
@@ -97,16 +98,7 @@
 						<!-- end card -->
 
 						<div class="row mt-3">
-							<div class="col-12 text-center">
-								<p>
-									<a
-										href="pages-recoverpw.html"
-										class="text-muted ml-1"
-										><i class="fa fa-lock mr-1"></i>Quên mật
-										khẩu ?</a
-									>
-								</p>
-							</div>
+							<div class="col-12 text-center"></div>
 							<!-- end col -->
 						</div>
 						<!-- end row -->
