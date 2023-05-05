@@ -89,30 +89,37 @@
 			<div class="outstanding-doctor-group-slider">
 				<div class="outstanding-doctor-group-slide">
 					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 0; i <= 1;
+						i++) { %>
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
 									<h4 class="outstanding-doctor-title">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="#"
 											class="outstanding-doctor-title"
 											aria-label=""
 										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 1
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
 										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
 										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
 										</p>
 										<p></p>
 									</div>
 									<div class="view-more">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="/doctors"
 											class="icon-plus"
 											aria-label=""
 										>
@@ -127,100 +134,63 @@
 									style="background-color: white"
 								>
 									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										href="#"
 										class="doctor-image"
 										aria-label=""
 									>
+										<% if (users[i].avatar) { %>
 										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											data-src="<%= users[i].avatar %>"
 											class="doctor-image lazy"
 											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											src="<%= users[i].avatar %>"
 										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
 									</a>
 								</div>
 							</div>
 						</div>
-
-						<div class="col-xs-12 col-md-6">
-							<div class="outstanding-doctor-group-member">
-								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="outstanding-doctor-title"
-											aria-label=""
-										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 2
-										</a>
-									</h4>
-									<div class="outstanding-doctor-description">
-										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
-										</p>
-										<p></p>
-									</div>
-									<div class="view-more">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="icon-plus"
-											aria-label=""
-										>
-											<p>Xem thêm &gt;&gt;</p>
-											<span>Chi tiết</span>
-										</a>
-									</div>
-								</div>
-
-								<div
-									class="outstanding-doctor-image"
-									style="background-color: white"
-								>
-									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-										class="doctor-image"
-										aria-label=""
-									>
-										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-											class="doctor-image lazy"
-											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-										/>
-									</a>
-								</div>
-							</div>
-						</div>
+						<% } %> <% } %>
 					</div>
 
 					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 2; i <= 3;
+						i++) { %>
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
 									<h4 class="outstanding-doctor-title">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="#"
 											class="outstanding-doctor-title"
 											aria-label=""
 										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 3
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
 										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
 										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
 										</p>
 										<p></p>
 									</div>
 									<div class="view-more">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="/doctors"
 											class="icon-plus"
 											aria-label=""
 										>
@@ -235,102 +205,65 @@
 									style="background-color: white"
 								>
 									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										href="#"
 										class="doctor-image"
 										aria-label=""
 									>
+										<% if (users[i].avatar) { %>
 										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											data-src="<%= users[i].avatar %>"
 											class="doctor-image lazy"
 											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											src="<%= users[i].avatar %>"
 										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
 									</a>
 								</div>
 							</div>
 						</div>
-
-						<div class="col-xs-12 col-md-6">
-							<div class="outstanding-doctor-group-member">
-								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="outstanding-doctor-title"
-											aria-label=""
-										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 4
-										</a>
-									</h4>
-									<div class="outstanding-doctor-description">
-										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
-										</p>
-										<p></p>
-									</div>
-									<div class="view-more">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="icon-plus"
-											aria-label=""
-										>
-											<p>Xem thêm &gt;&gt;</p>
-											<span>Chi tiết</span>
-										</a>
-									</div>
-								</div>
-
-								<div
-									class="outstanding-doctor-image"
-									style="background-color: white"
-								>
-									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-										class="doctor-image"
-										aria-label=""
-									>
-										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-											class="doctor-image lazy"
-											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-										/>
-									</a>
-								</div>
-							</div>
-						</div>
+						<% } %> <% } %>
 					</div>
 				</div>
 
 				<div class="outstanding-doctor-group-slide">
 					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 4; i <= 5;
+						i++) { %>
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
 									<h4 class="outstanding-doctor-title">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="#"
 											class="outstanding-doctor-title"
 											aria-label=""
 										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 5
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
 										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
 										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
 										</p>
 										<p></p>
 									</div>
 									<div class="view-more">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="/doctors"
 											class="icon-plus"
 											aria-label=""
 										>
@@ -345,100 +278,63 @@
 									style="background-color: white"
 								>
 									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										href="#"
 										class="doctor-image"
 										aria-label=""
 									>
+										<% if (users[i].avatar) { %>
 										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											data-src="<%= users[i].avatar %>"
 											class="doctor-image lazy"
 											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											src="<%= users[i].avatar %>"
 										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
 									</a>
 								</div>
 							</div>
 						</div>
-
-						<div class="col-xs-12 col-md-6">
-							<div class="outstanding-doctor-group-member">
-								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="outstanding-doctor-title"
-											aria-label=""
-										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 6
-										</a>
-									</h4>
-									<div class="outstanding-doctor-description">
-										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
-										</p>
-										<p></p>
-									</div>
-									<div class="view-more">
-										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-											class="icon-plus"
-											aria-label=""
-										>
-											<p>Xem thêm &gt;&gt;</p>
-											<span>Chi tiết</span>
-										</a>
-									</div>
-								</div>
-
-								<div
-									class="outstanding-doctor-image"
-									style="background-color: white"
-								>
-									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
-										class="doctor-image"
-										aria-label=""
-									>
-										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-											class="doctor-image lazy"
-											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
-										/>
-									</a>
-								</div>
-							</div>
-						</div>
+						<% } %> <% } %>
 					</div>
 
 					<div class="row">
+						<% if (users.length > 0) { %> <% for (let i = 6; i <= 7;
+						i++) { %>
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
 									<h4 class="outstanding-doctor-title">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="#"
 											class="outstanding-doctor-title"
 											aria-label=""
 										>
-											<span> Tiến sĩ, Bác sĩ </span>
-											Lê Tấn Đạt 7
+											<span>
+												<%=
+												users[i].doctor.getRankName() %>
+											</span>
+											<%= users[i].name %>
 										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
 										<p>
-											TS.BS Lê Tấn Đạt có 22 năm kinh
-											nghiệm về hóa trị và sinh học phân
-											tử ung bướu. BS Đạt nhận ...
+											<% if
+											(users[i].doctor.description.length
+											> 50) { %> <%=
+											users[i].doctor.description.slice(0,
+											80) + '...' %> <% } %>
 										</p>
 										<p></p>
 									</div>
 									<div class="view-more">
 										<a
-											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											href="/doctors"
 											class="icon-plus"
 											aria-label=""
 										>
@@ -453,20 +349,29 @@
 									style="background-color: white"
 								>
 									<a
-										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										href="#"
 										class="doctor-image"
 										aria-label=""
 									>
+										<% if (users[i].avatar) { %>
 										<img
-											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											data-src="<%= users[i].avatar %>"
 											class="doctor-image lazy"
 											alt=""
-											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											src="<%= users[i].avatar %>"
 										/>
+										<% } else { %>
+										<img
+											class="doctor-image lazy"
+											alt=""
+											src="https://api.dicebear.com/6.x/initials/svg?seed=<%= users[i].name %>&background=%23fff&color=%230000&bold=1"
+										/>
+										<% } %>
 									</a>
 								</div>
 							</div>
 						</div>
+						<% } %> <% } %>
 					</div>
 				</div>
 			</div>
