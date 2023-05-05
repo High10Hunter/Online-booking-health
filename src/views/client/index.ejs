@@ -1,7 +1,7 @@
 <link
-        rel="stylesheet"
-        type="text/css"
-        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+	rel="stylesheet"
+	type="text/css"
+	href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
 />
 
 <div class="banner-wrap">
@@ -55,213 +55,143 @@
 <div class="content-segment-wrap">
 	<div class="content-segment-margin">
 		<div class="content-segment">
-
 			<div class="content-segment-header">
-				<h2 class="content-segment-title">Chuyên khoa phổ biến</h2>
+				<h2 class="content-segment-title">Các chuyên khoa</h2>
 			</div>
-
-			<!-- <div class="content-segment-body">
-				<button class="slick-prev"></button>
-
-				<div class="slick-list">
-					<div class="slick-track">
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Tư vấn, trị liệu Tâm lý từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-tamthan.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Sức khỏe tâm thần từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-dalieu.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Bác sĩ Da liễu từ xa</h3>
-						</a>
-
-						<a href="" class="slick-side">
-							<div class="rectangle-img img-size-16x9">
-								<img
-									src="./client/assets/images/chuyenkhoa-xuongkhop.jpg"
-									alt=""
-								/>
-							</div>
-							<h3>Bác sĩ Cơ-Xương-Khớp từ xa</h3>
-						</a>
-					</div>
-				</div>
-
-				<button class="slick-next"></button>
-			</div> -->
-
 			<div class="specialtiy-slider">
-				<div class="specialtiy-slide">
+				<% if (specialities.length > 0) { %> <%
+				specialities.forEach((speciality) => { %>
+				<a
+					href="/doctors?page=1&speciality_id=<%= speciality.id %>"
+					class="specialtiy-slide"
+				>
 					<div class="specialtiy-image">
-						<img
-							src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-							alt=""
-						/>
+						<img src="<%= speciality.image %>" />
 					</div>
 					<h3 class="specialtiy-slide-title">
-						Cơ Xương Khớp
+						<%= speciality.name %>
 					</h3>
-				</div>
+				</a>
 
-				<div class="specialtiy-slide">
-					<div class="specialtiy-image">
-						<img
-							src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-							alt=""
-						/>
-					</div>
-					<h3 class="specialtiy-slide-title">
-						Cơ Xương Khớp
-					</h3>
-				</div>
-
-				<div class="specialtiy-slide">
-					<div class="specialtiy-image">
-						<img
-							src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-							alt=""
-						/>
-					</div>
-					<h3 class="specialtiy-slide-title">
-						Cơ Xương Khớp
-					</h3>
-				</div>
-
-				<div class="specialtiy-slide">
-					<div class="specialtiy-image">
-						<img
-							src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-							alt=""
-						/>
-					</div>
-					<h3 class="specialtiy-slide-title">
-						Cơ Xương Khớp
-					</h3>
-				</div>
-
-				<div class="specialtiy-slide">
-					<div class="specialtiy-image">
-						<img
-							src="./client/assets/images/chuyenkhoa-tam-ly.jpg"
-							alt=""
-						/>
-					</div>
-					<h3 class="specialtiy-slide-title">
-						Cơ Xương Khớp
-					</h3>
-				</div>
-			</div>
-
-			<div class="content-segment-extend">
-				<a class="content-segment-extend-btn" href="">Xem thêm</a>
+				<% }) %> <% } %>
 			</div>
 		</div>
 	</div>
-
-	
 </div>
-
-
 
 <div class="content-segment-wrap">
 	<div class="content-segment-margin">
 		<div class="content-segment">
 			<div class="content-segment-header">
-				<h2 class="content-segment-title">Bác sĩ nổi bật</h2>
+				<h2 class="content-segment-title">Bác sĩ của phòng khám</h2>
 			</div>
-			
+
 			<div class="outstanding-doctor-group-slider">
 				<div class="outstanding-doctor-group-slide">
 					<div class="row">
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 1
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 1
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
 
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 2
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 2
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -270,212 +200,285 @@
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 3
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 3
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
 
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 4
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 4
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="outstanding-doctor-group-slide">
-					<div class="row"> 
+					<div class="row">
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 5
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 5
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
 
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 6
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 6
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
-					</div> 
+					</div>
 
 					<div class="row">
 						<div class="col-xs-12 col-md-6">
 							<div class="outstanding-doctor-group-member">
 								<div class="outstanding-doctor-intro">
-									<h4 class="outstanding-doctor-title">	
-											<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="outstanding-doctor-title" aria-label="">
-												<span>
-													Tiến sĩ, Bác sĩ
-												</span>
-												Lê Tấn Đạt 7
-											</a>
+									<h4 class="outstanding-doctor-title">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="outstanding-doctor-title"
+											aria-label=""
+										>
+											<span> Tiến sĩ, Bác sĩ </span>
+											Lê Tấn Đạt 7
+										</a>
 									</h4>
 									<div class="outstanding-doctor-description">
-										<p>TS.BS Lê Tấn Đạt có 22 năm kinh nghiệm về hóa trị và sinh học phân tử ung bướu.
-			
-			BS Đạt nhận ...</p><p>
-									</p></div>
+										<p>
+											TS.BS Lê Tấn Đạt có 22 năm kinh
+											nghiệm về hóa trị và sinh học phân
+											tử ung bướu. BS Đạt nhận ...
+										</p>
+										<p></p>
+									</div>
 									<div class="view-more">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="icon-plus" aria-label="">
+										<a
+											href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+											class="icon-plus"
+											aria-label=""
+										>
 											<p>Xem thêm &gt;&gt;</p>
 											<span>Chi tiết</span>
-										</a>    
-									</div>
-									
-								</div>
-								
-								<div class="outstanding-doctor-image" style="background-color: white;">
-										<a href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri" class="doctor-image" aria-label="">
-											
-												<img data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png" class="doctor-image lazy" alt="" src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png">
-											
 										</a>
+									</div>
 								</div>
-								
+
+								<div
+									class="outstanding-doctor-image"
+									style="background-color: white"
+								>
+									<a
+										href="/danh-sach/bac-si/le-tan-dat-51206/ung-buou-xa-tri"
+										class="doctor-image"
+										aria-label=""
+									>
+										<img
+											data-src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+											class="doctor-image lazy"
+											alt=""
+											src="https://vinmec-prod.s3.amazonaws.com/images/17_06_2021_04_27_02_349920.png"
+										/>
+									</a>
+								</div>
 							</div>
 						</div>
-
-						
-					</div> 
-	
+					</div>
 				</div>
 			</div>
 
 			<div class="content-segment-extend">
-				<a class="content-segment-extend-btn" href="">Xem thêm</a>
+				<a class="content-segment-extend-btn" href="/doctors"
+					>Xem thêm</a
+				>
 			</div>
 		</div>
 	</div>
 </div>
 
-<%- include('script.ejs') %>
-
-<%- contentFor('css') %>
-
-
-<%- include('style.ejs') %>
-
-
-
-
-
-
-
+<%- include('script.ejs') %> <%- contentFor('css') %> <%- include('style.ejs')
+%>

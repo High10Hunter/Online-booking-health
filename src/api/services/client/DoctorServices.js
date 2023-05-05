@@ -539,7 +539,7 @@ const getAllSpeciality = async () => {
 
 		if (specialitiesInCache == undefined) {
 			const specialities = await Speciality.findAll({
-				attributes: ['id', 'name'],
+				attributes: ['id', 'name', 'image'],
 			});
 
 			specialitiesInCache = [];
@@ -547,6 +547,7 @@ const getAllSpeciality = async () => {
 				specialitiesInCache.push({
 					id: speciality.id,
 					name: speciality.name,
+					image: speciality.image,
 				});
 			});
 
