@@ -1,1 +1,22 @@
-<h1><% if (typeof message !== 'undefined') { %> <%= message %> <% } %></h1>
+<div class="error-appointment">
+  
+  <div style="margin-bottom: 40px;"></div>
+  <div class="content-up">
+    <img src="/client/assets/images/female-doctor-error-removebg-2.png" alt="">
+  </div>
+
+  <div class="content-down">
+    <h1 style="color: #4695f3; font-size: 24px;"><% if (typeof message !== 'undefined') { %> <%= message %> <% } %></h1>
+    
+    <br>
+    <p>Đã có lỗi xảy ra</p>
+    <a href="/" class="appoinment-status-btn">
+      <button class="bg-orange color-orange">
+        <b style="color: white;">Quay về trang chủ</b>
+      </button>
+    </a>
+  </div>
+</div>
+
+<%- include('style') %>
+ 

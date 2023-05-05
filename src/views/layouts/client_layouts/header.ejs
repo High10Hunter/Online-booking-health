@@ -16,43 +16,84 @@
 
 			<form method="get" action="/doctors" class="searchform">
 			<div class="form-group row active search">
+					<div class="" style="position: relative;">
+						<i class="fas fa-search" 
+						style="
+							position: absolute;
+							top: 21px;
+							left: 18px;
+							font-size: 20px;
+							z-index: 18;
+							color: rgb(217, 217, 217);
+						"></i>
+					</div>
+
 					<div class="input-group">
 						<input type="text" class="form-control" name="q" placeholder="Tìm kiếm bác sĩ..."
 						style="
-								width: 50%;
-								border: 1px solid rgb(217, 217, 217);
-								border-radius: 6px;
-								padding: 16px 16px 20px 48px;
-								margin: 0;
-								font-weight: 400;
-								font-variant: none;
+							width: 50%;
+							border: 1px solid rgb(217, 217, 217);
+							border-radius: 6px;
+							padding: 22px 26px 20px 40px;
+							margin: 0;
+							font-weight: 400;
+							font-variant: none;
+							margin-right: 10px;
 							">
+
 						<div class="input-group-append">
 							<button type="submit" class="btn btn-dark waves-effect waves-light" 
 							style="
-								border-radius: 6px;
+								background-color: #2c87f2;
+								border-radius: 8px;
+								padding: auto;
+								padding: 8px 12px 4px 12px;
 								">Tìm kiếm</button>
 						</div>
+						
 					</div>
+
+					
 				</div>
 			</form>
 		</div>
 
 		<ul id="menu-mainmenu" class="menu">
 			<li class="current-menu-item parent" onclick="openNewWindow()">
-				<div class="btn-group my-2">
-					<button type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"
+				<div class="btn-group my-2 dropdown-menu-wrapper" style="position: relative;">
+					<button type="button" id="dropdown-btn" class="btn btn-secondary dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false"
 					style="
-						font-weight: 400;
-						font-variant: none;
-						color: black;
+							position: relative;
+						    font-weight: 400;
+							font-variant: none;
+							color: #333333;
+							/* border: none !important; */
+							background-color: white;
+							/* box-shadow: none; */
+							line-height: 22px;
+							font-size: 18px;
+							/* border: 0px solid #076ce3; */
+							padding: 13px 14px 12px;
+							border-radius: 8px;
+
+							/* box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); */
 						"
 					>
 						<strong>
 							Chọn chuyên khoa
 						</strong>
+						<i id="dropdown-icon" class="fas fa-caret-down"></i>
 					</button>
-					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 37px, 0px);">
+					<div class="dropdown-menu" x-placement="bottom-start" 
+						style="
+							    /* margin: 44px 0px 0px; */
+								position: absolute;
+								will-change: transform;
+								width: 188px;
+								border-radius: 8px;
+								left: 10px;
+								transform: translate3d(0px, -5px, 0px);
+						">
 						<a href="/doctors?page=1" class="dropdown-item">Tất cả</a>
 						<% if (typeof specialities !== 'undefined') { %>
 							<% specialities.forEach(function(speciality) { %>
@@ -78,3 +119,11 @@
 			</li>
 		</ul>
 </header>
+
+<script>
+	// Add event listener to the dropdown button
+	document.querySelector('#dropdown-btn').addEventListener('click', function() {
+	// Toggle the rotated class on the icon
+		document.querySelector('#dropdown-icon').classList.toggle('fa-caret-up');
+	});
+</script>

@@ -146,9 +146,36 @@ const cancel = async (req, res) => {
 	}
 };
 
+const confirmBeta = async (req, res) => {
+	res.render('./client/confirm_appointment', {
+		layout: './client/confirm_appointment',
+		title: 'Xác nhận lịch khám',
+	});
+};
+
+const cancelBeta = async (req, res) => {
+	res.render('./client/cancel_appointment', {
+		layout: './client/cancel_appointment',
+		title: 'Hủy lịch khám',
+	});
+};
+
+const errorBeta = async (req, res) => {
+	res.render('./client/error_appointment', {
+		layout: './client/error_appointment',
+		title: 'Không thể xác nhận đơn khám',
+		message:
+			'Đơn khám này đã được xác nhận hoặc không tồn tại, bạn không thể xác nhận đơn khám này',
+	});
+};
+
 export default {
 	index,
 	store,
 	confirm,
 	cancel,
+
+	confirmBeta,
+	cancelBeta,
+	errorBeta,
 };
