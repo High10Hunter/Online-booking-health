@@ -14,6 +14,9 @@ module.exports = {
 				allowNull: false,
 				unique: true,
 			},
+			image: {
+				type: DataTypes.STRING,
+			},
 		});
 	},
 	async down(queryInterface, DataTypes) {
