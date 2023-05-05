@@ -9,6 +9,7 @@ import {
 	User,
 } from '../../models';
 import { NotFoundError } from '../../errors';
+import AppointmentStatusEnum from '../../enums/AppoimentStatusEnum';
 
 const getAllAppointments = async (q = '', currentPage = 1, status) => {
 	try {
@@ -21,12 +22,17 @@ const getAllAppointments = async (q = '', currentPage = 1, status) => {
 			'$customer.name$': {
 				[Op.iLike]: `%${q}%`,
 			},
+			status: {
+				[Op.ne]: AppointmentStatusEnum.NOT_CONFIRMED,
+			},
 		};
 
 		if (status) {
 			where = {
 				...where,
-				status: status,
+				status: {
+					[Op.eq]: status,
+				},
 			};
 		}
 		const { count, rows } = await Appointment.findAndCountAll({
