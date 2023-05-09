@@ -421,6 +421,12 @@ const sendMail = async appointment => {
 															nếu quý khách không
 															thể đến khám.
 															<br />
+															Mail này có hiệu lực
+															trong
+															<strong
+																>10 phút</strong
+															>.
+															<br />
 															<br />
 															<div
 																style="
@@ -428,7 +434,7 @@ const sendMail = async appointment => {
 																"
 															>
 																<a
-																	href="http://localhost:8080/confirm-appointment/${appointment.token}"
+																	href="${appointment.host}/confirm-appointment/${appointment.token}"
 																	target="_blank"
 																	class="btn-primary"
 																	style="
@@ -463,7 +469,7 @@ const sendMail = async appointment => {
 																</a>
 																&nbsp;&nbsp;&nbsp;&nbsp;
 																<a
-																	href="http://localhost:8080/cancel-appointment/${appointment.token}"
+																	href="${appointment.host}/cancel-appointment/${appointment.token}"
 																	target="_blank"
 																	class="btn-danger"
 																	style="

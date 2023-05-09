@@ -3,16 +3,13 @@ import JwtServices from '../services/jwt/JwtServices';
 import { User } from '../models';
 import { Sequelize } from 'sequelize';
 import RolesEnum from '../enums/RolesEnum';
+import AppointmentServices from '../services/nurses/AppointmentServices';
+import DoctorServices from '../services/client/DoctorServices';
 
 const testFunc = async (req, res) => {
 	try {
-		const user = await User.findOne({
-			where: {
-				id: 21,
-			},
-		});
-
-		console.log(user.getRole());
+		const data = await DoctorServices.getDoctorsForHomePage();
+		return res.json(data);
 	} catch (error) {
 		console.log(error);
 	}
