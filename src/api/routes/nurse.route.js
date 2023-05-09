@@ -13,14 +13,15 @@ const nurseRoutes = app => {
 		'/',
 		verifyAccessToken,
 		verifyRoles(RolesEnum.NURSE),
-		AppointmentController.homepage
-	);
-	router.get(
-		'/appointments',
-		verifyAccessToken,
-		verifyRoles(RolesEnum.NURSE),
 		AppointmentController.index
 	);
+
+	router.get(
+		'/statistic',
+		verifyAccessToken,
+		verifyRoles(RolesEnum.NURSE),
+		AppointmentController.getStatistic
+	)
 
 	router.post(
 		'/appointments/:id/update-status-appointment',
