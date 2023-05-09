@@ -2,7 +2,6 @@ import { Router } from 'express';
 import DoctorController from '../controllers/admin/DoctorController';
 import ScheduleController from '../controllers/admin/ScheduleController';
 import UserController from '../controllers/admin/UserController';
-import AccountController from '../controllers/admin/AccountController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';

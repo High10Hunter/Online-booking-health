@@ -1,19 +1,29 @@
 import { StatusCodes } from 'http-status-codes';
-import User from '../../services/admin/UserServices';
-import { configureMulter } from '../../utils';
+import User from '../services/admin/UserServices';
+import { configureMulter } from '../utils';
 
 const index = async (req, res) => {
 	try {
-		const { id } = req.payload;
+		const { id, role } = req.payload;
 		const user = await User.getUserById(id);
 
-		return res.render('./admin/account', {
+		const adminLayout = './layouts/admin_layout/master';
+		const nurseLayout = './layouts/nurse_layout/master';
+		const doctorLayout = './layouts/doctor_layout/master';
+
+		const layout = role === 1 ? adminLayout : (role === 2 ? nurseLayout : doctorLayout);
+		
+		return res.render('./account', {
 			title: 'Cài đặt tài khoản',
 			id,
 			user,
+			layout: layout,
 		});
 	} catch (error) {
-		return res.redirect('/admin');
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot get user',
+			user: null,
+		});
 	}
 };
 
