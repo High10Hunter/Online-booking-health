@@ -3,11 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const process = require('process');
+require('dotenv').config();
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+let config = require(__dirname + '/../config/config.json')[env];
 const db = {};
+config.username = process.env.DB_USER;
+config.password = process.env.DB_PASSWORD;
+config.database = process.env.DB_NAME;
+config.host = process.env.DB_HOST;
 
 let sequelize;
 if (config.use_env_variable) {
