@@ -7,11 +7,11 @@ import {
 	verifyAppointmentToken,
 } from '../../services/jwt/JwtServices';
 import Doctor from '../../services/client/DoctorServices';
+require('dotenv').config();
 
 const index = async (req, res, next) => {
 	try {
 		const { schedule_id } = req.params;
-		const { date } = req.query;
 
 		const schedule = await Appointment.getFreeSchedulesById(schedule_id);
 		if (!schedule) {
@@ -69,6 +69,8 @@ const store = async (req, res) => {
 			schedule_id
 		);
 
+		const host = process.env.DEPLOY_HOST;
+
 		sendMail({
 			name,
 			birthday,
@@ -76,6 +78,7 @@ const store = async (req, res) => {
 			email,
 			schedule,
 			token,
+			host,
 		})
 			.then(response => {
 				console.log(response.message);

@@ -1,6 +1,6 @@
 require('dotenv').config();
-import app from './src/app';
-import connectDB from './src/api/config/connectDB';
+import app from './app';
+import connectDB from './api/config/connectDB';
 
 //testing route
 // import test from './src/tests/test';
