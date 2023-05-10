@@ -309,21 +309,31 @@
                                           <div class="col-sm-12">
                                               <label>Họ tên:</label>
                                               <span class="error" id="name-error"></span>
-                                              <input
-                                                  type="text"
-                                                  class="col-sm-12"
-                                                  id="nameCustomer"
-                                                  name="name"
-                                                  placeholder="Họ và tên"
-                                                  style="border: 0; border-bottom:1px solid #ccc;"
-                                              />
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-user"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    class="col-sm-12 input-info"
+                                                    id="nameCustomer"
+                                                    name="name"
+                                                    placeholder="Họ và tên"
+                                                    style="border: 0; border-bottom:1px solid #ccc;"
+                                                />
+                                              </div>
                                           </div>
-                                          <div class="col-6">
+                                          <div class="col-xl-6 col-md-12">
                                               <label>Ngày sinh:</label>
                                               <span class="error" id="birthday-error"></span>
-                                              <input type="date" class="col-sm-12" id="birthdayCustomer" name="birthday" />
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-calendar"></i>
+                                                </span>
+                                                <input type="date" class="col-sm-12 input-info" id="birthdayCustomer" name="birthday" />
                                           </div>
-                                          <div class="col-6">
+                                              </div>
+                                          <div class="col-xl-6 col-md-12">
                                               <label for="gender">
                                                   Giới tính:
                                               </label>
@@ -364,27 +374,39 @@
                                           </div>
                                       </div>
                                       <div class="form-group row col-12">
-                                          <div class="col-sm-6">
+                                          <div class="col-xl-6 col-md-12">
                                               <label>Số điện thoại:</label>
                                               <span class="error" id="phone-error"></span>
-                                              <input
-                                                  type="text"
-                                                  class="col-sm-12"
-                                                  id="phone_numberCustomer"
-                                                  name="phone_number"
-                                                  placeholder="Số điện thoại"
-                                              />
+                                              
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-phone"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    class="col-sm-12 input-info"
+                                                    id="phone_numberCustomer"
+                                                    name="phone_number"
+                                                    placeholder="Số điện thoại"
+                                                />
+                                              </div>
                                           </div>
-                                          <div class="col-sm-6">
+                                          <div class="col-xl-6 col-md-12">
                                               <label>Email:</label>
                                               <span class="error" id="email-error"></span>
-                                              <input
-                                                  type="text"
-                                                  class="col-sm-12"
-                                                  id="emailCustomer"
-                                                  name="email"
-                                                  placeholder="email@gmail.com"
-                                              />
+                                              
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    class="col-sm-12 input-info"
+                                                    id="emailCustomer"
+                                                    name="email"
+                                                    placeholder="email@gmail.com"
+                                                />
+                                              </div>
                                           </div>
                                           
                                       </div>
@@ -394,60 +416,78 @@
                                           <div class="col-sm-12">
                                               <label>Lí do khám:</label>
                                               <span class="error" id="description-error"></span>
-                                              <textarea
-                                                  class="col-sm-12"
-                                                  id="descriptionAppointment"
-                                                  name="description"
-                                                  rows="4"
-                                                  placeholder="Lí do khám"
-                                              ></textarea>
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-question-circle"></i>
+                                                </span>
+                                                <textarea
+                                                    class="col-sm-12 input-info"
+                                                    id="descriptionAppointment"
+                                                    name="description"
+                                                    rows="4"
+                                                    placeholder="Lí do khám"
+                                                ></textarea>
+                                              </div>
                                           </div>
                                           <div class="col-sm-12">
                                               <label>Chẩn đoán:</label>
                                               <span class="error" id="diagnosis-error"></span>
-                                              <textarea
-                                                  class="col-sm-12"
-                                                  id="diagnosisAppointment"
-                                                  name="diagnosis"
-                                                  rows="2"
-                                                  placeholder="Chẩn đoán"
-                                              ></textarea>
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-diagnoses"></i>
+                                                </span>
+                                                <textarea
+                                                    class="col-sm-12 input-info"
+                                                    id="diagnosisAppointment"
+                                                    name="diagnosis"
+                                                    rows="2"
+                                                    placeholder="Chẩn đoán"
+                                                ></textarea>
+                                              </div>
                                           </div>
                                       </div>
   
                                       <div class="form-group row col-12">
-                                          <div class="col-7">
+                                          <div class="col-xl-6 col-xs-12">
                                               <label>Giá khám:</label>
                                               <span class="error" id="price-error"></span>
-                                              <div class="form-group row col-12">
-                                                  <input
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-money-bill-wave"></i>
+                                                </span>
+                                                <input
                                                   type="number"
-                                                  class="col-sm-10"
+                                                  class="col-sm-12 input-info"
                                                   id="priceAppointment"
+                                                  style="border:0; border-bottom:1px solid #969696; outline:none; background-color: #fff; border-radius:0;"
                                                   placeholder="Giá khám"
                                                   style="padding-right: 50px;"
-                                                  />
-                                                  <h6 style="position:absolute; right: 25%;">VNĐ</h6>
-                                              </div>
+                                                />
+                                                <p class="after-input">đ</p>
+                                            </div>
                                               
                                           </div>
-                                          <div class="col-sm-5">
+                                          <div class="col-xl-6 col-xs-12">
                                               <label>Trạng thái:</label>
-                                              <br/>
-                                              <select name="status" id="statusAppointment" class="col-sm-10" placeholder="Trạng thái">
-                                                  <option value="2">
-                                                      Chờ xử lý
-                                                  </option>
-                                                  <option value="3">
-                                                      Xác nhận
-                                                  </option>
-                                                  <option value="4">
-                                                      Từ chối
-                                                  </option>
-                                                  <option value="5">
-                                                      Khám xong
-                                                  </option>
-                                              </select>
+                                              <div class="input-box">
+                                                <span class="before-input">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </span>
+                                                <select name="status" id="statusAppointment" class="col-sm-12 input-info" placeholder="Trạng thái">
+                                                    <option value="2">
+                                                        Chờ xử lý
+                                                    </option>
+                                                    <option value="3">
+                                                        Xác nhận
+                                                    </option>
+                                                    <option value="4">
+                                                        Từ chối
+                                                    </option>
+                                                    <option value="5">
+                                                        Khám xong
+                                                    </option>
+                                                </select>
+                                              </div>
                                           </div>
                                       </div>
   
@@ -493,7 +533,7 @@
   
       p {
           font-family: 'Roboto', sans-serif;
-          color: #323a46;
+          color: #71b6f9;
           font-size: 16px;
           font-weight: normal;
       }
@@ -517,17 +557,46 @@
           height: 100px;
       }
   
-      input[type='text'],
-      input[type='email'],
-      input[type='number'],
-      input[type='date'],
-      select{
-          padding: 7px 5px;
+        .input-box{
+            position: relative;
+        }
+
+        .before-input{
+            max-width: fit-content;
+            position: absolute;
+            z-index: 1;
+            font-size: 1.1em;
+            left: 7px;
+            top:50%;
+            transform: translateY(-70%);
+        }
+
+        .after-input{
+            max-width: fit-content;
+            position: absolute;
+            z-index: 1;
+            font-size: 1.1em;
+            right: 7px;
+            top:50%;
+            transform: translateY(-70%);
+            
+        }
+
+      .col-sm-12.input-info {
+          padding: 7px 20px 7px 34px;
           border: 1px solid #ccc;
           border-radius: 5px;
           margin-bottom: 10px;
-          background-color: #eee;
+          background-color: #ffffff;
       }
+
+      .col-sm-12.input-info:focus {
+        outline:none;
+        border: 2px solid #71b6f9 !important;
+        border-radius: 5px !important;
+        box-shadow: 0 0 5px #71b6f9 !important;
+      }
+
   
       select {
           padding: 9px 0;
@@ -555,7 +624,6 @@
           border: 1px solid #ccc;
           border-radius: 5px;
           box-sizing: border-box;
-          background-color: #eee;
       }
   
       span.error {

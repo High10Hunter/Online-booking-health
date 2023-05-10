@@ -13,90 +13,119 @@
 					>
 						<div class="form-group left-side">
 							<div class="form-group row col-12">
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="name">Họ tên:</label>
 									<span class="error" id="name-error"></span>
-									<input
-										type="text"
-										class="col-sm-12"
-										id="name"
-										name="name"
-										placeholder="  Họ và tên"
-									/>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-user"></i>
+										</span>
+										<input
+											type="text"
+											class="col-sm-12 input-info"
+											id="name"
+											name="name"
+											placeholder="Họ và tên"
+										/>
+									</div>
+									
 								</div>
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="gender">Giới tính:</label>
 									<span class="error" id="gender-error"></span>
 									<br />
 									<div class="radioBox">
 										<input
-										type="radio"
-										class="col-sm-12"
-										id="male"
-										name="gender"
-										value="male"
-									/>
+											type="radio"
+											class="col-sm-12"
+											id="male"
+											name="gender"
+											value="male"
+										/>
 									<label class="radioText" for="male">Nam</label>
 									</div>
 									<div class="radioBox">
 										<input
-										type="radio"
-										class="col-sm-12"
-										id="female"
-										name="gender"
-										value="female"
-									/>
+											type="radio"
+											class="col-sm-12"
+											id="female"
+											name="gender"
+											value="female"
+										/>
 									<label class="radioText" for="female">Nữ</label>
 									</div>
 								</div>
 							</div>
 							<div class="form-group row col-12">
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="phone">Số điện thoại:</label>
 									<span class="error" id="phone-error"></span>
-									<input
-										type="number"
-										class="col-sm-12"
-										id="phone"
-										name="phone_number"
-										placeholder="  Số điện thoại"
-									/>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-phone"></i>
+										</span>
+										<input
+											type="number"
+											class="col-sm-12 input-info"
+											id="phone"
+											name="phone_number"
+											placeholder="Số điện thoại"
+										/>
+									</div>
 								</div>
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="email">Email:</label>
 									<span class="error" id="email-error"></span>
-									<input
-										type="text"
-										class="col-sm-12"
-										id="email"
-										name="email"
-										placeholder="  email@gmail.com"
-									/>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-envelope"></i>
+										</span>
+										<input
+											type="text"
+											class="col-sm-12 input-info"
+											id="email"
+											name="email"
+											placeholder="email@gmail.com"
+										/>
+									</div>
+									
 								</div>
 								
 							</div>
 	
 							<div class="form-group row col-12">
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="birthday">Ngày sinh:</label>
 									<span class="error" id="birthday-error"></span>
-									<input type="date" class="col-sm-12" id="birthday" name="birthday" />
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-calendar"></i>
+										</span>
+										<input type="date" class="col-sm-12 input-info" id="birthday" name="birthday" />
+									</div>
+									
 								</div>
-								<div class="col-6">
+								<div class="col-xl-6 col-md-12">
 									<label for="role">Vai trò:</label>
 									<span class="error" id="role-error"></span>
-									<select class="col-sm-12" id="role" name="role">
-										<option value="">-- Chọn Vai trò --</option>
-										<option value="1">Quản trị viên</option>
-										<option value="2">Y tá</option>
-										<option value="3">Bác sĩ</option>
-									</select>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-user-tag"></i>
+										</span>
+										<select class="col-sm-12 input-info" id="role" name="role">
+											<option value="">-- Chọn Vai trò --</option>
+											<option value="1">Quản trị viên</option>
+											<option value="2">Y tá</option>
+											<option value="3">Bác sĩ</option>
+										</select>
+									</div>
+									
 								</div>
 							</div>
 	
 							<div id="additional-fields"  style="display: none">
 								<div class="form-group row col-12">
-									<div class="col-4">
+									<div class="col-xl-4 col-md-6 col-sm-12">
 										<label for="speciality"
 											>Chuyên khoa:</label
 										>
@@ -104,48 +133,61 @@
 											class="error"
 											id="speciality-error"
 										></span>
-										<select
-											class="col-sm-12"
-											name="speciality"
-											id="speciality"
-										>
-											<option value="">
-												-- Chọn chuyên khoa --
-											</option>
-											<% if (specialities.length != 0) { %> <%
-											specialities.forEach((speciality) => {
-											%>
-											<option value="<%= speciality.id %>">
-												<%= speciality.name %>
-											</option>
-											<% }) %> <% } %>
-										</select>
+										<div class="input-box">
+											<span class="before-input">
+												<i class="fas fa-folder-plus"></i>
+											</span>
+											<select
+												class="col-sm-12 input-info"
+												name="speciality"
+												id="speciality"
+											>
+												<option value="">
+													-- Chọn chuyên khoa --
+												</option>
+												<% if (specialities.length != 0) { %> <%
+												specialities.forEach((speciality) => {
+												%>
+												<option value="<%= speciality.id %>">
+													<%= speciality.name %>
+												</option>
+												<% }) %> <% } %>
+											</select>
+										</div>
 									</div>
-									<div class="col-4">
+									<div class="col-xl-4 col-md-6 col-sm-12">
 										<label for="rank">Chức danh:</label>
 										<span class="error" id="rank-error"></span>
-										<select name="rank" class="col-sm-12" id="rank">
-											<option value="">
-												-- Chọn chức danh --
-											</option>
-											<option value="1">PGS-TS</option>
-											<option value="2">Tiến sĩ</option>
-											<option value="3">Bác sĩ CKII</option>
-											<option value="4">Bác sĩ CKI</option>
-										</select>
+										<div class="input-box">
+											<span class="before-input">
+												<i class="fas fa-network-wired"></i>
+											</span>
+											<select name="rank" class="col-sm-12 input-info" id="rank">
+												<option value="">
+													-- Chọn chức danh --
+												</option>
+												<option value="1">PGS-TS</option>
+												<option value="2">Tiến sĩ</option>
+												<option value="3">Bác sĩ CKII</option>
+												<option value="4">Bác sĩ CKI</option>
+											</select>
+										</div>
 									</div>
-									<div class="col-4">
+									<div class="col-xl-4 col-sm-12">
 										<label for="price">Giá khám:</label>
 										<span class="error" id="price-error"></span>
-										<div class="form-group row col-12">
+										<div class="input-box">
+											<span class="before-input">
+												<i class="fas fa-money-bill-wave"></i>
+											</span>
 											<input
-											type="number"
-											class="col-sm-10"
-											id="price"
-											name="price"
-											placeholder="  Giá khám"
-										/>
-										<h6 class="col-2">VNĐ</h6>
+												type="number"
+												class="col-sm-12 input-info"
+												id="price"
+												name="price"
+												placeholder="Giá khám"
+											/>
+											<p class="after-input">đ</p>
 										</div>
 
 									</div>
@@ -157,15 +199,19 @@
 											class="error"
 											id="description-error"
 										></span>
-										<textarea
-										name="description"
-										class="col-sm-12"
-										id="description"
-										rows="4"
-										style="width: 100%"
-										placeholder="Mô tả"
-										></textarea>
-
+										<div class="input-box">
+											<span class="before-input">
+												<i class="fas fa-info-circle"></i>
+											</span>
+											<textarea
+												name="description"
+												class="col-sm-12 input-info"
+												id="description"
+												rows="4"
+												style="width: 100%"
+												placeholder="Mô tả"
+											></textarea>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -186,22 +232,28 @@
 
 						<div class="form-group right-side">
 							<div class="col-12 img-form">
-								<label for="avatar">Ảnh:</label>
+								<label for="avatar"><i class="fas fa-camera"></i> Ảnh:</label>
 								<br/>
+								<label for="fileInput" class="btn btn-sm btn-secondary">
+									Chọn ảnh
+								</label>
 								<input
 									type="file"
 									name="avatar"
+									id="fileInput"
 									onchange="previewImage(event)"
 									accept="image/jpg, image/jpeg, image/png"
-									style="margin-top:10px; max-width:95%;"
+									style="margin-top:10px; max-width:95%; display:none;"
 								/>
-								<img
-									id="preview"
-									src="/admin/assets/images/anonymous-pic.jpg"
-									alt="Image Preview"
-									style="margin-top:10px; max-width:100%;"
-									class="col-12"
-								/>
+								<label for="fileInput">
+									<img
+										id="preview"
+										src="/admin/assets/images/anonymous-pic.jpg"
+										alt="Image Preview"
+										style="margin-top:10px; max-width:100%;"
+										class="col-12"
+									/>
+								</label>
 								<br/>
 							</div>
 						</div>
@@ -272,17 +324,44 @@
 		margin-left: 2px;
 	}
 
-	input[type='text'],
-	input[type='email'],
-	input[type='date'],
-	input[type='number'],
-	textarea,
-	select{
-		padding: 7px 5px;
+	.input-box {
+		position: relative;
+	}
+
+	.before-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		left: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.after-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		right: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.col-sm-12.input-info {
+		padding: 7px 20px 7px 34px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		margin-bottom: 10px;
-		background-color: #eee;
+	}
+
+	.col-sm-12.input-info:focus {
+		outline:none;
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #71b6f9 !important;
 	}
 
 	select {
@@ -311,7 +390,6 @@
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		box-sizing: border-box;
-		background-color: #eee;
 	}
 
 	span.error {

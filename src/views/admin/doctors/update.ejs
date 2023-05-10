@@ -47,12 +47,12 @@
 							<div class="form-group row info-form">
 								<div class="col-sm-12 info">
 										<label for="name">Số điện thoại:</label>
-										<p class="text-dark"><%= doctor.user.phone_number %></p>
+										<p class="text-light"><i class="fas fa-phone"></i>  <%= doctor.user.phone_number %></p>
 								</div>
 								
 								<div class="col-sm-12 info">
 									<label for="gender">Email liên hệ:</label>
-									<p class="text-dark"><%= doctor.user.email %></p>
+									<p class="text-light"><i class="fas fa-envelope"></i>  <%= doctor.user.email %></p>
 								</div>
 							</div>
 						</div>
@@ -60,69 +60,86 @@
 						<div class="form-group right-side">
 							<div class="form-group row">
 								<div class="col-12 doctor-info">
-									<label
+									<label for="speciality"
 										>Chuyên khoa:</label
 									>
 									<span
 									class="error"
 									id="speciality-error"
 									></span>
-
-									<select
-										name="speciality_id"
-										id="speciality"
-										class="col-sm-12"
-									>
-										<% if (specialities.length != 0) { %> <%
-										specialities.forEach((speciality) => {
-										%>
-										<option value="<%= speciality.id %>" <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>>
-											<%= speciality.name %>
-										</option>
-										<% }) %> <% } %>
-									</select>
-								</div>
-								<div class="col-12 doctor-info">
-									<label>Chức danh:</label>
-									<span class="error" id="rank-error"></span>
-									<select class="col-sm-12" name="rank" id="rank">
-										<option value="1" <%= doctor.rank == 1 ? 'selected' : '' %>>PGS-TS</option>
-										<option value="2" <%= doctor.rank == 2 ? 'selected' : '' %>>Tiến sĩ</option>
-										<option value="3" <%= doctor.rank == 3 ? 'selected' : '' %>>Bác sĩ CKII</option>
-										<option value="4" <%= doctor.rank == 4 ? 'selected' : '' %>>Bác sĩ CKI</option>
-									</select>
-								</div>
-								<div class="col-12 doctor-info">
-									<label>Giá khám:</label>
-									<span class="error" id="price-error"></span>
-									<div class="row col-12">
-										<input
-										type="number"
-										id="price"
-										class="col-sm-5"
-										name="price"
-										placeholder="Giá khám"
-										value="<%= doctor.price %>"
-										/>
-										<h5 class="col-sm-1">VNĐ</h5>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-folder-plus"></i>
+										</span>
+										<select
+											name="speciality_id"
+											id="speciality"
+											class="col-sm-12 input-info"
+										>
+											<% if (specialities.length != 0) { %> <%
+											specialities.forEach((speciality) => {
+											%>
+											<option value="<%= speciality.id %>" <%= doctor.speciality_id == speciality.id ? 'selected' : '' %>>
+												<%= speciality.name %>
+											</option>
+											<% }) %> <% } %>
+										</select>
 									</div>
-
+								</div>
+								<div class="col-12 doctor-info">
+									<label for="rank">Chức danh:</label>
+									<span class="error" id="rank-error"></span>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-network-wired"></i>
+										</span>
+										<select class="col-sm-12 input-info" name="rank" id="rank">
+											<option value="1" <%= doctor.rank == 1 ? 'selected' : '' %>>PGS-TS</option>
+											<option value="2" <%= doctor.rank == 2 ? 'selected' : '' %>>Tiến sĩ</option>
+											<option value="3" <%= doctor.rank == 3 ? 'selected' : '' %>>Bác sĩ CKII</option>
+											<option value="4" <%= doctor.rank == 4 ? 'selected' : '' %>>Bác sĩ CKI</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-xl-5 col-xs-12 doctor-info">
+									<label for="price">Giá khám:</label>
+									<span class="error" id="price-error"></span>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-money-bill-wave"></i>
+										</span>
+										<input
+											type="number"
+											id="price"
+											class="col-sm-12 input-info"
+											style="border:0; border-bottom:1px solid #969696; outline:none; border-radius:0;"
+											name="price"
+											placeholder="Giá khám"
+											value="<%= doctor.price %>"
+										/>
+										<p class="after-input">đ</p>
+									</div>
 								</div>
 
 								<div class="col-12 doctor-info">
-									<label>Mô tả:</label>
+									<label for="description">Mô tả:</label>
 									<span class="error" id="description-error"></span>
 									<span
 									class="error"
 									id="description-error"
 									></span>
-									<textarea
-										name="description"
-										id="description"
-										class="col-sm-12"
-										rows="5"
-										placeholder="Mô tả"
-									><%= doctor.description %></textarea>
+									<div class="input-box">
+										<span class="before-input">
+											<i class="fas fa-info-circle"></i>
+										</span>
+										<textarea
+											name="description"
+											id="description"
+											class="col-sm-12 input-info"
+											rows="5"
+											placeholder="Mô tả"
+										><%= doctor.description %></textarea>
+									</div>
 								</div>
 							</div>
 
@@ -218,24 +235,44 @@
 	.doctor-info{
 		margin-top: 15px;
 	}
+	.input-box {
+		position: relative;
+	}
 
-	input[type='text'],
-	textarea,
-	select {
-		padding: 7px 5px;
+	.before-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		left: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.after-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		right: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.col-sm-12.input-info {
+		padding: 7px 20px 7px 34px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		margin-bottom: 10px;
-		background-color: #eee;
 	}
-    input[type='number']{
-		border: 0;
-		border-bottom: 1px solid #969696;
-		/* width: 95%; */
-		margin-bottom: 10px;
-		font-size: 1em;
-		padding: 7px 5px;
-		outline: none;
+
+	.col-sm-12.input-info:focus {
+		outline:none;
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #71b6f9 !important;
 	}
 
 
