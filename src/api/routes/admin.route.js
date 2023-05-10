@@ -2,23 +2,12 @@ import { Router } from 'express';
 import DoctorController from '../controllers/admin/DoctorController';
 import ScheduleController from '../controllers/admin/ScheduleController';
 import UserController from '../controllers/admin/UserController';
-import AccountController from '../controllers/admin/AccountController';
 import RolesEnum from '../enums/RolesEnum';
 import verifyRoles from '../middlewares/verifyRoles';
 import { verifyAccessToken } from '../services/jwt/JwtServices';
 import HomepageController from '../controllers/admin/HomepageController';
 
 const router = Router();
-
-// const adminRoutes = app => {
-// 	//manage users routes
-// 	router.get('/users', UserController.index);
-// 	router.post('/users/create', UserController.create);
-// 	router.patch('/users/update/:id', UserController.update);
-// 	router.delete('/users/destroy/:id', UserController.destroy);
-
-// 	app.use('/api/admin', router);
-// };
 
 const adminRoutes = app => {
 	//* manage users routes
