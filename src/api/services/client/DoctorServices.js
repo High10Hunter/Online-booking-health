@@ -269,12 +269,6 @@ const getDoctorsForHomePage = async () => {
 			where: {
 				status: true,
 				role: 3,
-				// schedule is not booked
-				[Op.not]: [
-					sequelize.literal(
-						'exists (select * from "appointments" where "doctor->schedules"."id" = "doctor->schedules->appointments"."schedule_id")'
-					),
-				],
 			},
 			required: true,
 			include: [
@@ -290,15 +284,6 @@ const getDoctorsForHomePage = async () => {
 							as: 'schedules',
 							required: true,
 							subQuery: false,
-							where: {
-								// having the date is greater than today to the next 7 days
-								date: {
-									[Op.gte]: moment().format('YYYY-MM-DD'),
-									[Op.lte]: moment()
-										.add(7, 'days')
-										.format('YYYY-MM-DD'),
-								},
-							},
 							include: [
 								{
 									model: Appointment,
