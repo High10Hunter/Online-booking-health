@@ -61,6 +61,7 @@
 	<!-- end col -->
 </div>
 
+<h3>Lịch khám hôm nay</h3>
 <div id="calendar"></div>
 
 <%- contentFor('css') %>
@@ -88,10 +89,11 @@
 			locale: 'vi',
 			timeZone: 'Asia/Ho_Chi_Minh',
 			firstDay: 1, //start from monday
-			buttonText: {
-				today: 'Hôm nay',
-				week: 'Tuần',
-				day: 'Ngày',
+			// disable toolbar
+			headerToolbar: {
+				start: '',
+				center: 'title',
+				end: '',
 			},
 
 			height: 600,
