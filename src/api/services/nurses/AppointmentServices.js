@@ -8,7 +8,7 @@ import {
 	Speciality,
 	User,
 } from '../../models';
-import { NotFoundError } from '../../errors';
+import { NotFoundError, BadRequestError } from '../../errors';
 import AppointmentStatusEnum from '../../enums/AppoimentStatusEnum';
 
 const getAllAppointments = async (q = '', currentPage = 1, status) => {
@@ -230,9 +230,78 @@ const updateAppointment = async (id, data, userId) => {
 	}
 };
 
+const countAppointmentByDate = async (startDate, endDate) => {
+	try {
+		const count = await Appointment.count({
+			where: {
+				'$schedule.date$': {
+					[Op.between]: [startDate, endDate],
+				},
+				status: AppointmentStatusEnum.APPROVED,
+			},
+			include: [
+				{
+					model: Schedule,
+					as: 'schedule',
+					attributes: ['id'],
+					required: true,
+					subQuery: false,
+				},
+			],
+		});
+
+		return count;
+	} catch (error) {
+		throw new BadRequestError('Cannot get count appointment');
+	}
+};
+
+const countAppointmentByDateAndStatus = async (startDate, endDate, status) => {
+	try {
+		const count = await Appointment.count({
+			where: {
+				'$schedule.date$': {
+					[Op.between]: [startDate, endDate],
+				},
+				status: status,
+			},
+			include: [
+				{
+					model: Schedule,
+					as: 'schedule',
+					attributes: ['id'],
+					required: true,
+					subQuery: false,
+				},
+			],
+		});
+
+		return count;
+	} catch (error) {
+		throw new BadRequestError('Cannot get count appointment');
+	}
+};
+
+const countPendingAppointment = async () => {
+	try {
+		const count = await Appointment.count({
+			where: {
+				status: AppointmentStatusEnum.PENDING,
+			},
+		});
+
+		return count;
+	} catch (error) {
+		throw new BadRequestError('Cannot get count pending appointment');
+	}
+};
+
 export default {
 	getAllAppointments,
 	updateStatusAppointment,
 	getAppointmentById,
 	updateAppointment,
+	countAppointmentByDate,
+	countAppointmentByDateAndStatus,
+	countPendingAppointment,
 };
