@@ -5,30 +5,29 @@ import moment from 'moment';
 const index = async (req, res) => {
 	try {
 		const { q, page, status } = req.query;
-		const { rows, currentPage, endPage } = await Appointment.getAllAppointments(
-			q,
-			page,
-			status
-		);
+		const { rows, currentPage, endPage } =
+			await Appointment.getAllAppointments(q, page, status);
 
 		const todayAppointments = await Appointment.countAppointmentByDate(
 			moment().startOf('day').toDate(),
 			moment().endOf('day').toDate()
 		);
 
-		const currentMonthAppointments = await Appointment.countAppointmentByDate(
-			moment().startOf('month').toDate(),
-			moment().endOf('month').toDate()
-		);
+		const currentMonthAppointments =
+			await Appointment.countAppointmentByDate(
+				moment().startOf('month').toDate(),
+				moment().endOf('month').toDate()
+			);
 
 		const pendingAppointments = await Appointment.countPendingAppointment();
 
-		const todayCompletedAppointments = await Appointment.countAppointmentByDateAndStatus(
-			moment().startOf('day').toDate(),
-			moment().endOf('day').toDate(),
-			5
-		);
-		
+		const todayCompletedAppointments =
+			await Appointment.countAppointmentByDateAndStatus(
+				moment().startOf('day').toDate(),
+				moment().endOf('day').toDate(),
+				5
+			);
+
 		return res.render('./nurse/index', {
 			todayAppointments,
 			pendingAppointments,
@@ -82,10 +81,15 @@ const getAppointment = async (req, res) => {
 			'Thứ bảy',
 		];
 
+		const expired = moment(
+			date + ' ' + appointment.schedule.shift.end_time
+		).isBefore(moment().format('YYYY-MM-DD HH:mm:ss'));
+
 		const data = {
 			appointment,
 			doctor_rank: appointment.schedule.doctor.getRankName(),
 			appointment_day: daysOfWeek[dayOfWeek],
+			expired,
 		};
 
 		return res.status(StatusCodes.OK).json({
@@ -129,19 +133,21 @@ const getStatistic = async (req, res) => {
 			moment().endOf('day').toDate()
 		);
 
-		const currentMonthAppointments = await Appointment.countAppointmentByDate(
-			moment().startOf('month').toDate(),
-			moment().endOf('month').toDate()
-		);
+		const currentMonthAppointments =
+			await Appointment.countAppointmentByDate(
+				moment().startOf('month').toDate(),
+				moment().endOf('month').toDate()
+			);
 
 		const pendingAppointments = await Appointment.countPendingAppointment();
 
-		const todayCompletedAppointments = await Appointment.countAppointmentByDateAndStatus(
-			moment().startOf('day').toDate(),
-			moment().endOf('day').toDate(),
-			5
-		);
-		
+		const todayCompletedAppointments =
+			await Appointment.countAppointmentByDateAndStatus(
+				moment().startOf('day').toDate(),
+				moment().endOf('day').toDate(),
+				5
+			);
+
 		const data = {
 			todayAppointments,
 			currentMonthAppointments,

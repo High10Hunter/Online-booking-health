@@ -10,6 +10,7 @@ import {
 } from '../../models';
 import { NotFoundError, BadRequestError } from '../../errors';
 import AppointmentStatusEnum from '../../enums/AppoimentStatusEnum';
+import moment from 'moment';
 
 const getAllAppointments = async (q = '', currentPage = 1, status) => {
 	try {
@@ -207,7 +208,40 @@ const getAppointmentById = async appointmentId => {
 
 const updateAppointment = async (id, data, userId) => {
 	try {
-		const appointment = await Appointment.findByPk(id);
+		const appointment = await Appointment.findOne({
+			where: {
+				id,
+			},
+			include: [
+				{
+					model: Schedule,
+					as: 'schedule',
+					attributes: ['date'],
+					required: false,
+					subQuery: false,
+					include: [
+						{
+							model: Shift,
+							as: 'shift',
+							attributes: ['start_time', 'end_time'],
+							required: false,
+							subQuery: false,
+						},
+					],
+				},
+			],
+		});
+
+		if (!appointment) throw new Error('Appointment not found');
+
+		const expired = moment(
+			appointment.schedule.date +
+				' ' +
+				appointment.schedule.shift.end_time
+		).isBefore(moment().format('YYYY-MM-DD HH:mm:ss'));
+
+		if (expired) throw new Error('Appointment is expired');
+
 		appointment.set({
 			...data,
 			user_id: userId,
