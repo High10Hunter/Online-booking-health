@@ -859,14 +859,15 @@
                           $('#doctor-avatar').attr('src', 'https://api.dicebear.com/6.x/initials/svg?seed=' + appointment.schedule.doctor.user.name);
                       }
 
-                      if(response.data.expired && appointment.status >=4){
+                      if(response.data.expired){
                           $('#statusAppointment').prop('disabled', true);
                           if(appointment.status == 4) $('#statusAppointment').css('color', 'rgb(255, 0, 0)');
                           else if(appointment.status == 5) $('#statusAppointment').css('color', 'rgb(56, 173, 107)');
+                          else if (appointment.status == 3) $('#statusAppointment').css('color', 'rgb(0, 0, 255)');
+                          else $('#statusAppointment').css('color', 'rgb(48, 76, 6)');
                       } else {
                           $('#statusAppointment').prop('disabled', false);
                           $('#statusAppointment').css('color', 'rgb(0, 0, 0)');
-                            
                       }
                   },
                   error: function (xhr, status, error) {
