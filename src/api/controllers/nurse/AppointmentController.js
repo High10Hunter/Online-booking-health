@@ -82,10 +82,13 @@ const getAppointment = async (req, res) => {
 			'Thứ bảy',
 		];
 
+		const expired =  moment(date + ' ' + appointment.schedule.shift.end_time).isBefore(moment().format('YYYY-MM-DD HH:mm:ss'));
+
 		const data = {
 			appointment,
 			doctor_rank: appointment.schedule.doctor.getRankName(),
 			appointment_day: daysOfWeek[dayOfWeek],
+			expired,
 		};
 
 		return res.status(StatusCodes.OK).json({

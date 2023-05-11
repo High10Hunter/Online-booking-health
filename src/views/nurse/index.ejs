@@ -474,16 +474,16 @@
                                                     <i class="fas fa-info-circle"></i>
                                                 </span>
                                                 <select name="status" id="statusAppointment" class="col-sm-12 input-info" placeholder="Trạng thái">
-                                                    <option value="2">
+                                                    <option value="2" style="color: rgb(196, 196, 114)">
                                                         Chờ xử lý
                                                     </option>
-                                                    <option value="3">
+                                                    <option value="3" class="text-primary">
                                                         Xác nhận
                                                     </option>
-                                                    <option value="4">
+                                                    <option value="4" class="text-danger">
                                                         Từ chối
                                                     </option>
-                                                    <option value="5">
+                                                    <option value="5" class="text-success">
                                                         Khám xong
                                                     </option>
                                                 </select>
@@ -596,6 +596,16 @@
         border-radius: 5px !important;
         box-shadow: 0 0 5px #71b6f9 !important;
       }
+
+    #statusAppointment:disabled {
+        outline: none;
+        background-color: #e8e8e8;
+        color: #1db562;
+        cursor: not-allowed;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    }
 
   
       select {
@@ -847,6 +857,16 @@
                           $('#doctor-avatar').attr('src', appointment.schedule.doctor.user.avatar);
                       } else {
                           $('#doctor-avatar').attr('src', 'https://api.dicebear.com/6.x/initials/svg?seed=' + appointment.schedule.doctor.user.name);
+                      }
+
+                      if(response.data.expired && appointment.status >=4){
+                          $('#statusAppointment').prop('disabled', true);
+                          if(appointment.status == 4) $('#statusAppointment').css('color', 'rgb(255, 0, 0)');
+                          else if(appointment.status == 5) $('#statusAppointment').css('color', 'rgb(56, 173, 107)');
+                      } else {
+                          $('#statusAppointment').prop('disabled', false);
+                          $('#statusAppointment').css('color', 'rgb(0, 0, 0)');
+                            
                       }
                   },
                   error: function (xhr, status, error) {
