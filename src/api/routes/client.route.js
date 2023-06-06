@@ -17,6 +17,8 @@ const clientRoutes = app => {
 	router.get('/cancel-appointment-beta', AppointmentController.cancelBeta);
 	router.get('/confirm-appointment-beta', AppointmentController.confirmBeta);
 	router.get('/error-appointment-beta', AppointmentController.errorBeta);
+
+	router.post('/doctor_profile/:id/reviews', DoctorController.storeReview);
 	app.use('/', router);
 };
 
