@@ -608,8 +608,17 @@
                                 statusText = "Hoàn thành";
                                 statusClass = "table-success";
                         }
+                        const inputDate = new Date(appointment.createdAt);
+                        const formattedDate = inputDate.toLocaleString('vi-VN', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
                         let row = '<tr class="' + statusClass + '"><td>' + (index + 1) + '</td><td>' 
-                            + appointment.createdAt + '</td><td>' 
+                            + formattedDate + '</td><td>' 
                             + appointment.schedule.date + '</td><td>' 
                             + appointment.schedule.shift.start_time + ' - ' + appointment.schedule.shift.end_time + '</td><td>'
                             + statusText + '</td></tr>';
