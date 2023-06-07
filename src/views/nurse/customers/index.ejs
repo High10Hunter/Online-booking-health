@@ -637,7 +637,49 @@
             });
 
             $('#confirm-update-customer-btn').off('click').on('click', function () {
-                updateCustomer(customerId, currentBtn);
+                let valid = true;
+
+                if ($('#nameCustomer').val() === '') {
+                    valid = false;
+                    $('#name-error').html('Vui lòng không để trống tên khách hàng');
+                } else {
+                    $('#name-error').html('');
+                }
+
+                if ($('#male').is(':checked') === false && $('#female').is(':checked') === false) {
+                    valid = false;
+                    $('#gender-error').html('Giới tính không hợp lệ');
+                } else {
+                    $('#gender-error').html('');
+                }
+
+                if ($('#birthdayCustomer').val() === '') {
+                    valid = false;
+                    $('#birthday-error').html('Ngày sinh không hợp lệ');
+                } else {
+                    $('#birthday-error').html('');
+                }
+
+                if ($('#phone_numberCustomer').val() === '' || $('#phone_numberCustomer').val().length < 10) {
+                    valid = false;
+                    $('#phone-error').html('Số điện thoại không hợp lệ');
+                } else {
+                    $('#phone-error').html('');
+                }
+
+                if ($('#emailCustomer').val() === '') {
+                    valid = false;
+                    $('#email-error').html('Vui lòng nhập email');
+                } else if (!$('#emailCustomer').val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
+                    valid = false;
+                    $('#email-error').html('Email không hợp lệ');
+                } else {
+                    $('#email-error').html('');
+                }
+
+                if (valid) {
+                    updateCustomer(customerId, currentBtn);
+                }
             });
 
             
