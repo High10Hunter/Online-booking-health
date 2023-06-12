@@ -39,29 +39,38 @@
 									<h3 class="mt-0">Đăng nhập</h3>
 								</div>
 
-								<form action="/auth/login" method="POST">
+								<form id="login-form" action="/auth/login" method="POST">
 									<div class="form-group mb-3">
 										<label for="username">Tài khoản </label>
-										<input
-											class="form-control"
-											id="username"
-											name="username"
-											type="text"
-											required=""
-											placeholder="Nhập tài khoản..."
-										/>
+										<span class="error" id="username-error"></span>
+										<div class="input-box">
+											<i class="input-before fas fa-user-circle" style="color:#4ca3f7"></i>
+											<input
+												class="form-control"
+												id="username"
+												name="username"
+												type="text"
+												required=""
+												placeholder="Nhập tài khoản..."
+											/>
+										</div>
 									</div>
 
 									<div class="form-group mb-3">
 										<label for="password">Mật khẩu</label>
-										<input
-											class="form-control"
-											type="password"
-											name="password"
-											required=""
-											id="password"
-											placeholder="Nhập mật khẩu..."
-										/>
+										<span class="error" id="password-error"></span>
+										<div class="input-box">
+											<i class="input-before fas fa-lock" style="color:#4ca3f7"></i>
+											<input
+												class="form-control"
+												type="password"
+												name="password"
+												required=""
+												id="password"
+												placeholder="Nhập mật khẩu..."
+											/>
+										</div>
+										
 									</div>
 
 									<div class="form-group mb-3">
@@ -86,6 +95,7 @@
 									<div class="form-group mb-0 text-center">
 										<button
 											class="btn btn-primary btn-block"
+											id="btn-login"
 											type="submit"
 										>
 											Đăng nhập
@@ -112,3 +122,90 @@
 		<%- include('../layouts/admin_layout/script.ejs') %>
 	</body>
 </html>
+
+<style>
+	body {
+		background-image: url("/admin/assets/images/background.jpg");
+		background-size: cover;
+		background-position: top;
+		background-attachment: fixed;
+	}
+
+	
+	input:focus {
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px;
+	}
+
+	.input-box {
+		position: relative;
+	}
+
+	.input-before{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		left: 7px;
+		top:50%;
+		transform: translateY(-50%);
+	}
+
+	.input-box input {
+		padding-left: 30px;
+	}
+	.form-control.invalid {
+		outline: none;
+		border: 2px solid #dd7e88;
+		border-radius: 5px;
+	}
+	span.error {
+		color: red;
+		display: inline-block;
+		font-size: 12px;
+	}
+</style>
+
+<script>
+	$(document).ready(function() {
+		const form = $("#login-form");
+		const username = $("#username");
+		const password = $("#password");
+
+		username.on('input', function () {
+			username.removeClass('invalid');
+			$("#username-error").text("");
+		});
+		password.on('input', function () {
+			password.removeClass('invalid');
+			$("#password-error").text("");
+		});
+
+		$("#btn-login").on('click', function(e) {
+			e.preventDefault(); 
+			
+
+			let valid = true;
+			if (username.val() !== "") {
+				$("#username-error").text("");
+				username.removeClass('invalid');
+			} else {
+				$("#username-error").text("Tài khoản không được để trống");
+				username.addClass('invalid');
+				valid = false;
+			} 
+			if (password.val() !== "") {
+				$("#password-error").text("");
+				password.removeClass('invalid');
+			} else {
+				$("#password-error").text("Mật khẩu không được để trống");
+				password.addClass('invalid');
+				valid = false;
+			}
+			
+			if (valid) {
+				form.submit();
+			}
+		});
+	});
+</script>

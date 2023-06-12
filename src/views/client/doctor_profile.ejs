@@ -145,44 +145,194 @@
 				Phản hồi của bệnh nhân sau khi đi khám
 			</div>
 
-			<div class="feedback-list">
-				<div class="feedback-item">
-					<div class="feedback-name">
-						<strong>Nguyễn Kim Sơn</strong>&nbsp;
-						<a class="feedback-info"
-							><i class="bt-g bt-g-dongy-tron"></i> Đã khám ngày
-							16/07/2020
-						</a>
+			<div class="review-list">
+				<div class="review-form form-group col-xl-8 col-sm-12" id="review-form">
+					<h6 class="text-center" style="margin-bottom:10px;">Đánh giá sau khi khám:</h6>
+					<div class="row col-12">
+						<div class="col-12">
+							<div class="input-box">
+								<span class="before-input">
+									<i class="fas fa-user"></i>
+								</span>
+								<input
+									type="text"
+									class="col-sm-12 input-info"
+									id="name"
+									name="name"
+									placeholder="Họ và tên"
+								/>
+							</div>
+						</div>
+						<div class="col-xl-6 col-md-12">
+							<div class="input-box">
+								<span class="before-input">
+									<i class="fas fa-phone"></i>
+								</span>
+								<input
+									type="number"
+									class="col-sm-12 input-info"
+									id="phone"
+									name="phone_number"
+									placeholder="Số điện thoại"
+								/>
+							</div>
+						</div>
+						<div class="col-xl-6 col-md-12">
+							<div class="input-box">
+								<span class="before-input">
+									<i class="fas fa-envelope"></i>
+								</span>
+								<input
+									type="text"
+									class="col-sm-12 input-info"
+									id="email"
+									name="email"
+									placeholder="email@gmail.com"
+								/>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="input-box">
+								<span class="before-input">
+									<i class="fas fa-info-circle"></i>
+								</span>
+								<textarea
+									name="comment"
+									class="col-sm-12 input-info"
+									id="comment"
+									rows="2"
+									placeholder="Đánh giá"
+								></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="text-center">
+						<i class="fab fa-get-pocket" style="color:green"></i>
+						QTN Clinic cam kết bảo mật thông tin của bạn
 					</div>
 
-					<div class="feedback-content">Tốt</div>
+					<div class="text-right">
+						<button type="button" id="submit-review-btn" class="btn btn-primary" data-id="<%= doctor.id %>">Đánh giá</button>
+					</div>
 				</div>
+				<% if (reviews.length != 0) { %>
+					<% reviews.forEach(function (review) { %>
+						<div class="review col-xl-8 col-sm-12">
+							<strong><%= review.name %></strong>&nbsp
+							<span style="color:#45c3d2; float:right;">
+								<i class="fas fa-check-circle"></i>
+								Đã đăng vào lúc
+								<%= new Date(review.dataValues.createdAt).toLocaleString('vi-VN', {
+									hour: '2-digit',
+									minute: '2-digit',
+									second: '2-digit',
+									day: '2-digit',
+									month: '2-digit',
+									year: 'numeric'
+								}) 
+								%>
+							</span>
+							<div><span style="font-style: italic;">Đánh giá:</span> <%= review.comment %></div>
+						</div>
+					<% }); %>
+				<% } else { %>
+					<div class="no-review"><strong>Không có đánh giá</strong></div>
+				<% } %>
 
-				<div class="feedback-item">
-					<div class="feedback-name">
-						<strong>Một bệnh nhân</strong>&nbsp;
-						<a class="feedback-info"
-							><i class="bt-g bt-g-dongy-tron"></i> Đã khám ngày
-							30/08/2018
-						</a>
-					</div>
-					<div class="feedback-content">
-						Bác sĩ đã xem kỹ và sử dụng một phần kết quả xét nghiệm
-						trước đây tôi đã làm (dù làm ở bệnh viện khác),chỉ yêu
-						cầu tôi làm xét nghiệm cần thiết, giúp giảm chi phí khám
-						bệnh. Bác sĩ có giải thích về bệnh đủ để tôi hiểu và cảm
-						thấy yên tâm. Bây giờ tôi sẽ uống thuốc theo phác đồ để
-						xem kết quả như nào.
-					</div>
-				</div>
+			
 			</div>
 		</div>
 	</div>
 </div>
 
-<%- contentFor('css') %> <%- include('style') %> <%- contentFor('js') %>
+<%- contentFor('css') %>
+<style>
+	.review-list {
+		margin-top: 20px;
+	}
+	.review {
+		display:block;
+		padding: 7px 10px;
+		margin-bottom: 10px;
+		background-color: #dddddd;
+		border-radius: 10px;
+	}
+	.review-form {
+		display:block;
+		padding: 7px 10px;
+		margin-bottom: 10px;
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-radius: 10px;
+		box-shadow: 0px 2px 4px 0px
+		rgb(0,0,0,.2);
+	}
+
+	.input-box {
+		position: relative;
+	}
+
+	.before-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		left: 7px;
+		top:50%;
+		transform: translateY(-70%);
+	}
+
+	.after-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		right: 7px;
+		top:50%;
+		transform: translateY(-70%);
+	}
+
+	.col-sm-12.input-info {
+		padding: 15px 20px 15px 34px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-bottom: 15px;
+	}
+
+	.col-sm-12.input-info:focus {
+		outline:none;
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #71b6f9 !important;
+	}
+
+	.col-sm-12.input-info.invalid {
+		outline: none;
+		border: 2px solid #dd7e88 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #dc4050 !important;
+	}
+
+
+
+	button[type='submit'] {
+		text-transform: uppercase;
+		padding: 7px 15px;
+		margin-left: 10px;
+		border-radius: 5px;
+		cursor: pointer;
+		box-shadow: 0px 2px 4px 0px
+		rgb(0,0,0,.2);
+		margin-top: 15px;
+	}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<%- include('style') %> <%- contentFor('js') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- momentjs -->
 <script
+
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
 	crossorigin="anonymous"
 	referrerpolicy="no-referrer"
@@ -221,5 +371,109 @@
 			// assign schedule_id to href in <a>
 			$(this).attr('href', '/booking/' + schedule_id);
 		});
+
+
+		toastr.options = {
+			closeButton: true,
+			debug: false,
+			newestOnTop: false,
+			progressBar: false,
+			positionClass: 'toast-bottom-left',
+			preventDuplicates: true,
+			onclick: null,
+			showDuration: '300',
+			hideDuration: '1000',
+			timeOut: '5000',
+			extendedTimeOut: '1000',
+			showEasing: 'swing',
+			hideEasing: 'linear',
+			showMethod: 'fadeIn',
+			hideMethod: 'fadeOut',
+		};
+
+		const name = $('#name');
+		const email = $('#email');
+		const phone = $('#phone');
+		const comment = $('#comment');
+		const submitBtn = $('#submit-review-btn');
+		name.on('input', function () {
+			if (name.val() == '') {
+				name.addClass('invalid');
+			} else {
+				name.removeClass('invalid');
+			}
+		});
+		email.on('input', function () {
+			if (email.val() == '' || !email.val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/)) {
+				email.addClass('invalid');
+			} else {
+				email.removeClass('invalid');
+			}
+		});
+
+		phone.on('input', function () {
+			if (phone.val() == '' || phone.val().length < 10) {
+				phone.addClass('invalid');
+			} else {
+				phone.removeClass('invalid');
+			}
+		});
+		comment.on('input', function () {
+			if (comment.val() == '') {
+				comment.addClass('invalid');
+			} else {
+				comment.removeClass('invalid');
+			}
+		});
+		
+		$('#submit-review-btn').click(function (e) {
+			e.preventDefault();
+
+			if(name.val() == '' || email.val() == '' || !email.val().match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) 
+					|| phone.val() == '' || phone.val().length < 10 || comment.val() == '')
+				 return;
+
+			const data = {
+				doctor_id: $(this).data('id'),
+				name: name.val(),
+				email: email.val(),
+				phone_number: phone.val(),
+				comment: comment.val(),
+			}
+
+			$.ajax({
+				method: 'POST',
+				url: '/doctor_profile/<%= doctor.id %>/reviews',
+				data: JSON.stringify(data),
+				contentType: 'application/json',
+				success: function (response) {
+					toastr['success'](
+						'Gửi đánh giá thành công',
+						'Thành công'
+					);
+					const review = response.data;
+					var newReviewHtml = '<div class="review col-xl-8 col-sm-12">' +
+						'<strong>' + review.name + '</strong>&nbsp' +
+						'<span style="color:#45c3d2; float:right;">' +
+						'<i class="fas fa-check-circle"></i>&nbsp' +
+						'Vừa đăng lên' +
+						'</span>' +
+						'<div><span style="font-style: italic;">Đánh giá:</span> ' + review.comment + '</div>' +
+					'</div>';
+
+					if ($('.no-review').length > 0) {
+						$('.no-review').hide();
+					}
+					$('.review-form').after(newReviewHtml);
+				},
+				error: function (xhr, status, error) {
+					toastr['error'](
+						'Gửi đánh giá thất bại, thông tin bệnh nhân chưa có đơn khám nào',
+						'Thất bại'
+					);
+				},
+			});
+		});
 	});
+
 </script>
