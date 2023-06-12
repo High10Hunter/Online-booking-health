@@ -414,9 +414,6 @@
 	.card-box {
 		width: 100%;
 		height: 100%;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 		position: relative;
 		top: 5px;
 		overflow: auto;
@@ -579,7 +576,7 @@
 		position: absolute;
 		z-index: 1;
 		bottom: 0;
-		width: 50%;
+		width: calc(50% - 12px);
 		height: 3px;
 		border-radius: 15px;
 		background-color: #00a2ff;
@@ -665,6 +662,12 @@ $(document).ready(function () {
 		$(this).addClass('active');
 		pane.addClass('active');
 		});
+	});
+
+	$(window).resize(function () {
+		const tabActive = $('.tab-item.active');
+
+		line.css('left', tabActive[0].offsetLeft + 'px');
 	});
 
 	const form = $('#account-settings-form');

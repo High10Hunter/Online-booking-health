@@ -155,7 +155,7 @@
 							</td>
 
 							<td><%= user.name %></td>
-							<td><%= user.birthday %></td>
+							<td><%= new Date(user.birthday).toLocaleDateString('en-GB') %></td>
 							<td><%= user.getGenderName() %></td>
 							<td><%= user.email %></td>
 							<td><%= user.phone_number %></td>

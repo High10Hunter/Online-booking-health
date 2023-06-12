@@ -18,7 +18,7 @@
 					>
 						<div class="form-group left-side">
 							<div class="form-group picture-form">
-								<div class="user-box text-center">
+								<div class="text-center">
 									<% if (doctor.user.avatar) { %> 
 										<img src="<%= doctor.user.avatar %>" 
 										alt="user-img" 
@@ -168,9 +168,6 @@
     .card-box{
 		width: 100%;
 		height: 100%;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 		position: relative;
 		top: 5px;
 		overflow:auto;
@@ -235,6 +232,33 @@
 	.doctor-info{
 		margin-top: 15px;
 	}
+
+	@media (max-width: 960px) {
+		#update-doctor-form{
+			display: flex;
+			flex-direction: column;
+		}
+		.left-side{
+			width: 100%;
+			position: relative;
+			padding-top: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: row;
+		}
+		.picture-form{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.right-side{
+			width: auto;
+			margin: 0 20px;
+		}
+	}
+
 	.input-box {
 		position: relative;
 	}

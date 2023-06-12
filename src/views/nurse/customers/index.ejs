@@ -73,7 +73,7 @@
                         <% customers.forEach(function(customer) { %>
                     <tr >
                         <th scope="row"><%= customer.name %></td>
-                        <td><%= customer.birthday %></td>
+                        <td><%= new Date(customer.birthday).toLocaleDateString('en-GB') %></td>
                         <td><% if (customer.gender) {%> Nam <%} else {%> Nữ <% } %></td>
                         <td><%= customer.phone_number %></td>
                         <td><%= customer.email %></td>
@@ -195,7 +195,7 @@
                                 class="form-horizontal"
                             >
                                 
-                                <div class="form-group">
+                                <div class="form-group col-12">
                                     <div class="form-group row col-sm-12">
                                         <div class="col-sm-12">
                                             <label>Tên khách hàng:</label>
@@ -301,7 +301,7 @@
             
                                     <div class="form-group row col-12 history">
                                         <div class="col-12 text-dark"  style="font-weight: bold; margin-bottom: 10px;">LỊCH SỬ ĐẶT LỊCH KHÁM  <i class="fas fa-history"></i></div>
-                                        <div class="col-12">
+                                        <div class="col-12 table-responsive">
                                             <table class="table table-striped table-hover" id="history">
                                                 <thead class="thead-light">
                                                     <tr>

@@ -119,7 +119,7 @@
 										<span class="before-input">
 											<i class="fas fa-user-tag"></i>
 										</span>
-										<select class="col-sm-12 input-info" id="role" name="role">
+										<select class="col-sm-12 input-info" id="role" name="role" style="padding: 9px 20px 9px 34px;">
 											<option value="">-- Chọn Vai trò --</option>
 											<option value="1">Quản trị viên</option>
 											<option value="2">Y tá</option>
@@ -146,7 +146,7 @@
 											</span>
 											<select
 												class="col-sm-12 input-info"
-												name="speciality"
+												name="speciality_id"
 												id="speciality"
 											>
 												<option value="">
@@ -276,9 +276,6 @@
 	.card-box{
 		width:80vw;
 		height: 80vh;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 		position: relative;
 		top: 5px;
 		overflow:auto;
@@ -320,6 +317,27 @@
 		padding-top: 5px;
 	}
 
+	@media (max-width: 864px) {
+		#add-user-form{
+			display: flex;
+			flex-direction: column-reverse;
+
+		}
+		.right-side{
+			width: 100%;
+			height: 20%;
+			position: relative;
+			float: none;
+			padding-top: 15px;
+			padding-bottom: 10px;
+		}
+		.left-side{
+			width: 100%;
+			margin-left: 0px;
+			margin-top: 0px;
+			padding-top: 0px;
+		}
+	}
 
 	label {
 		display: inline-block;
@@ -371,23 +389,21 @@
 		box-shadow: 0 0 5px #71b6f9 !important;
 	}
 
-	select {
-		padding: 9px 0;
-	}
-
 	input[type='radio'] {
 		width: 20px;
 		height: 20px;
 		margin-right: 5px;
 		position: relative;
 		left: 1em;
-		bottom: -5px;
+		bottom: -7px;
 	}
 
 	.radioText {
+		position: relative;
 		margin-left: 24px;
 		font-weight: normal;
 		font-size: 16px;
+		bottom: -3px;
 	}
 
 	.radioBox{
