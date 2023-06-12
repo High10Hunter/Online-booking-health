@@ -19,15 +19,14 @@
 		</div>
 	</div>
 
-	<div class="wrapper">
-		<div class="row">
-			<div class="list-doctor">
+	<div class="wrapper col-12">
+		<div class="row col-12">
+			<div class="list-doctor col-xl-10 offset-xl-1 col-sm-12">
 				<% if (users.length != 0) { %> <% users.forEach(function(user) {
 				%>
 				<div
 					class="a-doctor"
-					data-name="Bác sĩ Chuyên khoa II Nguyễn Thị Kim Loan"
-					data-d`ichvu="Khám"
+					style="margin-bottom: 20px;"
 				>
 					<div class="a-doctor-infor">
 						<div class="a-doctor-img">
@@ -163,8 +162,8 @@
 		</div>
 		<!-- pagination -->
 		<div class="row pt-2">
-			<div class="col-12">
-				<nav aria-label="...">
+			<div class="col-xl-10 offset-xl-1 col-sm-12">
+				<nav aria-label="..." style="margin-top: -2em; margin-left: 12px;">
 					<% if (pages > 0) { %>
 					<ul class="pagination text-center">
 						<% if (current == 1) { %>

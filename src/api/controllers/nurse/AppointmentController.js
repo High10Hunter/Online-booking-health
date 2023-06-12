@@ -2,22 +2,37 @@ import { StatusCodes } from 'http-status-codes';
 import Appointment from '../../services/nurses/AppointmentServices';
 import moment from 'moment';
 
-const homepage = async (req, res) => {
-	return res.render('./nurse/index', {
-		layout: './layouts/nurse_layout/master',
-	});
-};
-
 const index = async (req, res) => {
 	try {
 		const { q, page, status } = req.query;
-		const { rows, currentPage, endPage } = await Appointment.getAllAppointments(
-			q,
-			page,
-			status
+		const { rows, currentPage, endPage } =
+			await Appointment.getAllAppointments(q, page, status);
+
+		const todayAppointments = await Appointment.countAppointmentByDate(
+			moment().startOf('day').toDate(),
+			moment().endOf('day').toDate()
 		);
-		
-		return res.render('./nurse/appointments/index', {
+
+		const currentMonthAppointments =
+			await Appointment.countAppointmentByDate(
+				moment().startOf('month').toDate(),
+				moment().endOf('month').toDate()
+			);
+
+		const pendingAppointments = await Appointment.countPendingAppointment();
+
+		const todayCompletedAppointments =
+			await Appointment.countAppointmentByDateAndStatus(
+				moment().startOf('day').toDate(),
+				moment().endOf('day').toDate(),
+				5
+			);
+
+		return res.render('./nurse/index', {
+			todayAppointments,
+			pendingAppointments,
+			todayCompletedAppointments,
+			currentMonthAppointments,
 			appointments: rows,
 			user: req.payload,
 			pages: endPage,
@@ -66,10 +81,15 @@ const getAppointment = async (req, res) => {
 			'Thứ bảy',
 		];
 
+		const expired = moment(
+			date + ' ' + appointment.schedule.shift.end_time
+		).isBefore(moment().format('YYYY-MM-DD HH:mm:ss'));
+
 		const data = {
 			appointment,
 			doctor_rank: appointment.schedule.doctor.getRankName(),
 			appointment_day: daysOfWeek[dayOfWeek],
+			expired,
 		};
 
 		return res.status(StatusCodes.OK).json({
@@ -79,7 +99,7 @@ const getAppointment = async (req, res) => {
 	} catch (error) {
 		return res.status(StatusCodes.BAD_REQUEST).json({
 			message: error.message || 'Cannot get appointment',
-			appointment: null,
+			data: [],
 		});
 	}
 };
@@ -106,10 +126,51 @@ const update = async (req, res) => {
 	}
 };
 
+const getStatistic = async (req, res) => {
+	try {
+		const todayAppointments = await Appointment.countAppointmentByDate(
+			moment().startOf('day').toDate(),
+			moment().endOf('day').toDate()
+		);
+
+		const currentMonthAppointments =
+			await Appointment.countAppointmentByDate(
+				moment().startOf('month').toDate(),
+				moment().endOf('month').toDate()
+			);
+
+		const pendingAppointments = await Appointment.countPendingAppointment();
+
+		const todayCompletedAppointments =
+			await Appointment.countAppointmentByDateAndStatus(
+				moment().startOf('day').toDate(),
+				moment().endOf('day').toDate(),
+				5
+			);
+
+		const data = {
+			todayAppointments,
+			currentMonthAppointments,
+			pendingAppointments,
+			todayCompletedAppointments,
+		};
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Get statistic successfully',
+			data: data,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot get statistic',
+			data: [],
+		});
+	}
+};
+
 export default {
-	homepage,
 	index,
 	updateStatus,
 	getAppointment,
 	update,
+	getStatistic,
 };

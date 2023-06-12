@@ -210,10 +210,39 @@ const deleteSchedule = async (id, date) => {
 			throw new Error('Date is in the past');
 		}
 
+		const schedule = await Schedule.findOne({
+			where: {
+				id,
+			},
+			attributes: ['date'],
+			include: [
+				{
+					model: Shift,
+					as: 'shift',
+					attributes: ['start_time', 'end_time'],
+					required: false,
+					subQuery: false,
+				},
+			],
+		});
+
+		if (!schedule) {
+			throw new Error('Schedule not found');
+		}
+
+		// check if start time today is in the past with HH:mm:ss format
+		if (
+			moment(schedule.date + 'T' + schedule.shift.start_time).isBefore(
+				moment()
+			)
+		) {
+			throw new Error('Start time is in the past');
+		}
+
 		// check if the schedule id is in appointments
 		const appointment = await Appointment.findOne({
 			where: {
-				id: id,
+				schedule_id: id,
 			},
 		});
 		if (appointment) {

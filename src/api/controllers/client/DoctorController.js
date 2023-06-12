@@ -1,6 +1,8 @@
 import Doctor from '../../services/client/DoctorServices';
 import Shift from '../../services/client/ShiftServices';
+import Review from '../../services/client/ReviewServices';
 import { getDatesRange } from '../../utils';
+import { StatusCodes } from 'http-status-codes';
 
 const homepage = async (req, res) => {
 	const specialities = await Doctor.getAllSpeciality();
@@ -89,11 +91,14 @@ const show = async (req, res) => {
 
 		const specialities = await Doctor.getAllSpeciality();
 
+		const reviews = await Review.getReviewsOfDoctor(doctor_id);
+		
 		return res.render('./client/doctor_profile', {
 			layout: './layouts/client_layouts/master',
 			doctor,
 			shifts,
 			specialities,
+			reviews,
 			selectedDate: date,
 		});
 	} catch (error) {
@@ -101,9 +106,28 @@ const show = async (req, res) => {
 	}
 };
 
+const storeReview = async (req, res) => {
+	try {
+		const review = await Review.createReview(req.body);
+
+		return res.status(StatusCodes.OK).json({
+			message: 'Create review successfully',
+			data: review,
+		});
+	} catch (error) {
+		return res.status(StatusCodes.BAD_REQUEST).json({
+			message: error.message || 'Cannot create review, customer not found or appointment not found',
+			data: [],
+		});
+	}
+}
+
+
+
 export default {
 	homepage,
 	displayFreeDoctor,
 	index,
 	show,
+	storeReview,
 };

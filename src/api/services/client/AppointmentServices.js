@@ -220,8 +220,7 @@ const cancelAppointment = async (id, customer_id) => {
 			throw new Error('Appointment not found');
 		}
 
-		appointment.status = AppointmentStatusEnum.DECLINED;
-		await appointment.save();
+		await appointment.destroy();
 	} catch (error) {
 		throw new Error(error.message || 'Cannot get appointment');
 	}

@@ -1,13 +1,6 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card-box">
-			<div class="row">
-				<div class="col-md-2 mb-1">
-					<a href="/admin">
-						<i class="dripicons-arrow-thin-left"> Quay lại</i>
-					</a>
-				</div>
-			</div>
 			<h3>Cài đặt tài khoản</h3>
 			<div class="row">
 				<div class="col-12">
@@ -34,22 +27,27 @@
 							<div class="form-group col-12">
 								<div class="personal-info tab-pane active">
 									<div class="form-group row col-12">
-										<div class="col-6">
+										<div class="col-xl-6 col-md-12">
 											<label for="name">Họ tên:</label>
 											<span
 												class="error"
 												id="name-error"
 											></span>
-											<input
-												type="text"
-												class="col-sm-12"
-												id="name"
-												name="name"
-												placeholder="Họ và tên"
-												value="<%= user.name %>"
-											/>
+											<div class="input-box">
+												<span class="before-input">
+													<i class="fas fa-user-tag"></i>
+												</span>
+												<input
+													type="text"
+													class="col-sm-12 input-info"
+													id="name"
+													name="name"
+													placeholder="Họ và tên"
+													value="<%= user.name %>"
+												/>
+											</div>
 										</div>
-										<div class="form-group col-6 picture-row">
+										<div class="form-group col-xl-6 col-md-12 picture-row">
 											<label for="avatar">Ảnh:</label>
 											<div>
 												<input
@@ -85,7 +83,7 @@
 										</div>
 									</div>
 									<div class="form-group row col-12">
-										<div class="col-6">
+										<div class="col-xl-6 col-md-12">
 											<label for="birthday"
 												>Ngày sinh:</label
 											>
@@ -93,15 +91,21 @@
 												class="error"
 												id="birthday-error"
 											></span>
-											<input
-												type="date"
-												class="col-sm-12"
-												id="birthday"
-												name="birthday"
-												value="<%= user.birthday %>"
-											/>
+											<div class="input-box">
+												<span class="before-input">
+													<i class="fas fa-calendar"></i>
+												</span>
+												<input
+													type="date"
+													class="col-sm-12 input-info"
+													id="birthday"
+													name="birthday"
+													value="<%= user.birthday %>"
+												/>
+											</div>
+											
 										</div>
-										<div class="col-6">
+										<div class="col-xl-6 col-md-12">
 											<label for="gender">
 												Giới tính:
 											</label>
@@ -148,7 +152,7 @@
 									</div>
 									<div class="form-group row col-12">
 
-										<div class="col-6">
+										<div class="col-xl-6 col-md-12">
 											<label for="phone"
 												>Số điện thoại:</label
 											>
@@ -159,34 +163,41 @@
 											<span>
 												<i class=""></i>
 											</span>
-											<input
-												type="number"
-												class="col-sm-12"
-												id="phone"
-												name="phone_number"
-												placeholder="Số điện thoại"
-												value="<%= user.phone_number %>"
-											/>
+											<div class="input-box">
+												<span class="before-input">
+													<i class="fas fa-phone"></i>
+												</span>
+												<input
+													type="number"
+													class="col-sm-12 input-info"
+													id="phone"
+													name="phone_number"
+													placeholder="Số điện thoại"
+													value="<%= user.phone_number %>"
+												/>
+											</div>
 										</div>
-										<div class="col-6">
+										<div class="col-xl-6 col-md-12">
 											<label for="email">Email:</label>
 											<span
 												class="error"
 												id="email-error"
 											></span>
-											<input
-												type="text"
-												class="col-sm-12"
-												id="email"
-												name="email"
-												placeholder="email@gmail.com"
-												value="<%= user.email %>"
-											/>
+											<div class="input-box">
+												<span class="before-input">
+													<i class="fas fa-envelope"></i>
+												</span>
+												<input
+													type="text"
+													class="col-sm-12 input-info"
+													id="email"
+													name="email"
+													placeholder="email@gmail.com"
+													value="<%= user.email %>"
+												/>
+											</div>
 										</div>
 									</div>
-
-
-
 									<div
 										class="form-group row"
 										style="
@@ -221,16 +232,22 @@
 													id="username-error"
 												></span>
 											</div>
-
-											<input
-												type="text"
-												class="col-sm-12"
-												id="username"
-												name="username"
-												placeholder="Tên đăng nhập"
-												value="<%= user.username %>"
-												disabled
-											/>
+											<div class="input-box">
+												<span class="before-input">
+													<i class="fas fa-user-edit"></i>
+												</span>
+												<input
+													type="text"
+													class="col-sm-12 input-info"
+													id="username"
+													name="username"
+													style="outline: none;"
+													placeholder="Tên đăng nhập"
+													value="<%= user.username %>"
+													disabled
+												/>
+											</div>
+											
 										</div>
 										<div class="col-4">
 											<button
@@ -397,9 +414,6 @@
 	.card-box {
 		width: 100%;
 		height: 100%;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 		position: relative;
 		top: 5px;
 		overflow: auto;
@@ -444,16 +458,58 @@
 		right:10%;
 	}
 
-	input[type='text'],
-	input[type='password'],
-	input[type='email'],
-	input[type='number'],
-	input[type='date']{
+	.input-box {
+		position: relative;
+	}
+
+	.before-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		left: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.after-input{
+		max-width: fit-content;
+		position: absolute;
+		z-index: 1;
+		font-size: 1.1em;
+		right: 7px;
+		top:50%;
+		transform: translateY(-70%);
+		
+	}
+
+	.col-sm-12.input-info{
+		padding: 7px 14px 7px 34px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin-bottom: 10px;
+	}
+
+	.col-sm-12.input-info:focus {
+		outline:none;
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #71b6f9 !important;
+	}
+
+	input[type='password']{
 		padding: 7px 5px;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		margin-bottom: 10px;
-		background-color: #eee;
+	}
+
+	input[type='password']:focus {
+		outline:none;
+		border: 2px solid #71b6f9 !important;
+		border-radius: 5px !important;
+		box-shadow: 0 0 5px #71b6f9 !important;
 	}
 
 	select {
@@ -482,7 +538,6 @@
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		box-sizing: border-box;
-		background-color: #eee;
 	}
 
 	span.error {
@@ -517,11 +572,11 @@
 		display: flex;
 		position: relative;
 	}
-	.tabs .line {
+	.line {
 		position: absolute;
-		left: 0;
+		z-index: 1;
 		bottom: 0;
-		width: 0;
+		width: calc(50% - 12px);
 		height: 3px;
 		border-radius: 15px;
 		background-color: #00a2ff;
@@ -595,11 +650,6 @@ $(document).ready(function () {
 	const tabActive = $('.tab-item.active');
 	const line = $('.tabs .line');
 
-	requestIdleCallback(function () {
-		line.css('left', tabActive.offsetLeft + 'px');
-		line.css('width', tabActive.offsetWidth + 'px');
-	});
-
 	tabs.each(function (index, tab) {
 		const pane = panes.eq(index);
 
@@ -607,12 +657,17 @@ $(document).ready(function () {
 		$('.tab-item.active').removeClass('active');
 		$('.tab-pane.active').removeClass('active');
 
-		line.css('left', $(this).offsetLeft + 'px');
-		line.css('width', $(this).offsetWidth + 'px');
+		line.css('left', $(this)[0].offsetLeft + 'px');
 
 		$(this).addClass('active');
 		pane.addClass('active');
 		});
+	});
+
+	$(window).resize(function () {
+		const tabActive = $('.tab-item.active');
+
+		line.css('left', tabActive[0].offsetLeft + 'px');
 	});
 
 	const form = $('#account-settings-form');
@@ -740,18 +795,12 @@ $(document).ready(function () {
 		editUsernameButton.hide();
 		usernameInput.prop('disabled', false);
 		usernameInput.focus();
-		usernameInput.css({
-			'border': '3px solid #71b6f9',
-		});
 		$('#confirm-edit-username-btn').show();
 	});
 
 	cancelUsernameButton.click(function () {
 		editUsernameButton.show();
 		usernameInput.prop('disabled', true);
-		usernameInput.css({
-			'border': '1px solid #ccc',
-		});
 		$('#confirm-edit-username-btn').hide();
 	});
 
@@ -765,9 +814,6 @@ $(document).ready(function () {
 			successNotify();
 		}
 		usernameInput.prop('disabled', true);
-		usernameInput.css({
-			'border': '1px solid #ccc',
-		});
 		$('#confirm-edit-username-btn').hide();
 		editUsernameButton.show();
 	});

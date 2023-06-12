@@ -90,7 +90,7 @@
             <% if (users.length != 0) { %> <% users.forEach(function(user) { %>
             <tr>
               <th scope="row"><%= user.name %></th>
-              <td><%= user.birthday %></td>
+              <td><%= new Date(user.birthday).toLocaleDateString('en-GB') %></td>
               <td><%= user.getGenderName() %></td>
               <td>
                 <a href="mailto:<%= user.email %>"><%= user.email %> </a>
